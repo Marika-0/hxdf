@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=Python3 with full dead-code elimination
 
---python ../build/python/dce_full/TestRun.py
+--python build/python/dce_full/TestRun.py

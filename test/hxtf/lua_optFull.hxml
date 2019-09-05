@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=Lua with full optimization
 
---lua ../build/lua/opt_full/TestRun.lua
+--lua build/lua/opt_full/TestRun.lua

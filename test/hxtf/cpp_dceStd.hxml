@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=C++ with standard dead-code elimination
 
---cpp ../build/cpp/dce_std
+--cpp build/cpp/dce_std

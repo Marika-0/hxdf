@@ -1,4 +1,6 @@
--p ../src
--p ../../src
+--cwd ../../
+
+-p src
+-p test/src
 
 --debug

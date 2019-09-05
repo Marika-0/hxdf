@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=PHP without dead-code elimination
 
---php ../build/php/dce_no
+--php build/php/dce_no

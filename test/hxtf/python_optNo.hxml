@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=Python3 without optimization
 
---python ../build/python/opt_no/TestRun.py
+--python build/python/opt_no/TestRun.py

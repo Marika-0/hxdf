@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=C++ without optimization
 
---cpp ../build/cpp/opt_no
+--cpp build/cpp/opt_no

@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=PHP with full optimization
 
---php ../build/php/opt_full
+--php build/php/opt_full

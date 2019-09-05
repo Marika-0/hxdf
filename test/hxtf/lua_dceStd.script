@@ -1,1 +1,1 @@
-lua ../build/lua/dce_std/TestRun.lua
+lua ../../build/lua/dce_std/TestRun.lua

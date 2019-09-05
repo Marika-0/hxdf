@@ -4,4 +4,4 @@ _head.hxml
 
 -D test_name=C++ with full optimization
 
---cpp ../build/cpp/opt_full
+--cpp build/cpp/opt_full
