@@ -1,0 +1,7 @@
+_head.hxml
+
+-D analyzer-optimize
+
+-D test_name=Java with full optimization
+
+--java ../build/java/opt_full

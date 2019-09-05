@@ -1,0 +1,7 @@
+_head.hxml
+
+-D analyzer-optimize
+
+-D test_name=PHP with full optimization
+
+--php ../build/php/opt_full

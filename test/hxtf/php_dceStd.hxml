@@ -1,0 +1,7 @@
+_head.hxml
+
+--dce std
+
+-D test_name=PHP with standard dead-code elimination
+
+--php ../build/php/dce_std

@@ -1,0 +1,7 @@
+_head.hxml
+
+--no-opt
+
+-D test_name=Python3 without optimization
+
+--python ../build/python/opt_no/TestRun.py

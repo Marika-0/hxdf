@@ -1,0 +1,7 @@
+_head.hxml
+
+--no-opt
+
+-D test_name=Lua without optimization
+
+--lua ../build/lua/opt_no/TestRun.lua

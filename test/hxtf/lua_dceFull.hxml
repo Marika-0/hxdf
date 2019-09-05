@@ -1,0 +1,7 @@
+_head.hxml
+
+--dce full
+
+-D test_name=Lua with full dead-code elimination
+
+--lua ../build/lua/dce_full/TestRun.lua

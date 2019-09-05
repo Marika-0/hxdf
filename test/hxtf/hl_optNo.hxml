@@ -1,0 +1,7 @@
+_head.hxml
+
+--no-opt
+
+-D test_name=HashLink without optimization
+
+--hl ../build/hl/opt_no/TestRun.hl

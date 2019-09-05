@@ -1,0 +1,7 @@
+_head.hxml
+
+--dce no
+
+-D test_name=Python3 without dead-code elimination
+
+--python ../build/python/dce_no/TestRun.py

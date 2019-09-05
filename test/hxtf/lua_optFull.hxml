@@ -1,0 +1,7 @@
+_head.hxml
+
+-D analyzer-optimize
+
+-D test_name=Lua with full optimization
+
+--lua ../build/lua/opt_full/TestRun.lua

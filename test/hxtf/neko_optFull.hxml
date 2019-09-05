@@ -1,0 +1,7 @@
+_head.hxml
+
+-D analyzer-optimize
+
+-D test_name=Neko with full optimization
+
+--neko ../build/neko/opt_full/TestRun.n

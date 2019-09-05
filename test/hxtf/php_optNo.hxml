@@ -1,0 +1,7 @@
+_head.hxml
+
+--no-opt
+
+-D test_name=PHP without optimization
+
+--php ../build/php/opt_no

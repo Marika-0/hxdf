@@ -1,0 +1,7 @@
+_head.hxml
+
+--dce no
+
+-D test_name=Neko without dead-code elimination
+
+--neko ../build/neko/dce_no/TestRun.n

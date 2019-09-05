@@ -1,0 +1,7 @@
+_head.hxml
+
+--no-opt
+
+-D test_name=C++ without optimization
+
+--cpp ../build/cpp/opt_no

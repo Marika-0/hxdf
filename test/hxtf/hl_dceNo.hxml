@@ -1,0 +1,7 @@
+_head.hxml
+
+--dce no
+
+-D test_name=HashLink without dead-code elimination
+
+--hl ../build/hl/dce_no/TestRun.hl

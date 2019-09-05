@@ -1,0 +1,7 @@
+_head.hxml
+
+--no-opt
+
+-D test_name=Java without optimization
+
+--java ../build/java/opt_no
