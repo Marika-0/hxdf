@@ -3,6 +3,8 @@ package;
 class TestMain extends TestBroker {
     public function new() {
         printName();
+
+        addBroker(test.TestSuite);
     }
 
     function printName():Void {
