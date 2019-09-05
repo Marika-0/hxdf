@@ -1,3 +1,4 @@
+import haxe.PosInfos;
 import hxtf.TestCase;
 import hxtf.TestBroker;
 import hxtf.TestBroker.addTest;
