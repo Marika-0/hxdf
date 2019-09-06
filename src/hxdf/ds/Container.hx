@@ -22,28 +22,9 @@ interface Container<T> {
     function clear():Void;
 
     /**
-        Returns an iterator over the elements of the Container.
-    **/
-    function iterator():Iterator<T>;
-
-    /**
         Returns a copy of the Container.
     **/
     function copy():Container<T>;
-
-    /**
-        Returns a new Container filtered with function `f`.
-
-        If `f` is null, the result is unspecified.
-    **/
-    function filter(f:T->Bool):Container<T>;
-
-    /**
-        Returns a new Container mapped with function `f`.
-
-        If `f` is null, the result is unspecified.
-    **/
-    function map<S>(f:T->S):Container<S>;
 
     /**
         Converts the Container into a string representation.
@@ -53,8 +34,6 @@ interface Container<T> {
 
 /**
     A sequential data storage type.
-
-    Filtering or mapping a SequentialContainer retains the order of elements.
 **/
 interface SequentialContainer<T> extends Container<T> {
     /**
@@ -71,24 +50,10 @@ interface SequentialContainer<T> extends Container<T> {
     function pop():Null<T>;
 
     /**
-        Returns the first item (the furthermost item at the growth-end of the
-        SequentialContainer) of the SequentialContainer.
+        Returns the first item (the furthermost item at the growth-end) of the
+        SequentialContainer.
     **/
     function first():Null<T>;
-
-    /**
-        Returns the last item (the furthermost item from the growth-end of the
-        SequentialContainer) of the SequentialContainer.
-    **/
-    function last():Null<T>;
-
-    /**
-        Removes the first occurrence of `v` in the SequentialContainer.
-
-        If `comp` is specified, item `item` is removed if `comp(v, item)`
-        returns true. Otherwise, standard equity is used.
-    **/
-    function remove(v:T, ?comp:T->T->Bool):Bool;
 
     /**
         Converts the SequentialContainer into a string where each element is
@@ -97,11 +62,57 @@ interface SequentialContainer<T> extends Container<T> {
     function join(sep:String):String;
 }
 
+interface TraversableContainer<T> extends Container<T> {
+    /**
+        Returns an iterator over the elements of the TraversableContainer.
+    **/
+    function iterator():Iterator<T>;
+
+    /**
+        Returns a new TraversableContainer filtered with function `f`.
+
+        If `f` is null, the result is unspecified.
+    **/
+    function filter(f:T->Bool):TraversableContainer<T>;
+
+    /**
+        Returns a new TraversableContainer mapped with function `f`.
+
+        If `f` is null, the result is unspecified.
+    **/
+    function map<S>(f:T->S):TraversableContainer<S>;
+}
+
 /**
-    A sequential data storage type supporting reading and writing of arbitrary
-    values.
+    A sequential data storage type that can add to or remove elements from
+    either end.
 **/
-interface RandomAccessContainer<T> extends SequentialContainer<T> {
+interface BilateralContainer<T> extends SequentialContainer<T> {
+    /**
+        Adds `item` to the secondary growth-end of the BilateralContainer.
+    **/
+    function unshift(item:T):T;
+
+    /**
+        Removes the furthermost item from the secondary growth-end of the
+        BilateralContainer and returns it.
+
+        See implementations for behavior when the BilateralContainer is empty.
+    **/
+    function shift():Null<T>;
+
+    /**
+        Returns the last item (the furthermost item at the secondary growth-end)
+        of the BilateralContainer.
+    **/
+    function last():Null<T>;
+}
+
+/**
+    A sequential data storage type supporting reading and writing values at
+    arbitrary positions.
+**/
+interface RandomAccessContainer<T> extends BilateralContainer<T> extends TraversableContainer<T> {
     /**
         Sets the value at index `index` to `value` and returns it.
 
@@ -117,12 +128,20 @@ interface RandomAccessContainer<T> extends SequentialContainer<T> {
         RandomAccessContainer, the result is unspecified.
     **/
     function get(index:Int):T;
+
+    /**
+        Removes the first occurrence of `v` in the RandomAccessContainer.
+
+        If `comp` is specified, item `item` is removed if `comp(v, item)`
+        returns true. Otherwise, standard equity is used.
+    **/
+    function remove(v:T, ?comp:T->T->Bool):Bool;
 }
 
 /**
     A potentially non-sequential unique element data storage type.
 **/
-interface SpaceContainer<T> {
+interface SpaceContainer<T> extends Container<T> {
     /**
         Returns the number of elements in the SpaceContainer.
     **/
@@ -152,14 +171,15 @@ interface SpaceContainer<T> {
 **/
 interface SetContainer<T> extends SpaceContainer<T> {
     /**
-        Adds the given element `item` to the SetContainer.
+        Adds the given element `item` to the SetContainer if it does not already
+        exist.
     **/
     function add(item:T):T;
 
     /**
         Removes the given element `item` from the SetContainer and returns it.
 
-        If `item` does not exist in the SpaceContainer, returns `null`.
+        If `item` does not exist in the SetContainer, returns `null`.
     **/
     function remove(item:T):Null<T>;
 }
@@ -167,7 +187,7 @@ interface SetContainer<T> extends SpaceContainer<T> {
 /**
     A container that maps keys to values.
 **/
-interface AssociativeContainer<K, V> extends Container<V> extends SpaceContainer<K> {
+interface AssociativeContainer<K, V> extends TraversableContainer<V> extends SpaceContainer<K> {
     /**
         Binds `key` to `value` and return `value`.
 
