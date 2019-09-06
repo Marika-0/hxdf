@@ -94,7 +94,7 @@ interface BilateralContainer<T> extends SequentialContainer<T> {
     function unshift(item:T):T;
 
     /**
-        Removes the furthermost item from the secondary growth-end of the
+        Removes the furthermost item at the secondary growth-end of the
         BilateralContainer and returns it.
 
         See implementations for behavior when the BilateralContainer is empty.
