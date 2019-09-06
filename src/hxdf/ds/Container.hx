@@ -23,8 +23,11 @@ interface Container<T> {
 
     /**
         Returns a copy of the Container.
+
+        The return type parameter is typed as `Dynamic` to prevent compiler
+        errors for the `copy` field of composite containers.
     **/
-    function copy():Container<T>;
+    function copy():Container<Dynamic>;
 
     /**
         Converts the Container into a string representation.
@@ -62,6 +65,9 @@ interface SequentialContainer<T> extends Container<T> {
     function join(sep:String):String;
 }
 
+/**
+    A container that can be iterated over, filtered, and mapped.
+**/
 interface TraversableContainer<T> extends Container<T> {
     /**
         Returns an iterator over the elements of the TraversableContainer.
@@ -187,7 +193,7 @@ interface SetContainer<T> extends SpaceContainer<T> {
 /**
     A container that maps keys to values.
 **/
-interface AssociativeContainer<K, V> extends TraversableContainer<V> extends SpaceContainer<K> {
+interface AssociativeContainer<K, V> extends SpaceContainer<K> extends TraversableContainer<V> {
     /**
         Binds `key` to `value` and return `value`.
 
