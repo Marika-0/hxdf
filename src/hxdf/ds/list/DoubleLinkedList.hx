@@ -10,7 +10,7 @@ import hxdf.lambda.unit.ForwardsDoubleNodeIterator;
     Supports arbitrary adding and removing elements from both ends, and
     iterating in either direction along the list.
 **/
-class DoubleLinkedList<T> implements hxdf.ds.Container.SequentialContainer<T> {
+class DoubleLinkedList<T> implements hxdf.ds.Container.BilateralContainer<T> {
     /**
         The length of `this` DoubleLinkedList.
     **/

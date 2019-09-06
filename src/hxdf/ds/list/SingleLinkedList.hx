@@ -10,7 +10,7 @@ import hxdf.lambda.unit.SingleNodeIterator;
     so inefficiently. If tail-end removal occurs frequently, consider using a
     `hxdf.ds.list.DoubleLinkedList`.
 **/
-class SingleLinkedList<T> implements hxdf.ds.Container.SequentialContainer<T> {
+class SingleLinkedList<T> implements hxdf.ds.Container.BilateralContainer<T> {
     /**
         The length of `this` SingleLinkedList.
     **/
