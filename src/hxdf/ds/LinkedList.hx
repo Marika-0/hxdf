@@ -1,4 +1,4 @@
-package hxdf.ds.list;
+package hxdf.ds;
 
 /**
     An alias for `hxdf.ds.list.SingleLinkedList`.
