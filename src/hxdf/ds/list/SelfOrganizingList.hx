@@ -1,5 +1,6 @@
 package hxdf.ds.list;
 
+import hxdf.ds.Container;
 import hxdf.ds.unit.SingleAssociationNode;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.KeyValuePair.KVPFactory;
@@ -21,7 +22,7 @@ import hxdf.lambda.unit.SingleAssociationNodeValueIterator;
     front of the list, halving the search time for each subsequent access of the
     same binding.
 **/
-class SelfOrganizingList<K, V> implements hxdf.ds.Container.AssociativeContainer<K, V> {
+class SelfOrganizingList<K, V> implements AssociativeContainer<K, V> {
     /**
         The number of key/value bindings in `this` SelfOrganizingList.
     **/

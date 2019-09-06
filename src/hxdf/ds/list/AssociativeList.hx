@@ -1,5 +1,6 @@
 package hxdf.ds.list;
 
+import hxdf.ds.Container;
 import hxdf.ds.unit.SingleAssociationNode;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.KeyValuePair.KVPFactory;
@@ -17,7 +18,7 @@ import hxdf.lambda.unit.SingleAssociationNodeValueIterator;
     New key/value bindings are placed at the beginning of the list, while
     existing binding are reassigned in-place.
 **/
-class AssociativeList<K, V> implements hxdf.ds.Container.AssociativeContainer<K, V> {
+class AssociativeList<K, V> implements AssociativeContainer<K, V> {
     /**
         The number of key/value bindings in `this` AssociativeList.
     **/

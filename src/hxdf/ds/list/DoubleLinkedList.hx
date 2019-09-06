@@ -1,5 +1,6 @@
 package hxdf.ds.list;
 
+import hxdf.ds.Container;
 import hxdf.ds.unit.DoubleNode;
 import hxdf.lambda.unit.BackwardsDoubleNodeIterator;
 import hxdf.lambda.unit.ForwardsDoubleNodeIterator;
@@ -10,7 +11,7 @@ import hxdf.lambda.unit.ForwardsDoubleNodeIterator;
     Supports arbitrary adding and removing elements from both ends, and
     iterating in either direction along the list.
 **/
-class DoubleLinkedList<T> implements hxdf.ds.Container.BilateralContainer<T> {
+class DoubleLinkedList<T> implements BilateralContainer<T> implements ExtractableContainer<T> {
     /**
         The length of `this` DoubleLinkedList.
     **/

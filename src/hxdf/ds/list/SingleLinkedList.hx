@@ -1,5 +1,6 @@
 package hxdf.ds.list;
 
+import hxdf.ds.Container;
 import hxdf.ds.unit.SingleNode;
 import hxdf.lambda.unit.SingleNodeIterator;
 
@@ -10,7 +11,7 @@ import hxdf.lambda.unit.SingleNodeIterator;
     so inefficiently. If tail-end removal occurs frequently, consider using a
     `hxdf.ds.list.DoubleLinkedList`.
 **/
-class SingleLinkedList<T> implements hxdf.ds.Container.BilateralContainer<T> {
+class SingleLinkedList<T> implements BilateralContainer<T> implements ExtractableContainer<T> {
     /**
         The length of `this` SingleLinkedList.
     **/
