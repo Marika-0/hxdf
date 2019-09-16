@@ -5,7 +5,7 @@ import hxdf.ds.unit.KeyValuePair;
 /**
     A storage for data.
 **/
-interface Container<T> {
+interface Container {
     /**
         The number of items in the Container.
     **/
@@ -27,7 +27,7 @@ interface Container<T> {
         The return type parameter is typed as `Dynamic` to prevent compiler
         errors for the `copy` field of composite containers.
     **/
-    function copy():Container<Dynamic>;
+    function copy():Container;
 
     /**
         Converts the Container into a string representation.
@@ -38,7 +38,7 @@ interface Container<T> {
 /**
     A sequential data storage type.
 **/
-interface SequentialContainer<T> extends Container<T> {
+interface SequentialContainer<T> extends Container {
     /**
         Adds `item` to the growth-end of the SequentialContainer.
     **/
@@ -94,7 +94,7 @@ interface BilateralContainer<T> extends SequentialContainer<T> {
     A container of potentially non-sequential elements that can be iterated
     over, filtered, and mapped.
 **/
-interface TraversableContainer<T> extends Container<T> {
+interface TraversableContainer<T> extends Container {
     /**
         Returns an iterator over the elements of the TraversableContainer.
     **/
@@ -133,7 +133,7 @@ interface ExtractableContainer<T> extends SequentialContainer<T> extends Travers
     A sequential data storage type supporting reading and writing values at
     arbitrary positions.
 **/
-interface RandomAccessContainer<T> extends BilateralContainer<T> extends TraversableContainer<T> {
+interface RandomAccessContainer<T> extends SequentialContainer<T> extends TraversableContainer<T> {
     /**
         Sets the value at index `index` to `value` and returns it.
 
@@ -154,7 +154,7 @@ interface RandomAccessContainer<T> extends BilateralContainer<T> extends Travers
 /**
     A potentially non-sequential unique element data storage type.
 **/
-interface SpaceContainer<T> extends Container<T> {
+interface SpaceContainer<T> extends Container {
     /**
         Returns the number of elements in the SpaceContainer.
     **/
