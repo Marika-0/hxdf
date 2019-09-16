@@ -1,6 +1,6 @@
 ## Help information and troubleshooting for development crud that happens sometimes.
 
-If the following errror appears when trying to run HashLink:
+If the following error appears when trying to run HashLink:
 
 > `hl: error while loading shared libraries: libhl.so: cannot open shared object file: No such file or directory`
 
