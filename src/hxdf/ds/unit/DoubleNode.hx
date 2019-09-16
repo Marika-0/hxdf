@@ -5,18 +5,20 @@ import hxdf.ds.tuple.Triple;
 /**
     A node containing some data and a reference to two other nodes.
 **/
-abstract DoubleNode<T>(Triple<T, DoubleNode<T>, DoubleNode<T>>) {
+class DoubleNode<T> {
+    var _data:Triple<T, DoubleNode<T>, DoubleNode<T>>;
+
     /**
         The data stored in `this` SingleNode.
     **/
     public var data(get, set):T;
 
     inline function get_data():T {
-        return this.first;
+        return _data.first;
     }
 
     inline function set_data(x:T):T {
-        return this.first = x;
+        return _data.first = x;
     }
 
     /**
@@ -25,11 +27,11 @@ abstract DoubleNode<T>(Triple<T, DoubleNode<T>, DoubleNode<T>>) {
     public var next(get, set):DoubleNode<T>;
 
     inline function get_next():DoubleNode<T> {
-        return this.second;
+        return _data.second;
     }
 
     inline function set_next(x:DoubleNode<T>):DoubleNode<T> {
-        return this.second = x;
+        return _data.second = x;
     }
 
     /**
@@ -38,11 +40,11 @@ abstract DoubleNode<T>(Triple<T, DoubleNode<T>, DoubleNode<T>>) {
     public var prev(get, set):DoubleNode<T>;
 
     inline function get_prev():DoubleNode<T> {
-        return this.third;
+        return _data.third;
     }
 
     inline function set_prev(x:DoubleNode<T>):DoubleNode<T> {
-        return this.third = x;
+        return _data.third = x;
     }
 
     /**
@@ -50,6 +52,6 @@ abstract DoubleNode<T>(Triple<T, DoubleNode<T>, DoubleNode<T>>) {
         other DoubleNodes.
     **/
     public inline function new(data:T, ?next:DoubleNode<T>, ?prev:DoubleNode<T>) {
-        this = new Triple(data, next, prev);
+        _data = new Triple(data, next, prev);
     }
 }

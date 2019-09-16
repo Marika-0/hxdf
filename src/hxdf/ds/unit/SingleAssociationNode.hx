@@ -5,14 +5,15 @@ import hxdf.ds.tuple.Double;
 /**
     A node containing a key/value pair and a reference to another node.
 **/
-abstract SingleAssociationNode<K, V>(Double<KeyValuePair<K, V>, SingleAssociationNode<K, V>>) {
+class SingleAssociationNode<K, V> {
+    var _data:Double<KeyValuePair<K, V>, SingleAssociationNode<K, V>>;
+
     /**
         The key of `this` SingleAssociationNode.
     **/
     public var key(get, never):K;
-
     inline function get_key():K {
-        return this.first.key;
+        return _data.first.key;
     }
 
     /**
@@ -21,11 +22,11 @@ abstract SingleAssociationNode<K, V>(Double<KeyValuePair<K, V>, SingleAssociatio
     public var value(get, set):V;
 
     inline function get_value():V {
-        return this.first.value;
+        return _data.first.value;
     }
 
     inline function set_value(v:V):V {
-        return this.first.value = v;
+        return _data.first.value = v;
     }
 
     /**
@@ -34,11 +35,11 @@ abstract SingleAssociationNode<K, V>(Double<KeyValuePair<K, V>, SingleAssociatio
     public var next(get, set):SingleAssociationNode<K, V>;
 
     inline function get_next():SingleAssociationNode<K, V> {
-        return this.second;
+        return _data.second;
     }
 
     inline function set_next(x:SingleAssociationNode<K, V>):SingleAssociationNode<K, V> {
-        return this.second = x;
+        return _data.second = x;
     }
 
     /**
@@ -46,6 +47,6 @@ abstract SingleAssociationNode<K, V>(Double<KeyValuePair<K, V>, SingleAssociatio
         optional reference to another SingleAssociationNode.
     **/
     public inline function new(key:K, value:V, ?next:SingleAssociationNode<K, V>) {
-        this = new Double(KeyValuePair.KVPFactory.create(key, value), next);
+        _data = new Double(KeyValuePair.KVPFactory.create(key, value), next);
     }
 }
