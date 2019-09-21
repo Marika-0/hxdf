@@ -241,7 +241,7 @@ class SingleLinkedList<T> implements BilateralContainer<T> implements Extractabl
         var list = new SingleLinkedList<T>();
         for (item in iterator()) {
             if (f(item)) {
-                #if haxe4 inline #end list.unshift(item);
+                inline list.unshift(item);
             }
         }
         return list;

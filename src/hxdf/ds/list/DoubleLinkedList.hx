@@ -249,7 +249,7 @@ class DoubleLinkedList<T> implements BilateralContainer<T> implements Extractabl
         var list = new DoubleLinkedList<T>();
         for (item in iterator()) {
             if (f(item)) {
-                #if haxe4 inline #end list.unshift(item);
+                inline list.unshift(item);
             }
         }
         return list;
