@@ -5,8 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 #                                                                              #
 # Script for setting up a development environment.                             #
 #                                                                              #
-# Reccomended to run through this manually command-by-command rather than      #
-# using it as an actual script.                                                #
+# Recommended to run through this manually.                                    #
 #                                                                              #
 ################################################################################
 
@@ -15,7 +14,6 @@ sudo apt-get update
 # Background
 sudo apt-get install -y git   # 1:2.20.1-2ubuntu1
 sudo apt-get install -y cmake # 3.13.4-1build1
-
 
 # Haxe (4.0.0-rc.5)
 wget https://github.com/HaxeFoundation/haxe/releases/download/4.0.0-rc.5/haxe-4.0.0-rc.5-linux64.tar.gz
@@ -33,16 +31,13 @@ rm -rv haxe_20190912112227_4a745347f
 
 printf "\n" | haxelib setup
 
-
 # Development
 sudo haxelib install checkstyle # 2.4.2
 sudo haxelib install formatter  # 1.9.1
 sudo haxelib install hxtf       # 1.2.0
 
-
 # C++
 sudo haxelib install hxcpp # 4.0.52
-
 
 # Hashlink (1.10)
 sudo apt-get install -y libpng-dev        # 1.6.37-1
@@ -62,12 +57,10 @@ cd ..
 rm -v 1.10.zip
 rm -rv hashlink-1.10
 
-
 # Java (8?)
 sudo haxelib install hxjava            # 4.0.0-alpha
 sudo apt-get install -y openjdk-11-jdk # 11.0.5+6-1ubuntu2
 sudo apt-get install -y openjdk-11-jre # 11.0.5+6-1ubuntu2
-
 
 # Lua (5.3)
 sudo apt-get install -y luarocks   # 2.4.2+dfsg-1
@@ -78,14 +71,12 @@ sudo luarocks install luv          # 1.30.1-0
 sudo luarocks install bit32        # 5.3.0-1
 sudo luarocks install luautf8      # 0.1.1-1
 
-
 # PHP (7.3)
 sudo apt-get install -y php7.3-cli   # 7.3.8-1
 sudo apt-get install -y php-mbstring # 2:7.3+69ubuntu2
 
   # If an error regarding mbstring still occurs, try:
   # sudo sed -i "s/;extension=mbstring/extension=mbstring/g" /etc/php/7.3/cli/php.ini
-
 
 # Python (3.7.3)
 sudo apt-get install -y python3 # 3.7.3-1
