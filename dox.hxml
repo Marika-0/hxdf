@@ -1,0 +1,11 @@
+-p src
+
+--xml doc.xml
+
+-D doc-gen
+
+hxdf
+
+--cmd rm -fr doc/dox
+--cmd haxelib run dox -i doc.xml -o doc/dox --include hxdf[.].*
+--cmd rm doc.xml
