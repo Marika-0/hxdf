@@ -30,7 +30,7 @@ interface Container {
     function copy():Container;
 
     /**
-        Converts the Container into a string representation.
+        Converts the Container into a String representation.
     **/
     function toString():String;
 }
@@ -121,10 +121,11 @@ interface TraversableContainer<T> extends Container {
 **/
 interface ExtractableContainer<T> extends SequentialContainer<T> extends TraversableContainer<T> {
     /**
-        Removes the first occurrence of `v` in the ExtractableContainer.
+        Removes the first instance of `v` tested sequentially against each
+        `item` in the ExtractableContainer using `comp(v, item)` if `comp` is
+        specified, or standard equity otherwise.
 
-        If `comp` is specified, item `item` is removed if `comp(v, item)`
-        returns true. Otherwise, standard equity is used.
+        If an item was removed, returns `true`, otherwise returns `false`.
     **/
     function remove(v:T, ?comp:T->T->Bool):Bool;
 }
@@ -161,6 +162,11 @@ interface SpaceContainer<T> extends Container {
     function size():Int;
 
     /**
+        Tells if element `item` exists in the SpaceContainer.
+    **/
+    function exists(item:T):Bool;
+
+    /**
         Removes the given element `item` from the SpaceContainer and returns
         `true` if it existed.
 
@@ -169,32 +175,9 @@ interface SpaceContainer<T> extends Container {
     function delete(item:T):Bool;
 
     /**
-        Tells if element `item` exists in the SpaceContainer.
-    **/
-    function exists(item:T):Bool;
-
-    /**
         Internal comparison function for evaluating the equity of elements.
     **/
     private function compare<S>(a:S, b:S):Bool;
-}
-
-/**
-    An arbitrary SpaceContainer.
-**/
-interface SetContainer<T> extends SpaceContainer<T> {
-    /**
-        Adds the given element `item` to the SetContainer if it does not already
-        exist.
-    **/
-    function add(item:T):T;
-
-    /**
-        Removes the given element `item` from the SetContainer and returns it.
-
-        If `item` does not exist in the SetContainer, returns `null`.
-    **/
-    function remove(item:T):Null<T>;
 }
 
 /**
@@ -276,4 +259,22 @@ interface AssociativeContainer<K, V> extends SpaceContainer<K> extends Traversab
         if `f` is null, the result is unspecified.
     **/
     function mapPairs<X, Y>(f:KeyValuePair<K, V>->KeyValuePair<X, Y>):AssociativeContainer<X, Y>;
+}
+
+/**
+    An arbitrary SpaceContainer.
+**/
+interface SetContainer<T> extends SpaceContainer<T> {
+    /**
+        Adds the given element `item` to the SetContainer if it does not already
+        exist.
+    **/
+    function add(item:T):T;
+
+    /**
+        Removes the given element `item` from the SetContainer and returns it.
+
+        If `item` does not exist in the SetContainer, returns `null`.
+    **/
+    function remove(item:T):Null<T>;
 }

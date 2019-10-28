@@ -98,11 +98,9 @@ class DoubleLinkedList<T> implements BilateralContainer<T> implements Extractabl
     }
 
     /**
-        Removes the first instance of `v` in `this` DoubleLinkedList.
-
-        If `comp` is specified, the function will be called with `v` as the
-        first argument and the comparing element as the second argument.
-        Otherwise, standard equity will be used.
+        Removes the first instance of `v` tested sequentially against each
+        `item` in `this` DoubleLinkedList using `comp(v, item)` if `comp` is
+        specified, or standard equity otherwise.
 
         If an item was removed, returns `true`, otherwise returns `false`.
     **/
