@@ -7,6 +7,7 @@ import hxdf.ds.tuple.Double;
 **/
 class SingleNode<T> {
     var _data:Double<T, SingleNode<T>>;
+
     /**
         The data stored in `this` SingleNode.
     **/

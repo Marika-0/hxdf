@@ -12,6 +12,7 @@ class SingleAssociationNode<K, V> {
         The key of `this` SingleAssociationNode.
     **/
     public var key(get, never):K;
+
     inline function get_key():K {
         return _data.first.key;
     }
