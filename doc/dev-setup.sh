@@ -15,10 +15,10 @@ sudo apt-get update
 sudo apt-get install -y git   # 1:2.20.1-2ubuntu1
 sudo apt-get install -y cmake # 3.13.4-1build1
 
-# Haxe (4.0.0-rc.5)
-wget https://github.com/HaxeFoundation/haxe/releases/download/4.0.0-rc.5/haxe-4.0.0-rc.5-linux64.tar.gz
-tar -xvzf tar -xzf haxe-4.0.0-rc.5-linux64.tar.gz
-cd haxe_20190912112227_4a745347f
+# Haxe (4.0.0)
+wget https://github.com/HaxeFoundation/haxe/releases/download/4.0.0/haxe-4.0.0-linux64.tar.gz
+tar -xvzf tar -xzf haxe-4.0.0-linux64.tar.gz
+cd haxe_20191025230916_ef18b627e
 
 sudo cp -v haxe /usr/bin/
 sudo cp -v haxelib /usr/bin/
@@ -26,18 +26,18 @@ sudo mkdir -v /usr/share/haxe
 sudo cp -rv std /usr/share/haxe/
 
 cd ..
-rm -v haxe-4.0.0-rc.5-linux64.tar.gz
-rm -rv haxe_20190912112227_4a745347f
+rm -v haxe-4.0.0-linux64.tar.gz
+rm -rv haxe_20191025230916_ef18b627e
 
 printf "\n" | haxelib setup
 
 # Development
-sudo haxelib install checkstyle # 2.4.2
-sudo haxelib install formatter  # 1.9.1
-sudo haxelib install hxtf       # 1.2.0
+sudo haxelib install checkstyle 2.5.0
+sudo haxelib install formatter 1.9.1
+sudo haxelib install hxtf 1.2.1
 
 # C++
-sudo haxelib install hxcpp # 4.0.52
+sudo haxelib install hxcpp 4.0.52
 
 # Hashlink (1.10)
 sudo apt-get install -y libpng-dev        # 1.6.37-1
@@ -57,8 +57,8 @@ cd ..
 rm -v 1.10.zip
 rm -rv hashlink-1.10
 
-# Java (8?)
-sudo haxelib install hxjava            # 4.0.0-alpha
+# Java (11)
+sudo haxelib install hxjava 4.0.0-alpha
 sudo apt-get install -y openjdk-11-jdk # 11.0.5+6-1ubuntu2
 sudo apt-get install -y openjdk-11-jre # 11.0.5+6-1ubuntu2
 
