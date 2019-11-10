@@ -1,6 +1,7 @@
 package hxdf.ds.list;
 
-import hxdf.ds.Container;
+import hxdf.ds.Container.BilateralContainer;
+import hxdf.ds.Container.ExtractableContainer;
 import hxdf.ds.unit.SingleNode;
 import hxdf.lambda.unit.SingleNodeIterator;
 

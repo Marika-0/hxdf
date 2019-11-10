@@ -1,6 +1,6 @@
 package hxdf.ds.list;
 
-import hxdf.ds.Container;
+import hxdf.ds.Container.AssociativeContainer;
 import hxdf.ds.unit.SingleAssociationNode;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.KeyValuePair.KVPFactory;

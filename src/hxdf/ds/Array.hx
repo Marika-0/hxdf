@@ -1,6 +1,7 @@
 package hxdf.ds;
 
-import hxdf.ds.Container;
+import hxdf.ds.Container.ExtractableContainer;
+import hxdf.ds.Container.RandomAccessContainer;
 import hxdf.lambda.BackwardsArrayIterator;
 import hxdf.lambda.ForwardsArrayIterator;
 
@@ -14,7 +15,7 @@ abstract Array<T>(_Array<T>) from _Array<T> to _Array<T> {
     **/
     public var length(get, never):Int;
 
-    inline function get_length() {
+    inline function get_length():Int {
         return this.length;
     }
 
@@ -26,7 +27,7 @@ abstract Array<T>(_Array<T>) from _Array<T> to _Array<T> {
     **/
     public var capacity(get, never):Int;
 
-    inline function get_capacity() {
+    inline function get_capacity():Int {
         return this.capacity;
     }
 
@@ -264,17 +265,29 @@ abstract Array<T>(_Array<T>) from _Array<T> to _Array<T> {
     }
 }
 
+/**
+    Data and implementation of `hxdf.ds.Array`.
+**/
 private class _Array<T> implements RandomAccessContainer<T> implements ExtractableContainer<T> {
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public var length(default, null):Int;
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public var capacity(get, null):Int;
 
     var array:std.Array<T>;
 
-    public function get_capacity():Int {
+    inline function get_capacity():Int {
         return array.length;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public static function fill<T>(x:T, amount:Int):_Array<T> {
         var array = new _Array<T>();
         array.reserve(amount);
@@ -284,11 +297,17 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return array;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function new() {
         array = new std.Array<T>();
         length = 0;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function push(item:T):T {
         if (length < capacity) {
             array[length] = item;
@@ -299,6 +318,9 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return item;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function pop():Null<T> {
         if (capacity != length) {
             shrink();
@@ -307,12 +329,18 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return array.pop();
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function unshift(item:T):T {
         array.unshift(item);
         length++;
         return item;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function shift():Null<T> {
         if (capacity != length) {
             shrink();
@@ -321,6 +349,9 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return array.shift();
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function first():Null<T> {
         if (isEmpty()) {
             return null;
@@ -328,6 +359,9 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return array[0];
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function last():Null<T> {
         if (isEmpty()) {
             return null;
@@ -335,20 +369,32 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return array[length - 1];
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function get(index:Int):T {
         return array[index];
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function set(index:Int, value:T):T {
         return array[index] = value;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function reserve(size:Int):Void {
         if (capacity < size) {
             array.resize(size);
         }
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function resize(size:Int):Void {
         array.resize(size);
         if (capacity < length) {
@@ -356,10 +402,16 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         }
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function shrink():Void {
         array.resize(length);
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function remove(v:T, ?comp:T->T->Bool):Bool {
         if (comp == null) {
             if (array.remove(v)) {
@@ -381,27 +433,45 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return false;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function isEmpty():Bool {
         return length == 0;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function clear():Void {
         array = new std.Array<T>();
         length = 0;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function dump():Void {
         length = 0;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function iterator():Iterator<T> {
         return new ForwardsArrayIterator(this);
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function reverseIterator():Iterator<T> {
         return new BackwardsArrayIterator(this);
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function copy():_Array<T> {
         var copy = new _Array<T>();
         copy.array = array.slice(0, length);
@@ -409,6 +479,9 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return copy;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function concat(arr:_Array<T>):_Array<T> {
         var concat = new _Array<T>();
         concat.array = array.copy().splice(0, length).concat(arr.array.copy().splice(0, arr.length));
@@ -416,6 +489,9 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return concat;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function filter(f:T->Bool):_Array<T> {
         var filter = new _Array<T>();
         filter.array = array.filter(f);
@@ -423,6 +499,9 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return filter;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function map<S>(f:T->S):_Array<S> {
         var map = new _Array<S>();
         map.array = array.map(f);
@@ -430,10 +509,16 @@ private class _Array<T> implements RandomAccessContainer<T> implements Extractab
         return map;
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public inline function toString():String {
         return '[${join(",")}]';
     }
 
+    /**
+        See `hxdf.ds.Array` comment for details.
+    **/
     public function join(sep:String):String {
         var buf = new StringBuf();
         var it = iterator();
