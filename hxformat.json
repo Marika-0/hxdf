@@ -327,7 +327,7 @@
 		"functionSignature": {
 			"rules": [],
 			"defaultAdditionalIndent": 1,
-			"defaultWrap": "fillLine"
+			"defaultWrap": "noWrap"
 		},
 		"opAddSubChain": {
 			"rules": [
@@ -387,28 +387,7 @@
 			"defaultWrap": "noWrap"
 		},
 		"implementsExtends": {
-			"rules": [
-				{
-					"type": "fillLine",
-					"additionalIndent": 2,
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 140
-						}
-					]
-				},
-				{
-					"type": "fillLine",
-					"additionalIndent": 2,
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					]
-				}
-			],
+			"rules": [],
 			"defaultWrap": "noWrap"
 		},
 		"typeParameter": {
