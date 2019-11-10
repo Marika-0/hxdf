@@ -36,8 +36,13 @@
 			"type": "AvoidStarImport"
 		},
 		{
+			"props": {},
+			"type": "BlockBreakingConditional"
+		},
+		{
 			"props": {
-				"format": "^(e|t|ex|[a-z][a-z][a-zA-Z]+)$"
+				"format": "^(e|t|ex|[a-z][a-z][a-zA-Z]+)$",
+				"severity": "IGNORE"
 			},
 			"type": "CatchParameterName"
 		},
@@ -52,9 +57,8 @@
 			"props": {
 				"ignoreExtern": true,
 				"format": "^[A-Z][A-Z0-9]*(_[A-Z0-9_]+)*$",
-				"tokens": [
-					"INLINE"
-				]
+				"tokens": [],
+				"severity": "IGNORE"
 			},
 			"type": "ConstantName"
 		},
@@ -80,7 +84,7 @@
 		},
 		{
 			"props": {
-				"lineStyle": "none",
+				"lineStyle": "ignore",
 				"startStyle": "twostars"
 			},
 			"type": "DocCommentStyle"
@@ -164,7 +168,7 @@
 		},
 		{
 			"props": {
-				"max": 2000
+				"severity": "IGNORE"
 			},
 			"type": "FileLength"
 		},
@@ -201,9 +205,12 @@
 			"type": "IndentationCharacter"
 		},
 		{
+			"props": {},
+			"type": "InlineFinal"
+		},
+		{
 			"props": {
-                "ignoreReturnAssignments": false,
-                "severity": "IGNORE"
+				"severity": "IGNORE"
 			},
 			"type": "InnerAssignment"
 		},
@@ -216,6 +223,7 @@
 		},
 		{
 			"props": {
+				"ignoreSingleline": false,
 				"tokens": [
 					"CLASS_DEF",
 					"ENUM_DEF",
@@ -265,62 +273,30 @@
 		},
 		{
 			"props": {
-				"ignoreNumbers": [
-					-1,
-					0,
-					1,
-					2
-				],
 				"severity": "IGNORE"
 			},
 			"type": "MagicNumber"
 		},
 		{
 			"props": {
-				"ignoreExtern": true,
-				"format": "^[_a-z][_a-zA-Z0-9]*$",
-				"tokens": [
-					"ABSTRACT",
-					"CLASS",
-					"PRIVATE",
-					"PUBLIC",
-					"TYPEDEF"
-				]
+				"severity": "IGNORE"
 			},
 			"type": "MemberName"
 		},
 		{
 			"props": {
-				"ignoreExtern": true,
-				"format": "^_*[A-Z][_a-zA-Z0-9]*$",
-				"tokens": [
-					"ENUM"
-				]
-			},
-			"type": "MemberName"
-		},
-		{
-			"props": {
-				"maxPrivate": 100,
-				"maxPublic": 100,
-				"maxTotal": 100,
 				"severity": "IGNORE"
 			},
 			"type": "MethodCount"
 		},
 		{
 			"props": {
-				"max": 50,
-				"countEmpty": false,
 				"severity": "IGNORE"
 			},
 			"type": "MethodLength"
 		},
 		{
 			"props": {
-				"ignoreExtern": true,
-				"format": "^[a-z][a-zA-Z0-9]*$",
-				"tokens": [],
 				"severity": "IGNORE"
 			},
 			"type": "MethodName"
@@ -333,6 +309,7 @@
 					"DYNAMIC",
 					"INLINE",
 					"OVERRIDE",
+					"FINAL",
 					"MACRO"
 				]
 			},
@@ -340,9 +317,6 @@
 		},
 		{
 			"props": {
-				"minLength": 2,
-				"ignore": "^\\s+$",
-				"allowDuplicates": 2,
 				"severity": "IGNORE"
 			},
 			"type": "MultipleStringLiterals"
@@ -353,9 +327,12 @@
 		},
 		{
 			"props": {
-				"allowSingleLineStatement": true,
+				"allowSingleLineStatement": false,
 				"tokens": [
+					"IF",
 					"ELSE_IF",
+					"FOR",
+					"WHILE",
 					"DO_WHILE"
 				]
 			},
@@ -363,21 +340,18 @@
 		},
 		{
 			"props": {
-				"max": 1,
 				"severity": "IGNORE"
 			},
 			"type": "NestedForDepth"
 		},
 		{
 			"props": {
-				"max": 1,
 				"severity": "IGNORE"
 			},
 			"type": "NestedIfDepth"
 		},
 		{
 			"props": {
-				"max": 1,
 				"severity": "IGNORE"
 			},
 			"type": "NestedTryDepth"
@@ -390,16 +364,18 @@
 		},
 		{
 			"props": {
+				"newFunctionTypePolicy": "around",
 				"ternaryOpPolicy": "around",
 				"unaryOpPolicy": "none",
+				"oldFunctionTypePolicy": "none",
 				"boolOpPolicy": "around",
 				"intervalOpPolicy": "none",
 				"assignOpPolicy": "around",
-				"functionArgPolicy": "none",
 				"bitwiseOpPolicy": "around",
 				"arithmeticOpPolicy": "around",
 				"compareOpPolicy": "around",
-				"arrowPolicy": "around"
+				"arrowPolicy": "around",
+				"arrowFunctionPolicy": "around"
 			},
 			"type": "OperatorWhitespace"
 		},
@@ -442,7 +418,7 @@
 					"++",
 					"--"
 				],
-				"option": "nl"
+				"option": "eol"
 			},
 			"type": "OperatorWrap"
 		},
@@ -456,8 +432,7 @@
 		},
 		{
 			"props": {
-				"max": 7,
-				"ignoreOverriddenMethods": false
+				"severity": "IGNORE"
 			},
 			"type": "ParameterNumber"
 		},
@@ -495,8 +470,6 @@
 		},
 		{
 			"props": {
-				"ignoreFormat": "^$",
-				"max": 2,
 				"severity": "IGNORE"
 			},
 			"type": "ReturnCount"
@@ -515,7 +488,8 @@
 					"IF",
 					"WHILE",
 					"SWITCH",
-					"TRY"
+					"TRY",
+					"CATCH"
 				],
 				"option": "same"
 			},
@@ -525,6 +499,7 @@
 			"props": {
 				"commaPolicy": "after",
 				"semicolonPolicy": "after",
+				"allowTrailingComma": false,
 				"dotPolicy": "none"
 			},
 			"type": "SeparatorWhitespace"
@@ -588,8 +563,7 @@
 		},
 		{
 			"props": {
-				"ignoreEnumAbstractValues": true,
-				"severity": "IGNORE"
+				"ignoreEnumAbstractValues": true
 			},
 			"type": "Type"
 		},
@@ -607,9 +581,7 @@
 		},
 		{
 			"props": {
-				"ignoreExtern": true,
-				"format": "^[A-Z]+[a-zA-Z0-9]*$",
-				"tokens": []
+				"severity": "IGNORE"
 			},
 			"type": "TypeName"
 		},
@@ -637,7 +609,8 @@
 				"tokens": [
 					",",
 					";"
-				]
+				],
+				"allowTrailingComma": false
 			},
 			"type": "WhitespaceAfter"
 		},
