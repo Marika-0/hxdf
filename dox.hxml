@@ -7,5 +7,5 @@
 hxdf
 
 --cmd rm -fr doc/dox
---cmd haxelib run dox -i doc.xml -o doc/dox --include hxdf[.].*
+--cmd haxelib run dox -i doc.xml -o doc/dox --include "hxdf[.].*" -D version "0.0.0" -D source-path "https://github.com/Marika-0/hxdf/tree/master/src/" -D description "Development Framework for Haxe"
 --cmd rm doc.xml
