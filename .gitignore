@@ -1,3 +1,5 @@
 build/
 doc/dox
+doc/uml/*
+!doc/uml/*.mp
 test/hxtf/*.cache
