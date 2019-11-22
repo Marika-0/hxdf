@@ -97,7 +97,6 @@ beginfig(1);
 	ClassTemplate.RandomAccessTemplate("T")(RandomAccessContainer);
 
 
-
 	leftToRight(offset)(SequentialContainer, TraversableContainer, AssociativeContainer, SetContainer);
 	BilateralContainer.n = (xpart (SequentialContainer.c + TraversableContainer.c) / 2, min(SequentialContainer.bottom, TraversableContainer.bottom)) - v_offset;
 	RandomAccessContainer.n = BilateralContainer.s - v_offset;
@@ -107,7 +106,6 @@ beginfig(1);
 	SpaceContainer.c = (xpart (AssociativeContainer.c + SetContainer.c) / 2, midY);
 
 	Container.s = (xpart (WalkableContainer.c + SpaceContainer.c) / 2, max(WalkableContainer.top, SpaceContainer.top) + offset);
-
 
 
 	drawObject(Container);
@@ -130,18 +128,6 @@ beginfig(1);
 
 	drawObjects(SetContainer, SetTemplate);
 	link(inheritance)(rpathStepY(SpaceContainer.se - (SpaceContainer.width / 3, 0), SetContainer.n, -offset / 2));
-	
-	%numeric stepX; stepX = max(SetContainer.top, AssociativeContainer.top) + offset / 4;
-	%numeric midX; midX = (WalkableContainer.right - WalkableContainer.width / 3 + xpart SpaceContainer.c) / 2;
-	%link(inheritance)(SetContainer.n -- (xpart SetContainer.c, stepX) -- (midX, stepX) -- (midX, stepX + offset / 4) -- (xpart SpaceContainer.c, stepX + offset / 4) -- SpaceContainer.s);
-	%link(inheritance)(AssociativeContainer.n -- (xpart AssociativeContainer.c, stepX) -- (midX, stepX) -- (midX, stepX + offset / 4) -- (xpart WalkableContainer.se - WalkableContainer.width / 3, stepX + offset / 4) -- WalkableContainer.se - (WalkableContainer.width / 3, 0));
-	
-	
-	%link(inheritance)(rpathStepY(SpaceContainer.se - (SpaceContainer.width / 3, 0), SetContainer.n, -offset / 2));
-	%link(inheritance)(rpathStepY(WalkableContainer.se - (WalkableContainer.width / 3, 0), SetContainer.n, -offset / 2));
-
-	%link(inheritance)(rpathStepY(WalkableContainer.se - (WalkableContainer.width / 3, 0), AssociativeContainer.n, -offset / 2));
-	%link(inheritance)(rpathStepY(SpaceContainer.sw + (SpaceContainer.width / 3, 0), AssociativeContainer.n, -offset / 2));
 
 	drawObjects(BilateralContainer, BilateralTemplate);
 	link(inheritance)(pathStepY(BilateralContainer.n, SequentialContainer.s, offset / 2));
