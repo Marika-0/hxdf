@@ -1,223 +1,276 @@
 package hxdf.ds;
 
 import hxdf.ds.unit.KeyValuePair;
+import hxdf.lambda.Iterator;
 
 /**
-    A storage for data.
+    A data storage type.
 **/
-interface Container {
+interface Container<T> {
     /**
-        The number of items in the Container.
+        The number of elements in the Container.
     **/
     var length(default, null):Int;
 
     /**
-        Tells if the Container is empty.
+        Tests if the Container contains any elements.
+
+        Returns `true` if the Container is empty, otherwise returns `false`.
     **/
     function isEmpty():Bool;
 
     /**
-        Clears all elements from the Container.
+        Removes all elements from the Container.
     **/
     function clear():Void;
 
     /**
         Returns a copy of the Container.
-
-        The return type parameter is typed as `Dynamic` to prevent compiler
-        errors for the `copy` field of composite containers.
     **/
-    function copy():Container;
+    function copy():Container<T>;
 
     /**
-        Converts the Container into a String representation.
+        Converts the Container into a string representation.
+
+        Containers of a sequential list of elements will have the elements in
+        order separated by `","` and contained in square brackets (`"["`/`"]"`).
+
+        Containers of a non-sequential grouping of elements will have each
+        element separated by `","` and contained in braces (`"{"`/`"]}`).
+
+        Containers of key-value pairs will formay key/values as `key=>value`
+        and will have each pair separated by `","`. The pairs may or may not be
+        in a particular order depending on the datastructure and will always be
+        contained in braces (`"{"`/`"]}`).
     **/
     function toString():String;
 }
 
 /**
-    A sequential data storage type.
+    A sequential data storage container.
 **/
-interface SequentialContainer<T> extends Container {
+interface SequentialContainer<T> extends Container<T> {
     /**
-        Adds `item` to the growth-end of the SequentialContainer.
+        Adds `item` to the SequentialContainer.
     **/
-    function push(item:T):T;
+    function push(item:T):Void;
 
     /**
-        Removes the furthermost item at the growth-end of the
-        SequentialContainer and returns it.
+        Removes the first element from the "push-end" of the SequentialContainer
+        and returns it.
 
-        See implementations for behavior when the SequentialContainer is empty.
+        If the SequentialContainer is empty, returns null.
     **/
     function pop():Null<T>;
 
     /**
-        Returns the first item (the furthermost item at the growth-end) of the
-        SequentialContainer.
+        Returns the first element from the "push-end" of the SequentialContainer
+        without removing it.
+
+        If the SequentialContainer is empty, returns null.
     **/
-    function first():Null<T>;
+    function peek():Null<T>;
 
     /**
-        Converts the SequentialContainer into a string where each element is
-        separated by `sep`.
+        Converts the SequentialContainer into a string representation where each
+        element is separated by `sep`.
+
+        If the SequentialContainer is empty, returns an empty string.
     **/
     function join(sep:String):String;
 }
 
 /**
-    A sequential data storage type that can add to or remove elements from
-    either end.
+    A container that can be iterated over and transformed.
 **/
-interface BilateralContainer<T> extends SequentialContainer<T> {
+interface WalkableContainer<T> extends Container<T> {
     /**
-        Adds `item` to the secondary growth-end of the BilateralContainer.
+        Returns a UnidirectionalIterator over the elements of the
+        WalkableContainer.
     **/
-    function unshift(item:T):T;
+    function iterator():UnidirectionalIterator<T>;
 
     /**
-        Removes the furthermost item at the secondary growth-end of the
-        BilateralContainer and returns it.
+        Returns a copy of the WalkableContainer filtered with function `f`.
 
-        See implementations for behavior when the BilateralContainer is empty.
+        The returned WalkableContainer contains each element `item` of the
+        WalkableContainer where `f(item)` returns `true`.
+
+        If the WalkableContainer stores it's elements sequentially, the order of
+        elements is preserved.
+
+        If `f` is null, the result may be unspecified.
     **/
-    function shift():Null<T>;
+    function filter(f:(T) -> Bool):WalkableContainer<T>;
 
     /**
-        Returns the last item (the furthermost item at the secondary growth-end)
-        of the BilateralContainer.
+        Returns a copy of the WalkableContainer mapped with function `f`.
+
+        The returned WalkableContainer contains the transformation `f(item)` of
+        each element `item` of the WalkableContainer
+
+        If the WalkableContainer stores it's elements sequentially, the order of
+        elements is preserved.
+
+        If `f` is null, the result may be unspecified.
     **/
-    function last():Null<T>;
+    function map<S>(f:(T) -> S):WalkableContainer<S>;
 }
 
 /**
-    A container of potentially non-sequential elements that can be iterated
-    over, filtered, and mapped.
+    An aggregative container of elements.
 **/
-interface TraversableContainer<T> extends Container {
+interface SpaceContainer<T> extends Container<T> {
     /**
-        Returns an iterator over the elements of the TraversableContainer.
-    **/
-    function iterator():Iterator<T>;
-
-    /**
-        Returns a new TraversableContainer filtered with function `f`.
-
-        If `f` is null, the result is unspecified.
-    **/
-    function filter(f:T->Bool):TraversableContainer<T>;
-
-    /**
-        Returns a new TraversableContainer mapped with function `f`.
-
-        If `f` is null, the result is unspecified.
-    **/
-    function map<S>(f:T->S):TraversableContainer<S>;
-}
-
-/**
-    A sequential container that can be traversed and have the first element
-    satisfying a given condition extracted.
-**/
-interface ExtractableContainer<T> extends SequentialContainer<T> extends TraversableContainer<T> {
-    /**
-        Removes the first instance of `v` tested sequentially against each
-        `item` in the ExtractableContainer using `comp(v, item)` if `comp` is
-        specified, or standard equity otherwise.
-
-        If an item was removed, returns `true`, otherwise returns `false`.
-    **/
-    function remove(v:T, ?comp:T->T->Bool):Bool;
-}
-
-/**
-    A sequential data storage type supporting reading and writing values at
-    arbitrary positions.
-**/
-interface RandomAccessContainer<T> extends SequentialContainer<T> extends TraversableContainer<T> {
-    /**
-        Sets the value at index `index` to `value` and returns it.
-
-        If `index` is negative or not less than the length of the
-        RandomAccessContainer, the result is unspecified.
-    **/
-    function set(index:Int, value:T):T;
-
-    /**
-        Returns the value stored at index `index`.
-
-        If `index` is negative or not less than the length of the
-        RandomAccessContainer, the result is unspecified.
-    **/
-    function get(index:Int):T;
-}
-
-/**
-    A potentially non-sequential unique element data storage type.
-**/
-interface SpaceContainer<T> extends Container {
-    /**
-        Returns the number of elements in the SpaceContainer.
+        Returns the number of elements in the SpaceContainer (equivalent to
+        `length`).
     **/
     function size():Int;
 
     /**
-        Tells if element `item` exists in the SpaceContainer.
+        Tells if `val` exists in the SpaceContainer.
     **/
-    function exists(item:T):Bool;
+    function exists(val:T):Bool;
 
     /**
-        Removes the given element `item` from the SpaceContainer and returns
-        `true` if it existed.
+        Removes `val` from the SpaceContainer.
 
-        If `item` does not exist in the SpaceContainer, returns `false`.
+        Returns `true` if an element was deleted, or `false` otherwise.
     **/
-    function delete(item:T):Bool;
-
-    /**
-        Internal comparison function for evaluating the equity of elements.
-    **/
-    private function compare<S>(a:S, b:S):Bool;
+    function delete(val:T):Bool;
 }
 
 /**
-    A container that maps keys to values.
+    A sequential container that can add to or remove elements from either of two
+    ends.
 **/
-interface AssociativeContainer<K, V> extends SpaceContainer<K> extends TraversableContainer<V> {
+interface BilateralContainer<T> extends SequentialContainer<T> {
     /**
-        Binds `key` to `value` and return `value`.
-
-        If `key` is already bound to a value, that binding is overridden.
-
-        If `key` is null, the result is unspecified.
+        Adds `item` to opposite end of the BilateralContainer than
+        SequentialContainer's `push` function.
     **/
-    function set(key:K, value:V):V;
+    function unshift(item:T):Void;
 
     /**
-        Returns the binding of `key`.
+        Removes the first element from the "unshift-end" of the
+        BilateralContainer and returns it.
 
-        Returns `null` if `key` is not bound to a value.
+        If the BilateralContainer is empty, returns null.
+    **/
+    function shift():Null<T>;
 
-        If `key` is null, the result is unspecified.
+    /**
+        Returns the first element from the "unshift-end" of the
+        BilateralContainer without removing it.
+
+        If the BilateralContainer is empty, returns null.
+    **/
+    function spy():Null<T>;
+}
+
+/**
+    A sequential container that can be iterated over through various means,
+    filtered, transformed, and remove individual elements.
+**/
+interface ExtractableContainer<T> extends SequentialContainer<T> extends WalkableContainer<T> {
+    /**
+        Returns a key-value iterator over the indexes-elements of the
+        ExtractableContainer.
+
+        Equivalent to `keyValueIterator()`, just renamed to make more sense
+        since it works specifically with indexes.
+    **/
+    function indexIterator():IndexIterator<T>;
+
+    /**
+        Returns a key-value iterator over the indexes-elements of the
+        ExtractableContainer.
+
+        Allows use of the ExtractableContainer in key-value iteration loops.
+    **/
+    function keyValueIterator():IndexIterator<T>;
+
+    /**
+        Removes the first element `item` from the ExtractableContainer for which
+        `comp(val, item)` returns `true`.
+
+        If `comp` is null, standard equity is used.
+
+        Returns `true` if an element was removed, or `false` otherwise.
+    **/
+    function remove(val:T, ?comp:(T, T) -> Bool):Bool;
+}
+
+/**
+    A container that can be arbitrarily iterated over from two distinct ends.
+**/
+interface TraversableContainer<T> extends WalkableContainer<T> {
+    /**
+        Returns a UnidirectionalIterator over the TraversableContainer
+        (iterating in reverse to `iterator()`).
+    **/
+    function reverseIterator():UnidirectionalIterator<T>;
+
+    /**
+        Returns a BidirectionalIterator over the TraversableContainer.
+    **/
+    function beginIterator():BidirectionalIterator<T>;
+
+    /**
+        Returns a BidirectionalIterator over the TraversableContainer
+        (iterating in reverse to `beginIterator()`).
+    **/
+    function endIterator():BidirectionalIterator<T>;
+}
+
+/**
+    A container consisting of keys mapped to associated values.
+
+    The methods inherited from WalkableContainer operate on the values of the
+    AssociativeContainer. AssociativeContainer provides methods for walking over
+    keys and key-value pairs.
+**/
+interface AssociativeContainer<K, V> extends WalkableContainer<V> extends SpaceContainer<K> {
+    /**
+        Maps `key` to `value` in the AssociativeContainer.
+
+        If `key` is already mapped to a value, the previous value is
+        overwritten.
+
+        If `key` is null the result may be unspecified.
+    **/
+    function set(key:K, value:V):Void;
+
+    /**
+        Returns the mapped value of `key` in the AssociativeContainer.
+
+        If `key` is not mapped to a value, returns null.
+
+        If `key` is null the result may be unspecified.
     **/
     function get(key:K):Null<V>;
 
     /**
-        Removes the given item `item` from the SpaceContainer and returns it.
+        Removes the the mapping of `key` from the AssociativeContainer and
+        returns it's corresponding value.
 
-        If `item` does not exist in the SpaceContainer, returns `null`.
+        If `key` is not mapped to a value, returns null.
+
+        If `key` is null the result may be unspecified.
     **/
     function remove(key:K):Null<V>;
 
     /**
-        Returns an iterator over the keys of the AssociativeContainer.
+        Returns a UnidirectionalIterator over the keys of the
+        AssociativeContainer.
     **/
-    function keys():Iterator<K>;
+    function keyIterator():UnidirectionalIterator<K>;
 
     /**
-        Returns an iterator over the key/value pairs of AssociativeContainer.
+        Returns a UnidirectionalIterator over the key/value pairs of the
+        AssociativeContainer.
     **/
-    function keyValueIterator():Iterator<KeyValuePair<K, V>>;
+    function keyValueIterator():KeyValueIterator<K, V>;
 
     /**
         Returns a new AssociativeContainer filtered with function `f`.
@@ -225,9 +278,9 @@ interface AssociativeContainer<K, V> extends SpaceContainer<K> extends Traversab
         The returned AssociativeContainer will contain all key/value bindings
         for which `f(key)` returns `true`.
 
-        If `f` is null, the result is unspecified.
+        If `f` is null, the result may be unspecified.
     **/
-    function filterKeys(f:K->Bool):AssociativeContainer<K, V>;
+    function filterKeys(f:(K) -> Bool):AssociativeContainer<K, V>;
 
     /**
         Returns a new AssociativeContainer filtered with function `f`.
@@ -235,9 +288,9 @@ interface AssociativeContainer<K, V> extends SpaceContainer<K> extends Traversab
         The returned AssociativeContainer will contain all key/value bindings
         for which `f({key:K, value:V})` returns `true`.
 
-        If `f` is null, the result is unspecified.
+        If `f` is null, the result may be unspecified.
     **/
-    function filterPairs(f:KeyValuePair<K, V>->Bool):AssociativeContainer<K, V>;
+    function filterPairs(f:(KeyValuePair<K, V>) -> Bool):AssociativeContainer<K, V>;
 
     /**
         Returns a new AssociativeContainer mapped with function `f`.
@@ -245,9 +298,9 @@ interface AssociativeContainer<K, V> extends SpaceContainer<K> extends Traversab
         The returned AssociativeContainer will retain all its original values
         with the key to each value being set to `f(key)`.
 
-        if `f` is null, the result is unspecified.
+        If `f` is null, the result may be unspecified.
     **/
-    function mapKeys<X>(f:K->X):AssociativeContainer<X, V>;
+    function mapKeys<S>(f:(K) -> S):AssociativeContainer<S, V>;
 
     /**
         Returns a new AssociativeContainer mapped with function `f`.
@@ -256,25 +309,40 @@ interface AssociativeContainer<K, V> extends SpaceContainer<K> extends Traversab
         on each key/value pair of the AssociativeContainer. Where `pair` is of
         the type `hxdf.lambda.KeyValuePair`.
 
-        if `f` is null, the result is unspecified.
+        if `f` is null, the result may be unspecified.
     **/
-    function mapPairs<X, Y>(f:KeyValuePair<K, V>->KeyValuePair<X, Y>):AssociativeContainer<X, Y>;
+    function mapPairs<X, Y>(f:(KeyValuePair<K, V>) -> KeyValuePair<X, Y>):AssociativeContainer<X, Y>;
 }
 
 /**
-    An arbitrary SpaceContainer.
+    An aggregative container of unique elements.
 **/
-interface SetContainer<T> extends SpaceContainer<T> {
+interface SetContainer<T> extends WalkableContainer<T> extends SpaceContainer<T> {
     /**
         Adds the given element `item` to the SetContainer if it does not already
         exist.
     **/
-    function add(item:T):T;
+    function add(val:T):Void;
+}
+
+/**
+    A sequential container supporting reading and writing of values at arbitrary
+    positions and arbitrary traversion.
+**/
+interface RandomAccessContainer<T> extends BilateralContainer<T> extends ExtractableContainer<T> extends TraversableContainer<T> {
+    /**
+        Sets the value at position `index` to `value` and returns it.
+
+        If `index` is negative or not less than the length of the
+        RandomAccessContainer, the result may be unspecified.
+    **/
+    function get(index:Int):T;
 
     /**
-        Removes the given element `item` from the SetContainer and returns it.
+        Returns the value stored at position `index`.
 
-        If `item` does not exist in the SetContainer, returns `null`.
+        If `index` is not in the range `[0, length)`, the result may be
+        unspecified.
     **/
-    function remove(item:T):Null<T>;
+    function set(index:Int, value:T):Void;
 }
