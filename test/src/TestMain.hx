@@ -1,10 +1,8 @@
 package;
 
-class TestMain extends TestBroker {
+class TestMain {
     public function new() {
         printName();
-
-        addBroker(test.TestSuite);
     }
 
     function printName():Void {

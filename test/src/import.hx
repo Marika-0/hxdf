@@ -1,5 +1,3 @@
-import haxe.PosInfos;
-import hxtf.TestCase;
-import hxtf.TestBroker;
-import hxtf.TestBroker.addTest;
-import hxtf.TestBroker.addBroker;
+package;
+
+import hxtf.TestRun.addObject;
