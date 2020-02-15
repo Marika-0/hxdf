@@ -88,8 +88,8 @@ class SingleLinkedList<T> implements ExtractableContainer<T> {
     /**
         Returns an iterator over the elements of `this` SingleLinkedList.
     **/
-    public inline function iterator():UnidirectionalIterator<T> {
-        return new UnidirectionalIterator<T>(head);
+    public inline function iterator():ForwardsIterator<T> {
+        return new ForwardsIterator<T>(head);
     }
 
     /**
@@ -246,7 +246,7 @@ class SingleLinkedList<T> implements ExtractableContainer<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class UnidirectionalIterator<T> implements hxdf.lambda.Iterator.UnidirectionalIterator<T> {
+private class ForwardsIterator<T> implements hxdf.lambda.Iterator.UnidirectionalIterator<T> {
     var node:SingleNode<T>;
 
     public function new(head:SingleNode<T>) {
@@ -278,8 +278,8 @@ private class UnidirectionalIterator<T> implements hxdf.lambda.Iterator.Unidirec
         return node == (cast it).node;
     }
 
-    public inline function copy():UnidirectionalIterator<T> {
-        return new UnidirectionalIterator(node);
+    public inline function copy():ForwardsIterator<T> {
+        return new ForwardsIterator(node);
     }
 }
 
