@@ -3,6 +3,7 @@ package;
 class TestMain {
     public function new() {
         printName();
+        addObject(test.TestSuite);
     }
 
     function printName():Void {
