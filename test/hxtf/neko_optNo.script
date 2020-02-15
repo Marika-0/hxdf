@@ -1,1 +1,1 @@
-neko ../../build/neko/opt_no/TestRun.n
+neko ../build/neko/opt_no/TestRun.n

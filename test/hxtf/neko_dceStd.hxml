@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Neko with standard dead-code elimination
 
---neko build/neko/dce_std/TestRun.n
+--neko test/build/neko/dce_std/TestRun.n

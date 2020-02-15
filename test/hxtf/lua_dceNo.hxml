@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Lua without dead-code elimination
 
---lua build/lua/dce_no/TestRun.lua
+--lua test/build/lua/dce_no/TestRun.lua

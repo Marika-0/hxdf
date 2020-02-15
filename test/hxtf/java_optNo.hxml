@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Java without optimization
 
---java build/java/opt_no
+--java test/build/java/opt_no

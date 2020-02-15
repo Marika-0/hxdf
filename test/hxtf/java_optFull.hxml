@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Java with full optimization
 
---java build/java/opt_full
+--java test/build/java/opt_full

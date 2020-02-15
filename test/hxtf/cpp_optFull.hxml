@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=C++ with full optimization
 
---cpp build/cpp/opt_full
+--cpp test/build/cpp/opt_full

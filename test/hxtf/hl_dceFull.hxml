@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=HashLink with full dead-code elimination
 
---hl build/hl/dce_full/TestRun.hl
+--hl test/build/hl/dce_full/TestRun.hl

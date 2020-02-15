@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=C++ without dead-code elimination
 
---cpp build/cpp/dce_no
+--cpp test/build/cpp/dce_no

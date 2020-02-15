@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Java with full dead-code elimination
 
---java build/java/dce_full
+--java test/build/java/dce_full

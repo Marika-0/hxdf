@@ -1,5 +1,5 @@
-build/
 doc/dox
 doc/uml/*
 !doc/uml/*.mp
+test/build
 test/hxtf/*.cache

@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Python3 without optimization
 
---python build/python/opt_no/TestRun.py
+--python test/build/python/opt_no/TestRun.py
