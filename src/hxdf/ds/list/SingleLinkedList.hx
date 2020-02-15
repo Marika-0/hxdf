@@ -1,20 +1,16 @@
 package hxdf.ds.list;
 
-import hxdf.ds.Container.BilateralContainer;
 import hxdf.ds.Container.ExtractableContainer;
+import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
-import hxdf.lambda.unit.SingleNodeIterator;
+import hxdf.lambda.Compare;
 
 /**
     A singly-linked list.
-
-    This list supports removal of elements from the end of the list, but does
-    so inefficiently. If tail-end removal occurs frequently, consider using a
-    `hxdf.ds.list.DoubleLinkedList`.
 **/
-class SingleLinkedList<T> implements BilateralContainer<T> implements ExtractableContainer<T> {
+class SingleLinkedList<T> implements ExtractableContainer<T> {
     /**
-        The length of `this` SingleLinkedList.
+        The number of items in `this` SingleLinkedList.
     **/
     public var length(default, null):Int;
 
@@ -31,22 +27,21 @@ class SingleLinkedList<T> implements BilateralContainer<T> implements Extractabl
     }
 
     /**
-        Adds element `item` to the front of `this` SingleLinkedList and returns
-        it.
+        Adds `item` to the front of `this` SingleLinkedList.
     **/
-    public function push(item:T):T {
+    public function push(item:T):Void {
         head = new SingleNode<T>(item, head);
         if (tail == null) {
             tail = head;
         }
         length++;
-        return item;
     }
 
     /**
-        Removes the first element of `this` SingleLinkedList and returns it.
+        Removes the first item from the front of `this` SingleLinkedList and
+        returns it.
 
-        If `this` SingleLinkedList is empty, returns `null`.
+        If `this` SingleLinkedList is empty, returns null.
     **/
     public function pop():Null<T> {
         if (head == null) {
@@ -62,69 +57,125 @@ class SingleLinkedList<T> implements BilateralContainer<T> implements Extractabl
     }
 
     /**
-        Adds element `item` to the end of `this` SingleLinkedList and returns
-        it.
+        Returns the first item at the front of `this` SingleLinkedList.
+
+        If `this` SingleLinkedList is empty, returns null.
     **/
-    public function unshift(item:T):T {
+    public inline function peek():Null<T> {
+        return head == null ? null : head.data;
+    }
+
+    /**
+        Adds `item` to the end of `this` SingleLinkedList.
+    **/
+    public function unshift(item:T):Void {
         if (head == null) {
-            tail = head = new SingleNode<T>(item);
+            head = tail = new SingleNode<T>(item);
         } else {
             tail = tail.next = new SingleNode<T>(item);
         }
         length++;
-        return item;
     }
 
     /**
-        Removes the last element of `this` SingleLinkedList and returns it.
+        Returns the first item at the end of `this` SingleLinkedList.
 
-        If `this` SingleLinkedList is empty, returns `null`.
-
-        This function iterates over the whole length of `this` SingleLinkedList.
-        If it is going to be called often, consider using a
-        `hxdf.ds.list.DoubleLinkedList`.
+        if `this` SingleLinkedList is empty, retuns null.
     **/
-    public function shift():Null<T> {
-        if (head == null) {
-            return null;
-        }
+    public inline function spy():Null<T> {
+        return tail == null ? null : tail.data;
+    }
 
-        var x = tail.data;
-        if (head == tail) {
-            head = tail = null;
-        } else {
-            var node = head;
-            while (node.next != tail) {
-                node = node.next;
+    /**
+        Returns an iterator over the elements of `this` SingleLinkedList.
+    **/
+    public inline function iterator():UnidirectionalIterator<T> {
+        return new UnidirectionalIterator<T>(head);
+    }
+
+    /**
+        Returns a key-value iterator over the element of `this` SingleLinkedList
+        and their positions.
+
+        Equivalent to `indexIterator()`.
+    **/
+    public inline function keyValueIterator():IndexIterator<T> {
+        return new IndexIterator<T>(head);
+    }
+
+    /**
+        Returns a key-value iterator over the element of `this` SingleLinkedList
+        and their positions.
+
+        Equivalent to `keyValueIterator()`.
+    **/
+    public inline function indexIterator():IndexIterator<T> {
+        return keyValueIterator();
+    }
+
+    /**
+        Returns a new SingleLinkedList containing each element `item` of `this`
+        SingleLinkedList for which `f(item)` returns `true`.
+
+        The individual elements are not copied and retain their identity.
+
+        if `f` is null, the result is unspecified.
+    **/
+    public function filter(f:(T) -> Bool):SingleLinkedList<T> {
+        var list = new SingleLinkedList<T>();
+        for (item in this) {
+            if (f(item)) {
+                list.unshift(item);
             }
-            tail = node;
-            tail.next = null;
         }
-        length--;
-        return x;
+        return list;
     }
 
     /**
-        Removes the first instance of `v` tested sequentially against each
-        `item` in `this` SingleLinkedList using `comp(v, item)` if `comp` is
-        specified, or standard equity otherwise.
+        Returns a new SingleLinkedList containing each element `item` of `this`
+        SingleLinkedList transformed by `f(item)`.
 
-        If an item was removed, returns `true`, otherwise returns `false`.
+        If `f` is null, the result is unspecified.
     **/
-    public function remove(v:T, ?comp:T->T->Bool):Bool {
-        if (comp == null) {
-            comp = (v, x) -> v == x;
+    public function map<S>(f:(T) -> S):SingleLinkedList<S> {
+        var list = new SingleLinkedList<S>();
+        for (item in this) {
+            list.unshift(f(item));
+        }
+        return list;
+    }
+
+    /**
+        Removes the first element `item` from `this` SingleLinkedList for which
+        `comp(val, item)` returns `true`.
+
+        If `comp` is null, standard equity is used.
+
+        Returns `true` if an element was removed, or `false` otherwise.
+    **/
+    public function remove(val:T, ?comp:(T, T) -> Bool):Bool {
+        if (isEmpty()) {
+            return false;
         }
 
-        var prev:SingleNode<T> = null;
-        var node = head;
+        if (comp == null) {
+            comp = Compare.standardEquity;
+        }
+        if (comp(val, head.data)) {
+            if (head == tail) {
+                head = tail = null;
+            } else {
+                head = head.next;
+            }
+            length--;
+            return true;
+        }
+
+        var prev = head;
+        var node = head.next;
         while (node != null) {
-            if (comp(v, node.data)) {
-                if (prev == null) {
-                    head = head.next;
-                } else {
-                    prev.next = node.next;
-                }
+            if (comp(val, node.data)) {
+                prev.next = node.next;
                 if (node == tail) {
                     tail = prev;
                 }
@@ -138,168 +189,152 @@ class SingleLinkedList<T> implements BilateralContainer<T> implements Extractabl
     }
 
     /**
-        Tells if `this` SingleLinkedList is empty.
+        Returns `true` if `this` SingleLinkedList is empty, or `false`
+        otherwise.
     **/
     public inline function isEmpty():Bool {
         return head == null;
     }
 
     /**
-        Clears all items from `this` SingleLinkedList.
+        Removes all elements from `this` SingleLinkedList.
 
-        This function does not traverse the elements, but sets internal
-        references to null and `this.length` to 0.
+        This function does not traverse the elements.
     **/
     public function clear():Void {
+        head = tail = null;
         length = 0;
-        head = null;
-        tail = null;
     }
 
     /**
-        Accesses the first element of `this` SingleLinkedList and returns it.
+        Creates a copy of `this` SingleLinkedList.
 
-        If `this` SingleLinkedList is empty, returns `null`.
-    **/
-    public function first():Null<T> {
-        return head == null ? null : head.data;
-    }
-
-    /**
-        Accesses the last element of `this` SingleLinkedList and returns it.
-
-        If `this` SingleLinkedList is empty, returns `null`.
-    **/
-    public function last():Null<T> {
-        return tail == null ? null : tail.data;
-    }
-
-    /**
-        Returns an iterator on the elements of `this` SingleLinkedList.
-    **/
-    public inline function iterator():SingleNodeIterator<T> {
-        return new SingleNodeIterator<T>(head);
-    }
-
-    /**
-        Returns a shallow copy of `this` SingleLinkedList.
-
-        The elements are not copied and retain their identity, such that
-        `list.first() == list.copy().first()` is true, but `list == list.copy()`
-        is false.
+        The elements of `this` SingleLinkedList are not copied and retain their
+        identity.
     **/
     public function copy():SingleLinkedList<T> {
         var list = new SingleLinkedList<T>();
-        if (head != null) {
-            list.head = new SingleNode<T>(head.data);
-            var node = list.head;
-            var it = iterator();
-            it.next();
-            while (it.hasNext()) {
-                node = node.next = new SingleNode<T>(it.next());
-            }
-            list.tail = node;
-            list.length = length;
+        for (item in this) {
+            list.unshift(item);
         }
         return list;
     }
 
     /**
-        Creates a new SingleLinkedList by appending a copy of `list` to a copy
-        of `this` SingleLinkedList.
-
-        This operation does not modify `list` or `this` SingleLinkedList.
-
-        The length of the returned SingleLinkedList is equal to the sum of
-        `this.length` and `l.length`.
-
-        If `list` is null, the result is unspecified.
-    **/
-    public function concat(list:SingleLinkedList<T>):SingleLinkedList<T> {
-        if (head == null) {
-            return list.copy();
-        }
-        var conc = copy();
-        conc.length += list.length;
-        conc.tail.next = list.copy().head;
-        return conc;
-    }
-
-    /**
-        Returns a new SingleLinkedList filtered with function `f`.
-
-        The returned SingleLinkedList will contain all elements of `this`
-        SingleLinkedList for which `f(element)` returns `true`, preserving the
-        order of elements.
-
-        This function does not modify `this` SingleLinkedList.
-
-        If `f` is null, the result is unspecified.
-    **/
-    public function filter(f:T->Bool):SingleLinkedList<T> {
-        var list = new SingleLinkedList<T>();
-        for (item in iterator()) {
-            if (f(item)) {
-                inline list.unshift(item);
-            }
-        }
-        return list;
-    }
-
-    /**
-        Returns a new SingleLinkedList mapped with function `f`.
-
-        The returned SingleLinkedList will contain the output of `f(element)` on
-        each element of `this` SingleLinkedList, preserving the order of
-        elements.
-
-        If `f` is null, the result is unspecified.
-    **/
-    public function map<S>(f:T->S):SingleLinkedList<S> {
-        var list = new SingleLinkedList<S>();
-        if (head != null) {
-            list.head = new SingleNode<S>(f(head.data));
-            var node = list.head;
-            var it = iterator();
-            it.next();
-            while (it.hasNext()) {
-                node = node.next = new SingleNode<S>(f(it.next()));
-            }
-            list.tail = node;
-            list.length = length;
-        }
-        return list;
-    }
-
-    /**
-        Converts `this` SingleLinkedList into a String representation.
-
-        Internally, this function calls `Std.string` on each element of `this`
-        SingleLinkedList.
-
-        The output is formatted to be enclosed by `"[]"`, with each element
-        separated by `","`.
+        Converts `this` SingleLinkedList into a string representation.
     **/
     public inline function toString():String {
         return '[${join(",")}]';
     }
 
     /**
-        Converts `this` SingleLinkedList into a String representation where each
-        element is separated by `sep`.
-
-        Internally, this function calls `Std.string` on each element of `this`
-        SingleLinkedList.
+        Converts `this` SingleLinkedList into a string representation where
+        each element is separated by `sep`.
     **/
     public function join(sep:String):String {
+        if (isEmpty()) {
+            return "";
+        }
         var buf = new StringBuf();
-        var it = iterator();
-        while (it.hasNext()) {
-            buf.add(Std.string(it.next()));
-            if (it.hasNext()) {
-                buf.add(sep);
-            }
+        var iterator = iterator();
+        buf.add(Std.string(iterator.next()));
+        while (iterator.hasNext()) {
+            buf.add(Std.string(sep));
+            buf.add(Std.string(iterator.next()));
         }
         return buf.toString();
+    }
+}
+
+@SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
+private class UnidirectionalIterator<T> implements hxdf.lambda.Iterator.UnidirectionalIterator<T> {
+    var node:SingleNode<T>;
+
+    public function new(head:SingleNode<T>) {
+        node = head;
+    }
+
+    public inline function hasNext():Bool {
+        return node != null;
+    }
+
+    public function next():T {
+        var data = node.data;
+        node = node.next;
+        return data;
+    }
+
+    public function advance(steps:Int):T {
+        while (0 < steps--) {
+            node = node.next;
+        }
+        return node.data;
+    }
+
+    public inline function value():T {
+        return node.data;
+    }
+
+    public inline function equals(it:hxdf.lambda.Iterator.SequentialIterator<T>):Bool {
+        return node == (cast it).node;
+    }
+
+    public inline function copy():UnidirectionalIterator<T> {
+        return new UnidirectionalIterator(node);
+    }
+}
+
+@SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
+private class IndexIterator<T> implements hxdf.lambda.Iterator.IndexIterator<T> {
+    var node:SingleNode<T>;
+    var index:Int;
+
+    public function new(head:SingleNode<T>, pos = 0) {
+        node = head;
+        index = pos;
+    }
+
+    public inline function hasNext():Bool {
+        return node != null;
+    }
+
+    public function next():KeyValuePair<Int, T> {
+        var data = node.data;
+        node = node.next;
+        return KVPFactory.create(index++, data);
+    }
+
+    public function advance(steps:Int):KeyValuePair<Int, T> {
+        if (0 < steps) {
+            index += steps;
+        }
+        while (0 < steps--) {
+            node = node.next;
+        }
+        return KVPFactory.create(index, node.data);
+    }
+
+    public inline function key():Int {
+        return index;
+    }
+
+    public inline function position():Int {
+        return index;
+    }
+
+    public inline function value():T {
+        return node.data;
+    }
+
+    public inline function pair():KeyValuePair<Int, T> {
+        return KVPFactory.create(index, node.data);
+    }
+
+    public inline function equals(it:hxdf.lambda.Iterator.SequentialIterator<KeyValuePair<Int, T>>):Bool {
+        return index == (cast it).index;
+    }
+
+    public inline function copy():IndexIterator<T> {
+        return new IndexIterator(node, index);
     }
 }
