@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -qf \
+haxelib run hxtf -f \
     hl_dceNo \
     hl_dceStd \
     hl_dceFull \

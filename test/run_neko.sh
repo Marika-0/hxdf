@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -qf \
+haxelib run hxtf -f \
     neko_dceNo \
     neko_dceStd \
     neko_dceFull \

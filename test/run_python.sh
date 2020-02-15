@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -qf \
+haxelib run hxtf -f \
     python_dceNo \
     python_dceStd \
     python_dceFull \

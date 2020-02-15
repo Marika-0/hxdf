@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -qf \
+haxelib run hxtf -f \
     php_dceNo \
     php_dceStd \
     php_dceFull \

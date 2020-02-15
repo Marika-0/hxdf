@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -qf \
+haxelib run hxtf -f \
     lua_dceNo \
     lua_dceStd \
     lua_dceFull \

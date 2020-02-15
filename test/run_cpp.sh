@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -qf \
+haxelib run hxtf -f \
     cpp_dceNo \
     cpp_dceStd \
     cpp_dceFull \
