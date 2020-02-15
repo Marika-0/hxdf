@@ -6,7 +6,7 @@ import hxdf.lambda.Iterator;
 /**
     A data storage type.
 **/
-interface Container<T> {
+interface Container {
     /**
         The number of elements in the Container.
     **/
@@ -27,7 +27,7 @@ interface Container<T> {
     /**
         Returns a copy of the Container.
     **/
-    function copy():Container<T>;
+    function copy():Container;
 
     /**
         Converts the Container into a string representation.
@@ -49,7 +49,7 @@ interface Container<T> {
 /**
     A sequential data storage container.
 **/
-interface SequentialContainer<T> extends Container<T> {
+interface SequentialContainer<T> extends Container {
     /**
         Adds `item` to the SequentialContainer.
     **/
@@ -83,7 +83,7 @@ interface SequentialContainer<T> extends Container<T> {
 /**
     A container that can be iterated over and transformed.
 **/
-interface WalkableContainer<T> extends Container<T> {
+interface WalkableContainer<T> extends Container {
     /**
         Returns a UnidirectionalIterator over the elements of the
         WalkableContainer.
@@ -120,7 +120,7 @@ interface WalkableContainer<T> extends Container<T> {
 /**
     An aggregative container of elements.
 **/
-interface SpaceContainer<T> extends Container<T> {
+interface SpaceContainer<T> extends Container {
     /**
         Returns the number of elements in the SpaceContainer (equivalent to
         `length`).

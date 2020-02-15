@@ -24,10 +24,9 @@ beginfig(1);
 		(	"+length(default, null) : Int")
 		(	"+isEmpty() : Bool",
 			"+clear() : Void",
-			"+copy() : Container<T>",
+			"+copy() : Container",
 			"+toString() : String");
 	Class_stereotypes.Container(interface_stereotype);
-	ClassTemplate.ContainerTemplate("T")(Container);
 
 	Class.SequentialContainer("SequentialContainer<T>")
 		()
@@ -115,7 +114,7 @@ beginfig(1);
 	RandomAccessContainer.n = (xpart (BilateralContainer.c + ExtractableContainer.c + TraversableContainer.c) / 3, min(BilateralContainer.bottom, ExtractableContainer.bottom, TraversableContainer.bottom, AssociativeContainer.bottom, SetContainer.bottom) - offset);
 
 
-	drawObjects(Container, ContainerTemplate);
+	drawObject(Container);
 
 	drawObjects(SequentialContainer, SequentialTemplate);
 	link(inheritance)(rpathStepY(Container.s, SequentialContainer.n, -offset / 2));
