@@ -3,7 +3,6 @@ package hxdf.ds.list;
 import hxdf.ds.Container.ExtractableContainer;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
-import hxdf.lambda.Compare;
 
 /**
     A singly-linked list.
@@ -159,7 +158,7 @@ class SingleLinkedList<T> implements ExtractableContainer<T> {
         }
 
         if (comp == null) {
-            comp = Compare.standardEquity;
+            comp = hxdf.lambda.Compare.standardEquity;
         }
         if (comp(val, head.data)) {
             if (head == tail) {
