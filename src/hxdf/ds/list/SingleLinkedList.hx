@@ -3,6 +3,8 @@ package hxdf.ds.list;
 import hxdf.ds.Container.ExtractableContainer;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
+import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
+import hxdf.lambda.Iterator.IndexIterator as IndexTemplate;
 
 /**
     A singly-linked list.
@@ -88,8 +90,8 @@ class SingleLinkedList<T> implements ExtractableContainer<T> {
     /**
         Returns an iterator over the elements of `this` SingleLinkedList.
     **/
-    public inline function iterator():ForwardsIterator<T> {
-        return new ForwardsIterator<T>(head);
+    public inline function iterator():SequentialIterator<T> {
+        return new SequentialIterator<T>(head);
     }
 
     /**
@@ -246,7 +248,7 @@ class SingleLinkedList<T> implements ExtractableContainer<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class ForwardsIterator<T> implements hxdf.lambda.Iterator.UnidirectionalIterator<T> {
+private class SequentialIterator<T> implements SequentialTemplate<T> {
     var node:SingleNode<T>;
 
     public function new(head:SingleNode<T>) {
@@ -258,33 +260,22 @@ private class ForwardsIterator<T> implements hxdf.lambda.Iterator.Unidirectional
     }
 
     public function next():T {
-        var data = node.data;
+        var value = node.data;
         node = node.next;
-        return data;
+        return value;
     }
 
-    public function advance(steps:Int):T {
-        while (0 < steps--) {
-            node = node.next;
-        }
-        return node.data;
-    }
-
-    public inline function value():T {
-        return node.data;
-    }
-
-    public inline function equals(it:hxdf.lambda.Iterator.SequentialIterator<T>):Bool {
+    public inline function equals(it:SequentialTemplate<T>):Bool {
         return node == (cast it).node;
     }
 
-    public inline function copy():ForwardsIterator<T> {
-        return new ForwardsIterator(node);
+    public inline function copy():SequentialIterator<T> {
+        return new SequentialIterator(node);
     }
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class IndexIterator<T> implements hxdf.lambda.Iterator.IndexIterator<T> {
+private class IndexIterator<T> implements IndexTemplate<T> {
     var node:SingleNode<T>;
     var index:Int;
 
@@ -298,39 +289,13 @@ private class IndexIterator<T> implements hxdf.lambda.Iterator.IndexIterator<T> 
     }
 
     public function next():KeyValuePair<Int, T> {
-        var data = node.data;
+        var value = node.data;
         node = node.next;
-        return KVPFactory.create(index++, data);
+        return KVPFactory.create(index++, value);
     }
 
-    public function advance(steps:Int):KeyValuePair<Int, T> {
-        if (0 < steps) {
-            index += steps;
-        }
-        while (0 < steps--) {
-            node = node.next;
-        }
-        return KVPFactory.create(index, node.data);
-    }
-
-    public inline function key():Int {
-        return index;
-    }
-
-    public inline function position():Int {
-        return index;
-    }
-
-    public inline function value():T {
-        return node.data;
-    }
-
-    public inline function pair():KeyValuePair<Int, T> {
-        return KVPFactory.create(index, node.data);
-    }
-
-    public inline function equals(it:hxdf.lambda.Iterator.SequentialIterator<KeyValuePair<Int, T>>):Bool {
-        return index == (cast it).index;
+    public inline function compare(it:IndexTemplate<T>):Int {
+        return index - (cast it).index;
     }
 
     public inline function copy():IndexIterator<T> {

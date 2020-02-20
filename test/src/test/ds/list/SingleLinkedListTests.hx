@@ -156,6 +156,18 @@ class SingleLinkedListTests extends hxtf.TestObject {
         for (index => item in listA) {
             assert(item == [37, 29, 24, 13, 5][index]);
         }
+
+        var iteratorA = listA.indexIterator();
+        var iteratorB = listA.indexIterator();
+        assert(iteratorA.compare(iteratorB) == 0);
+        iteratorA.next();
+        assert(0 < iteratorA.compare(iteratorB));
+        iteratorB.next();
+        assert(iteratorA.compare(iteratorB) == 0);
+        iteratorB.next();
+        assert(iteratorA.compare(iteratorB) < 0);
+        iteratorA.next();
+        assert(iteratorA.compare(iteratorB) == 0);
     }
 
     function test_transforming():Void {
