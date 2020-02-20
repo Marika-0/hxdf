@@ -72,6 +72,11 @@ interface SequentialContainer<T> extends Container {
     function peek():Null<T>;
 
     /**
+        Returns an iterator over the elements of the SequentialContainer.
+    **/
+    function iterator():SequentialIterator<T>;
+
+    /**
         Converts the SequentialContainer into a string representation where each
         element is separated by `sep`.
 
@@ -84,12 +89,6 @@ interface SequentialContainer<T> extends Container {
     A container that can be iterated over and transformed.
 **/
 interface WalkableContainer<T> extends Container {
-    /**
-        Returns a UnidirectionalIterator over the elements of the
-        WalkableContainer.
-    **/
-    function iterator():UnidirectionalIterator<T>;
-
     /**
         Returns a copy of the WalkableContainer filtered with function `f`.
 
@@ -174,16 +173,16 @@ interface BilateralContainer<T> extends SequentialContainer<T> {
 **/
 interface ExtractableContainer<T> extends SequentialContainer<T> extends WalkableContainer<T> {
     /**
-        Returns a key-value iterator over the indexes-elements of the
+        Returns a key-value iterator over the indexes-element pairs of the
         ExtractableContainer.
 
-        Equivalent to `keyValueIterator()`, just renamed to make more sense
-        since it works specifically with indexes.
+        Equivalent to `keyValueIterator()` - renamed for more understandable
+        code since it works specifically with indexes.
     **/
     function indexIterator():IndexIterator<T>;
 
     /**
-        Returns a key-value iterator over the indexes-elements of the
+        Returns a key-value iterator over the indexes-element pairs of the
         ExtractableContainer.
 
         Allows use of the ExtractableContainer in key-value iteration loops.
@@ -199,28 +198,6 @@ interface ExtractableContainer<T> extends SequentialContainer<T> extends Walkabl
         Returns `true` if an element was removed, or `false` otherwise.
     **/
     function remove(val:T, ?comp:(T, T) -> Bool):Bool;
-}
-
-/**
-    A container that can be arbitrarily iterated over from two distinct ends.
-**/
-interface TraversableContainer<T> extends WalkableContainer<T> {
-    /**
-        Returns a UnidirectionalIterator over the TraversableContainer
-        (iterating in reverse to `iterator()`).
-    **/
-    function reverseIterator():UnidirectionalIterator<T>;
-
-    /**
-        Returns a BidirectionalIterator over the TraversableContainer.
-    **/
-    function beginIterator():BidirectionalIterator<T>;
-
-    /**
-        Returns a BidirectionalIterator over the TraversableContainer
-        (iterating in reverse to `beginIterator()`).
-    **/
-    function endIterator():BidirectionalIterator<T>;
 }
 
 /**
@@ -261,13 +238,17 @@ interface AssociativeContainer<K, V> extends WalkableContainer<V> extends SpaceC
     function remove(key:K):Null<V>;
 
     /**
-        Returns a UnidirectionalIterator over the keys of the
-        AssociativeContainer.
+        Returns an iterator over the values of the AssociativeContainer.
     **/
-    function keyIterator():UnidirectionalIterator<K>;
+    function iterator():InputIterator<V>;
 
     /**
-        Returns a UnidirectionalIterator over the key/value pairs of the
+        Returns an iterator over the keys of the AssociativeContainer.
+    **/
+    function keyIterator():InputIterator<K>;
+
+    /**
+        Returns an iterator over the key/value pairs of the
         AssociativeContainer.
     **/
     function keyValueIterator():KeyValueIterator<K, V>;
@@ -326,6 +307,28 @@ interface SetContainer<T> extends WalkableContainer<T> extends SpaceContainer<T>
 }
 
 /**
+    A container that can be arbitrarily iterated over from two distinct ends.
+**/
+interface TraversableContainer<T> extends WalkableContainer<T> {
+    /**
+        Returns a SequentialIterator over the TraversableContainer
+        (iterating in reverse to `iterator()`).
+    **/
+    function reverseIterator():SequentialIterator<T>;
+
+    /**
+        Returns a BidirectionalIterator over the TraversableContainer.
+    **/
+    function beginIterator():BidirectionalIterator<T>;
+
+    /**
+        Returns a BidirectionalIterator over the TraversableContainer
+        (iterating in reverse to `beginIterator()`).
+    **/
+    function endIterator():BidirectionalIterator<T>;
+}
+
+/**
     A sequential container supporting reading and writing of values at arbitrary
     positions and arbitrary traversion.
 **/
@@ -345,4 +348,10 @@ interface RandomAccessContainer<T> extends BilateralContainer<T> extends Extract
         unspecified.
     **/
     function set(index:Int, value:T):Void;
+
+    /**
+        Returns a random-access iterator over the elements of the
+        RandomAccessContainer.
+    **/
+    function accessIterator():RandomAccessIterator<T>;
 }

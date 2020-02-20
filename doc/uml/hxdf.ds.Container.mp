@@ -33,14 +33,14 @@ beginfig(1);
 		(	"+push(item:T) : Void",
 			"+pop() : Null<T>",
 			"+peek() : Null<T>",
+			"+iterator() : SequentialIterator<T>",
 			"+join(sep:String) : String");
 	Class_stereotypes.SequentialContainer(interface_stereotype);
 	ClassTemplate.SequentialTemplate("T")(SequentialContainer);
 
 	Class.WalkableContainer("WalkableContainer<T>")
 		()
-		(	"+iterator() : UnidirectionalIterator<T>",
-			"+filter(f:(T)->Bool) : WalkableContainer<T>",
+		(	"+filter(f:(T)->Bool) : WalkableContainer<T>",
 			"+map<S>(f:(T)->S) : WalkableContainer<S>");
 	Class_stereotypes.WalkableContainer(interface_stereotype);
 	ClassTemplate.WalkableTemplate("T")(WalkableContainer);
@@ -61,14 +61,6 @@ beginfig(1);
 	Class_stereotypes.BilateralContainer(interface_stereotype);
 	ClassTemplate.BilateralTemplate("T")(BilateralContainer);
 
-	Class.TraversableContainer("TraversableContainer<T>")
-		()
-		(	"+reverseIterator() : UnidirectionalIterator<T>",
-			"+beginIterator() : BidirectionalIterator<T>",
-			"+endIterator() : BidirectionalIterator<T>");
-	Class_stereotypes.TraversableContainer(interface_stereotype);
-	ClassTemplate.TraversableTemplate("T")(TraversableContainer);
-
 	Class.ExtractableContainer("ExtractableContainer<T>")
 		()
 		(	"+indexIterator() : IndexIterator<T>",
@@ -82,8 +74,9 @@ beginfig(1);
 		(	"+set(key:K, value:V) : Void",
 			"+get(key:K) : Null<V>",
 			"+remove(key:K) : Null<V>",
-			"+keyIterator() : Unidirectionaliterator<K>",
-			"+keyValueIterator() : KeyValueIterator<K, V>",
+			"+iterator() : InputIterator<V>",
+			"+keyIterator() : InputIterator<K>",
+			"+keyValueIterator() : InputIterator<KeyValuePair<K, V>>",
 			"+filterKeys(f:(K)->Bool) : AssociativeContainer<K, V>",
 			"+filterPairs(f:(KeyValuePair<K, V>)->Bool) : AssociativeContainer<K, V>",
 			"+mapKeys<S>(f:(K)->S) : AssociativeContainer<S, V>",
@@ -97,21 +90,31 @@ beginfig(1);
 	Class_stereotypes.SetContainer(interface_stereotype);
 	ClassTemplate.SetTemplate("T")(SetContainer);
 
+	Class.TraversableContainer("TraversableContainer<T>")
+		()
+		(	"+reverseIterator() : SequentialIterator<T>",
+			"+beginIterator() : BidirectionalIterator<T>",
+			"+endIterator() : BidirectionalIterator<T>");
+	Class_stereotypes.TraversableContainer(interface_stereotype);
+	ClassTemplate.TraversableTemplate("T")(TraversableContainer);
+
 	Class.RandomAccessContainer("RandomAccessContainer<T>")
 		()
 		(	"+get(index:Int) : T",
-			"+set(index:Int, value:T) : Void");
+			"+set(index:Int, value:T) : Void",
+			"+accessIterator() : RandomAccessIterator<T>");
 	Class_stereotypes.RandomAccessContainer(interface_stereotype);
 	ClassTemplate.RandomAccessTemplate("T")(RandomAccessContainer);
 
 
-	leftToRight(offset)(BilateralContainer, ExtractableContainer, TraversableContainer, AssociativeContainer, SetContainer);
-	numeric midRowY; midRowY = max(BilateralContainer.top, ExtractableContainer.top, TraversableContainer.top, AssociativeContainer.top, SetContainer.top) + offset + max(SequentialContainer.height, WalkableContainer.height, SpaceContainer.height) / 2;
+	leftToRight(offset)(BilateralContainer, ExtractableContainer, AssociativeContainer, SetContainer);
+	numeric midRowY; midRowY = max(BilateralContainer.top, ExtractableContainer.top, AssociativeContainer.top, SetContainer.top) + offset + max(SequentialContainer.height, WalkableContainer.height, SpaceContainer.height) / 2;
 	SequentialContainer.c = ((xpart BilateralContainer.c + ExtractableContainer.left + ExtractableContainer.width / 3) / 2, midRowY);
-	WalkableContainer.c = ((ExtractableContainer.right - ExtractableContainer.width / 3 + xpart TraversableContainer.c + AssociativeContainer.left + AssociativeContainer.width / 3) / 2, midRowY);
+	WalkableContainer.c = ((ExtractableContainer.right - ExtractableContainer.width / 3 + AssociativeContainer.left + AssociativeContainer.width / 3) / 2, midRowY);
 	SpaceContainer.c = ((AssociativeContainer.right - AssociativeContainer.width / 3 + xpart SetContainer.c) / 2, midRowY);
 	Container.s = (xpart (SequentialContainer.c + WalkableContainer.c + SpaceContainer.c), max(SequentialContainer.top, WalkableContainer.top, SpaceContainer.top) + offset);
-	RandomAccessContainer.n = (xpart (BilateralContainer.c + ExtractableContainer.c + TraversableContainer.c) / 3, min(BilateralContainer.bottom, ExtractableContainer.bottom, TraversableContainer.bottom, AssociativeContainer.bottom, SetContainer.bottom) - offset);
+	TraversableContainer.n = (xpart BilateralContainer.c, min(BilateralContainer.bottom, ExtractableContainer.bottom, AssociativeContainer.bottom, SetContainer.bottom) - offset);
+	RandomAccessContainer.n = (xpart (BilateralContainer.c + ExtractableContainer.c) / 2, TraversableContainer.bottom - offset);
 
 
 	drawObject(Container);
@@ -130,22 +133,21 @@ beginfig(1);
 
 	drawObjects(ExtractableContainer, ExtractableTemplate);
 	link(inheritance)(rpathStepY(SequentialContainer.s, ExtractableContainer.nw + (ExtractableContainer.width / 3, 0), (max(BilateralContainer.top, ExtractableContainer.top) - SequentialContainer.bottom) / 2));
-	link(inheritance)(rpathStepY(WalkableContainer.s, ExtractableContainer.ne - (ExtractableContainer.width / 3, 0), (max(ExtractableContainer.top, TraversableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
-
-	drawObjects(TraversableContainer, TraversableTemplate);
-	link(inheritance)(rpathStepY(WalkableContainer.s, TraversableContainer.n, (max(ExtractableContainer.top, TraversableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
+	link(inheritance)(rpathStepY(WalkableContainer.s, ExtractableContainer.ne - (ExtractableContainer.width / 3, 0), (max(ExtractableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
 
 	drawObjects(SetContainer, SetTemplate);
 	link(inheritance)(rpathStepY(SpaceContainer.s, SetContainer.n, (max(SetContainer.top, AssociativeContainer.top) - SpaceContainer.bottom) / 2));
 
 	drawObjects(AssociativeContainer, AssociativeTemplate);
-	link(inheritance)(rpathStepY(WalkableContainer.s, AssociativeContainer.nw + (AssociativeContainer.width / 3, 0), (max(ExtractableContainer.top, TraversableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
+	link(inheritance)(rpathStepY(WalkableContainer.s, AssociativeContainer.nw + (AssociativeContainer.width / 3, 0), (max(ExtractableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
 	link(inheritance)(rpathStepY(SpaceContainer.s, AssociativeContainer.ne - (AssociativeContainer.width / 3, 0), (max(SetContainer.top, AssociativeContainer.top) - SpaceContainer.bottom) / 2));
 
+	drawObjects(TraversableContainer, TraversableTemplate);
+	link(inheritance)(TraversableContainer.n -- BilateralContainer.s);
+
 	drawObjects(RandomAccessContainer, RandomAccessTemplate);
-	link(inheritance)(pathStepY(RandomAccessContainer.n, BilateralContainer.s, (min(BilateralContainer.bottom, ExtractableContainer.bottom, TraversableContainer.bottom) - RandomAccessContainer.top) / 2));
-	link(inheritance)(pathStepY(RandomAccessContainer.n, ExtractableContainer.s, (min(BilateralContainer.bottom, ExtractableContainer.bottom, TraversableContainer.bottom) - RandomAccessContainer.top) / 2));
-	link(inheritance)(pathStepY(RandomAccessContainer.n, TraversableContainer.s, (min(BilateralContainer.bottom, ExtractableContainer.bottom, TraversableContainer.bottom) - RandomAccessContainer.top) / 2));
+	link(inheritance)(pathStepY(RandomAccessContainer.n, TraversableContainer.s, offset / 2));
+	link(inheritance)(pathStepY(RandomAccessContainer.n, ExtractableContainer.s, offset / 2));
 
 
 	Note.package(
