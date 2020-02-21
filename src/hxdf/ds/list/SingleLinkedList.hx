@@ -1,15 +1,14 @@
 package hxdf.ds.list;
 
-import hxdf.ds.Container.ExtractableContainer;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
-import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
 import hxdf.lambda.Iterator.IndexIterator as IndexTemplate;
+import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
 
 /**
     A singly-linked list.
 **/
-class SingleLinkedList<T> implements ExtractableContainer<T> {
+class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         The number of items in `this` SingleLinkedList.
     **/
