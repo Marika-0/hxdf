@@ -137,7 +137,7 @@ class SingleLinkedListTests extends hxtf.TestObject {
         assertF(listA.indexIterator().hasNext());
 
         // `keyValueIterator()` and `indexIterator()` both return the same
-        // value, so we don't need to test them individually.
+        // thing, so we don't need to test them individually.
 
         listA.push(5);
         for (item in listA) {
