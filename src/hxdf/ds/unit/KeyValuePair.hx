@@ -1,26 +1,24 @@
 package hxdf.ds.unit;
 
 /**
-    Represents a key/value pair.
-
-    Used internally instead of specifying an anonymous object.
+    A key/value pair.
 **/
-typedef KeyValuePair<K, V> = {
-    var key:K;
-    var value:V;
-}
-
-/**
-    A factory for creating KeyValuePair instances.
-**/
-class KVPFactory {
+class KeyValuePair<K, V> {
     /**
-        Creates a new KeyValuePair with given key `k` and value `v`.
+        The key of `this` KeyValuePair.
     **/
-    public static inline function create<K, V>(k:K, v:V):KeyValuePair<K, V> {
-        return {
-            key: k,
-            value: v
-        };
+    public var key:K;
+
+    /**
+        The value of `this` KeyValuePair.
+    **/
+    public var value:V;
+
+    /**
+        Creates a new KeyValuePair with key `key` and value `value`.
+    **/
+    public inline function new(key:K, value:V) {
+        this.key = key;
+        this.value = value;
     }
 }
