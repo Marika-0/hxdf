@@ -2,8 +2,8 @@ package hxdf.ds.list;
 
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
-import hxdf.lambda.Iterator.IndexIterator as IndexTemplate;
-import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
+import hxdf.lambda.Iterator.IndexIterator as IndexIteratorTemplate;
+import hxdf.lambda.Iterator.SequentialIterator as SequentialIteratorTemplate;
 
 /**
     A singly-linked list.
@@ -247,7 +247,7 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class SequentialIterator<T> implements SequentialTemplate<T> {
+private class SequentialIterator<T> implements SequentialIteratorTemplate<T> {
     var node:SingleNode<T>;
 
     public function new(head:SingleNode<T>) {
@@ -264,7 +264,7 @@ private class SequentialIterator<T> implements SequentialTemplate<T> {
         return value;
     }
 
-    public inline function equals(it:SequentialTemplate<T>):Bool {
+    public inline function equals(it:SequentialIteratorTemplate<T>):Bool {
         return node == (cast it).node;
     }
 
@@ -274,7 +274,7 @@ private class SequentialIterator<T> implements SequentialTemplate<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class IndexIterator<T> implements IndexTemplate<T> {
+private class IndexIterator<T> implements IndexIteratorTemplate<T> {
     var node:SingleNode<T>;
     var index:Int;
 
@@ -293,7 +293,7 @@ private class IndexIterator<T> implements IndexTemplate<T> {
         return KVPFactory.create(index++, value);
     }
 
-    public inline function compare(it:IndexTemplate<T>):Int {
+    public inline function compare(it:IndexIteratorTemplate<T>):Int {
         return index - (cast it).index;
     }
 
