@@ -283,7 +283,7 @@ private class IndexIterator<T> implements IndexTemplate<T> implements Bidirectio
     }
 
     public inline function next():KeyValuePair<Int, T> {
-        return KVPFactory.create(index++, iterator.next());
+        return new KeyValuePair(index++, iterator.next());
     }
 
     public inline function hasPrev():Bool {
@@ -291,7 +291,7 @@ private class IndexIterator<T> implements IndexTemplate<T> implements Bidirectio
     }
 
     public inline function prev():KeyValuePair<Int, T> {
-        return KVPFactory.create(--index, iterator.prev());
+        return new KeyValuePair(index, iterator.prev());
     }
 
     public inline function equals(it:SequentialTemplate<KeyValuePair<Int, T>>):Bool {

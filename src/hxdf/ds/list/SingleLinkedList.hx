@@ -290,7 +290,7 @@ private class IndexIterator<T> implements IndexIteratorTemplate<T> {
     public function next():KeyValuePair<Int, T> {
         var value = node.data;
         node = node.next;
-        return KVPFactory.create(index++, value);
+        return new KeyValuePair(index++, value);
     }
 
     public inline function compare(it:IndexIteratorTemplate<T>):Int {
