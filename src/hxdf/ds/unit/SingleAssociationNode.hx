@@ -1,7 +1,5 @@
 package hxdf.ds.unit;
 
-import hxdf.ds.tuple.Double;
-
 /**
     A node containing a key/value pair and a reference to another node.
 **/
@@ -9,45 +7,25 @@ class SingleAssociationNode<K, V> {
     /**
         The key of `this` SingleAssociationNode.
     **/
-    public var key(get, never):K;
-
-    inline function get_key():K {
-        return double.first.key;
-    }
+    public var key:K;
 
     /**
         The value of `this` SingleAssociationNode.
     **/
-    public var value(get, set):V;
-
-    inline function get_value():V {
-        return double.first.value;
-    }
-
-    inline function set_value(v:V):V {
-        return double.first.value = v;
-    }
+    public var value:V;
 
     /**
         The node referenced by `this` SingleAssociationNode.
     **/
-    public var next(get, set):SingleAssociationNode<K, V>;
-
-    inline function get_next():SingleAssociationNode<K, V> {
-        return double.second;
-    }
-
-    inline function set_next(x:SingleAssociationNode<K, V>):SingleAssociationNode<K, V> {
-        return double.second = x;
-    }
-
-    var double:Double<KeyValuePair<K, V>, SingleAssociationNode<K, V>>;
+    public var next:SingleAssociationNode<K, V>;
 
     /**
-        Creates a new SingleAssociationNode with given key and value, and
-        optional reference to another SingleAssociationNode.
+        Creates a new SingleAssociationNode with key `key` and value `value`,
+        and an optional reference to another SingleAssociationNode.
     **/
     public inline function new(key:K, value:V, ?next:SingleAssociationNode<K, V>) {
-        double = new Double(KeyValuePair.KVPFactory.create(key, value), next);
+        this.key = key;
+        this.value = value;
+        this.next = next;
     }
 }
