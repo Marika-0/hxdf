@@ -20,8 +20,8 @@ class DoubleNode<T> {
     public var prev:DoubleNode<T>;
 
     /**
-        Creates a new DoubleNode storing `data` with optional references to next
-        and previous DoubleNodes.
+        Creates a new DoubleNode with data `data`, and optional references to
+        next and previous DoubleNodes.
     **/
     public inline function new(data:T, ?next:DoubleNode<T>, ?prev:DoubleNode<T>) {
         this.data = data;

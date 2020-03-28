@@ -15,8 +15,8 @@ class SingleNode<T> {
     public var next:SingleNode<T>;
 
     /**
-        Creates a new SingleNode storing `data` with an optional reference to
-        another node `next`.
+        Creates a new SingleNode with data `data`, and an optional reference to
+        another SingleNode.
     **/
     public inline function new(data:T, ?next:SingleNode<T>) {
         this.data = data;
