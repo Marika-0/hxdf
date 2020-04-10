@@ -4,5 +4,6 @@ class TestSuite {
     public function new() {
         addObject(test.ds.TestSuite);
         addObject(test.io.TestSuite);
+        addObject(test.lambda.TestSuite);
     }
 }
