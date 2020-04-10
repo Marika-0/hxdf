@@ -199,7 +199,7 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         Removes all elements from `this` SingleLinkedList.
 
-        This function does not traverse the elements.
+        This function does not traverse the list.
     **/
     public function clear():Void {
         head = tail = null;
