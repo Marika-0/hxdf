@@ -1,6 +1,6 @@
 cd hxtf;
 
-haxelib run hxtf -f \
+haxelib run hxtf -f -t 0 \
     java_dceNo \
     java_dceStd \
     java_dceFull \
