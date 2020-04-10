@@ -39,9 +39,8 @@ interface Container {
         element separated by `","` and contained in braces (`"{"`/`"]}`).
 
         Containers of key-value pairs will formay key/values as `key=>value`
-        and will have each pair separated by `","`. The pairs may or may not be
-        in a particular order depending on the datastructure and will always be
-        contained in braces (`"{"`/`"]}`).
+        and will have each pair separated by `","`, with the entire string
+        contained in braces (`"{"`/`"}`).
     **/
     function toString():String;
 }
