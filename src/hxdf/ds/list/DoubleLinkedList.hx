@@ -6,18 +6,30 @@ import hxdf.lambda.Iterator.BidirectionalIterator as BidirectionalTemplate;
 import hxdf.lambda.Iterator.IndexIterator as IndexTemplate;
 import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
 
+/**
+    A doubly-linked list.
+**/
 class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> implements hxdf.ds.Container.ExtractableContainer<T> {
+    /**
+        The number of items in `this` DoubleLinkedList.
+    **/
     public var length(default, null):Int;
 
     var head:DoubleNode<T>;
     var tail:DoubleNode<T>;
 
+    /**
+        Creates a new empty DoubleLinkedList.
+    **/
     public function new() {
         length = 0;
         head = null;
         tail = null;
     }
 
+    /**
+        Adds `item` to the front of `this` DoubleLinkedList.
+    **/
     public function push(item:T):Void {
         head = new DoubleNode<T>(item, head);
         if (tail == null) {
@@ -28,6 +40,12 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         length++;
     }
 
+    /**
+        Removes the first item from the front of `this` DoubleLinkedList and
+        returns it.
+
+        If `this` DoubleLinkedList is empty, returns null.
+    **/
     public function pop():Null<T> {
         if (head == null) {
             return null;
@@ -43,10 +61,18 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         return x;
     }
 
+    /**
+        Returns the first item at the front of `this` DoubleLinkedList.
+
+        If `this` DoubleLinkedList is empty, returns null.
+    **/
     public inline function peek():Null<T> {
         return head == null ? null : head.data;
     }
 
+    /**
+        Adds `item` to the end of `this` DoubleLinkedList.
+    **/
     public function unshift(item:T):Void {
         tail = new DoubleNode<T>(item, null, tail);
         if (head == null) {
@@ -57,6 +83,12 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         length++;
     }
 
+    /**
+        Removes the first item from the end of `this` DoubleLinkedList and
+        returns it.
+
+        If `this` DoubleLinkedList is empty, returns null.
+    **/
     public function shift():Null<T> {
         if (tail == null) {
             return null;
@@ -72,34 +104,74 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         return x;
     }
 
+    /**
+        Returns the first item at the end of `this` DoubleLinkedList.
+
+        if `this` DoubleLinkedList is empty, retuns null.
+    **/
     public inline function spy():Null<T> {
         return tail == null ? null : tail.data;
     }
 
+    /**
+        Returns an iterator over the elements of `this` DoubleLinkedList.
+    **/
     public inline function iterator():BeginIterator<T> {
         return new BeginIterator<T>(head);
     }
 
+    /**
+        Returns an iterator over the elements of `this` DoubleLinkedList in
+        reverse.
+    **/
     public inline function reverseIterator():EndIterator<T> {
         return new EndIterator<T>(tail);
     }
 
+    /**
+        Returns a bidirectional iterator over the elements of `this`
+        DoubleLinkedList.
+    **/
     public inline function beginIterator():BeginIterator<T> {
         return iterator();
     }
 
+    /**
+        Returns a bidirectional iterator over the elements of `this`
+        DoubleLinkedList in reverse.
+    **/
     public inline function endIterator():EndIterator<T> {
         return reverseIterator();
     }
 
+    /**
+        Returns a key-value iterator over the element of `this` DoubleLinkedList
+        and their positions.
+
+        Equivalent to `indexIterator()`.
+    **/
     public inline function keyValueIterator():IndexIterator<T> {
         return new IndexIterator<T>(head);
     }
 
+    /**
+        Returns a key-value iterator over the element of `this` DoubleLinkedList
+        and their positions.
+
+        Equivalent to `keyValueIterator()`.
+    **/
     public inline function indexIterator():IndexIterator<T> {
         return keyValueIterator();
     }
 
+    /**
+        Returns a new DoubleLinkedList containing each element `item` of `this`
+        DoubleLinkedList for which `f(item)` returns `true`.
+
+        The individual elements are not copied and retain their identity.
+
+        if `f` is null, the result is unspecified.
+    **/
     public function filter(f:(T) -> Bool):DoubleLinkedList<T> {
         var list = new DoubleLinkedList<T>();
         for (item in this) {
@@ -110,6 +182,12 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         return list;
     }
 
+    /**
+        Returns a new DoubleLinkedList containing each element `item` of `this`
+        DoubleLinkedList transformed by `f(item)`.
+
+        If `f` is null, the result is unspecified.
+    **/
     public function map<S>(f:(T) -> S):DoubleLinkedList<S> {
         var list = new DoubleLinkedList<S>();
         for (item in this) {
@@ -118,6 +196,14 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         return list;
     }
 
+    /**
+        Removes the first element `item` from `this` DoubleLinkedList for which
+        `comp(val, item)` returns `true`.
+
+        If `comp` is null, standard equity is used.
+
+        Returns `true` if an element was removed, or `false` otherwise.
+    **/
     public function remove(val:T, ?comp:(T, T) -> Bool):Bool {
         if (isEmpty()) {
             return false;
@@ -154,15 +240,30 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         return false;
     }
 
+    /**
+        Returns `true` if `this` DoubleLinkedList is empty, or `false`
+        otherwise.
+    **/
     public inline function isEmpty():Bool {
         return head == null;
     }
 
+    /**
+        Removes all elements from `this` DoubleLinkedList.
+
+        This function does not traverse the list.
+    **/
     public function clear():Void {
         head = tail = null;
         length = 0;
     }
 
+    /**
+        Creates a copy of `this` DoubleLinkedList.
+
+        The elements of `this` DoubleLinkedList are not copied and retain their
+        identity.
+    **/
     public function copy():DoubleLinkedList<T> {
         var list = new DoubleLinkedList<T>();
         for (item in this) {
@@ -171,10 +272,17 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         return list;
     }
 
+    /**
+        Converts `this` DoubleLinkedList into a string representation.
+    **/
     public inline function toString():String {
         return '[${join(",")}]';
     }
 
+    /**
+        Converts `this` DoubleLinkedList into a string representation where
+        each element is separated by `sep`.
+    **/
     public function join(sep:String):String {
         if (isEmpty()) {
             return "";
