@@ -12,7 +12,6 @@ install_package() {
     haxelib set $1 $2;
 }
 
-install_package checkstyle 2.5.0;
 install_package formatter  1.9.1;
 install_package hxcpp      4.0.52;
 install_package hxjava     4.0.0-alpha;
