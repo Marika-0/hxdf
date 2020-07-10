@@ -16,21 +16,20 @@ import hxdf.lambda.Iterator.InputIterator as InputIteratorTemplate;
     existing bindings are reassigned in-place. No guarantees are made for the
     order of key/value pairs.
 **/
-abstract AssociativeList<K, V>(_AssociativeList<K, V>) from _AssociativeList<K, V> {
+class AssociativeList<K, V> implements AssociativeContainer<K, V> {
     /**
         The number of key/value pairs in `this` AssociativeList.
     **/
-    public var length(get, never):Int;
+    public var length(default, null):Int;
 
-    inline function get_length():Int {
-        return this.length;
-    }
+    var head:SingleAssociationNode<K, V>;
 
     /**
         Creates a new empty AssociativeList.
     **/
-    public inline function new() {
-        this = new _AssociativeList<K, V>();
+    public function new() {
+        length = 0;
+        head = null;
     }
 
     /**
@@ -38,8 +37,10 @@ abstract AssociativeList<K, V>(_AssociativeList<K, V>) from _AssociativeList<K, 
 
         If `key` is not bound to a value, returns `null`.
     **/
-    @:arrayAccess public inline function get(key:K):Null<V> {
-        return this.get(key);
+    public function get(key:K):Null<V> {
+        var value:Null<V>;
+        find(key, (node) -> value = node.value, () -> value = null);
+        return value;
     }
 
     /**
@@ -47,8 +48,11 @@ abstract AssociativeList<K, V>(_AssociativeList<K, V>) from _AssociativeList<K, 
 
         If `key` is already bound to a value, that binding is overridden.
     **/
-    @:arrayAccess public inline function set(key:K, value:V):Void {
-        this.set(key, value);
+    public function set(key:K, value:V):Void {
+        find(key, (node) -> node.value = value, () -> {
+            head = new SingleAssociationNode<K, V>(key, value, head);
+            length++;
+        });
     }
 
     /**
@@ -57,192 +61,6 @@ abstract AssociativeList<K, V>(_AssociativeList<K, V>) from _AssociativeList<K, 
         If `key` is not bound, returns `null`, and `this` AssociativeList is
         unchanged.
     **/
-    public inline function remove(key:K):Null<V> {
-        return this.remove(key);
-    }
-
-    /**
-        Returns the number of key/value bindings in `this` AssociativeList.
-    **/
-    public inline function size():Int {
-        return this.size();
-    }
-
-    /**
-        Returns if the given `key` is bound to a value.
-
-        This function does now modify `this` AssociativeList.
-    **/
-    public inline function exists(key:K):Bool {
-        return this.exists(key);
-    }
-
-    /**
-        Removes the binding of `key` and returns `true` if it existed.
-
-        If `key` is not bound, returns `false`, and `this` AssociativeList is
-        unchanged.
-    **/
-    public inline function delete(key:K):Bool {
-        return this.delete(key);
-    }
-
-    /**
-        Returns an iterator over the values of `this` AssociativeList.
-    **/
-    public inline function iterator():ValueInputIterator<V> {
-        return this.iterator();
-    }
-
-    /**
-        Returns an iterator over the keys of `this` AssociativeList.
-    **/
-    public inline function keyIterator():KeyInputIterator<K> {
-        return this.keyIterator();
-    }
-
-    /**
-        Returns an iterator over the key/value pairs of `this` AssociativeList.
-    **/
-    public inline function keyValueIterator():PairInputIterator<K, V> {
-        return this.keyValueIterator();
-    }
-
-    /**
-        Returns a new AssociativeList filtered with function `f`.
-
-        The returned AssociativeList will contain all key/value bindings of
-        `this` AssociativeList for which `f(value)` returns `true`.
-
-        This function does not modify `this` AssociativeList.
-    **/
-    public inline function filter(f:(V) -> Bool):AssociativeList<K, V> {
-        return (this.filter(f) : AssociativeList<K, V>);
-    }
-
-    /**
-        Returns a new AssociativeList filtered with function `f`.
-
-        The returned AssociativeList will contain all key/value bindings of
-        `this` AssociativeList for which `f(key)` returns `true`.
-
-        This function does not modify `this` AssociativeList.
-    **/
-    public inline function filterKeys(f:(K) -> Bool):AssociativeList<K, V> {
-        return (this.filterKeys(f) : AssociativeList<K, V>);
-    }
-
-    /**
-        Returns a new AssociativeList filtered with function `f`.
-
-        The returned AssociativeList will contain all key/value bindings of
-        `this` AssociativeList for which `f({key:K, value:V})` returns `true`.
-
-        This function does not modify `this` AssociativeList.
-    **/
-    public inline function filterPairs(f:(KeyValuePair<K, V>) -> Bool):AssociativeList<K, V> {
-        return (this.filterPairs(f) : AssociativeList<K, V>);
-    }
-
-    /**
-        Returns a new AssociativeList mapped with function `f`.
-
-        The returned AssociativeList will retain all its original keys with each
-        key/value pair's value binding being set to `f(value)`.
-    **/
-    public inline function map<S>(f:(V) -> S):AssociativeList<K, S> {
-        return (this.map(f) : AssociativeList<K, S>);
-    }
-
-    /**
-        Returns a new AssociativeList mapped with function `f`.
-
-        The returned AssociativeList will retain all its original keys with each
-        key/value pair's key binding being set to `f(key)`.
-
-        If the mapping function produces collisions, the value bound to the
-        collision key is unspecified.
-    **/
-    public inline function mapKeys<S>(f:(K) -> S):AssociativeList<S, V> {
-        return (this.mapKeys(f) : AssociativeList<S, V>);
-    }
-
-    /**
-        Returns a new AssociativeList mapped with function `f`.
-
-        The returned AssociativeList will contain the key/value pair bindings
-        from the output of `f({key:K, value:V})`.
-
-        If the mapping function produces collisions, the value bound to the
-        collision key is unspecified.
-    **/
-    public inline function mapPairs<X, Y>(f:(KeyValuePair<K, V>) -> KeyValuePair<X, Y>):AssociativeList<X, Y> {
-        return (this.mapPairs(f) : AssociativeList<X, Y>);
-    }
-
-    /**
-        Tells if `this` AssociativeList is empty.
-    **/
-    public inline function isEmpty():Bool {
-        return this.isEmpty();
-    }
-
-    /**
-        Removes all bindings from `this` AssociativeList.
-
-        This function does not traverse the list.
-    **/
-    public inline function clear():Void {
-        this.clear();
-    }
-
-    /**
-        Returns a shallow copy of `this` AssociativeList.
-
-        The elements are not copied and retain their identity.
-    **/
-    public inline function copy():AssociativeList<K, V> {
-        return (this.copy() : AssociativeList<K, V>);
-    }
-
-    /**
-        Converts `this` AssociativeList into a string representation.
-
-        Internally, this function calls `Std.string` on each key/value binding
-        of `this` AssociativeList.
-
-        The output is formatted to be enclosed by `"{}"`, with each pair in the
-        form `"key=value"` and separated by `","`.
-    **/
-    public inline function toString():String {
-        return this.toString();
-    }
-}
-
-@SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
-    public var length(default, null):Int;
-
-    var head:SingleAssociationNode<K, V>;
-
-    public function new() {
-        length = 0;
-        head = null;
-    }
-
-    public function get(key:K):Null<V> {
-        var value:Null<V>;
-        find(key, (node) -> value = node.value, () -> value = null);
-        return value;
-    }
-
-    public function set(key:K, value:V):Void {
-        find(key, (node) -> node.value = value, () -> {
-            head = new SingleAssociationNode<K, V>(key, value, head);
-            length++;
-        });
-    }
-
     public function remove(key:K):Null<V> {
         var value:Null<V>;
         findWithParent(key, (node, parent) -> {
@@ -257,14 +75,28 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         return value;
     }
 
+    /**
+        Returns the number of key/value bindings in `this` AssociativeList.
+    **/
     public inline function size():Int {
         return length;
     }
 
+    /**
+        Returns if the given `key` is bound to a value.
+
+        This function does now modify `this` AssociativeList.
+    **/
     public inline function exists(key:K):Bool {
         return find(key, (node) -> {}, () -> {});
     }
 
+    /**
+        Removes the binding of `key` and returns `true` if it existed.
+
+        If `key` is not bound, returns `false`, and `this` AssociativeList is
+        unchanged.
+    **/
     public function delete(key:K):Bool {
         return findWithParent(key, (node, parent) -> {
             length--;
@@ -276,53 +108,123 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         }, () -> {});
     }
 
+    /**
+        Returns an iterator over the values of `this` AssociativeList.
+    **/
     public inline function iterator():ValueInputIterator<V> {
         return new ValueInputIterator(head);
     }
 
+    /**
+        Returns an iterator over the keys of `this` AssociativeList.
+    **/
     public inline function keyIterator():KeyInputIterator<K> {
         return new KeyInputIterator(head);
     }
 
+    /**
+        Returns an iterator over the key/value pairs of `this` AssociativeList.
+    **/
     public inline function keyValueIterator():PairInputIterator<K, V> {
         return new PairInputIterator(head);
     }
 
-    public inline function filter(f:(V) -> Bool):_AssociativeList<K, V> {
-        return internalFilter((node) -> node.value, f);
+    /**
+        Returns a new AssociativeList filtered with function `f`.
+
+        The returned AssociativeList will contain all key/value bindings of
+        `this` AssociativeList for which `f(value)` returns `true`.
+
+        This function does not modify `this` AssociativeList.
+    **/
+    public inline function filter(f:(V) -> Bool):AssociativeList<K, V> {
+        return internalFilter((node) -> f(node.value));
     }
 
-    public inline function filterKeys(f:(K) -> Bool):_AssociativeList<K, V> {
-        return internalFilter((node) -> node.key, f);
+    /**
+        Returns a new AssociativeList filtered with function `f`.
+
+        The returned AssociativeList will contain all key/value bindings of
+        `this` AssociativeList for which `f(key)` returns `true`.
+
+        This function does not modify `this` AssociativeList.
+    **/
+    public inline function filterKeys(f:(K) -> Bool):AssociativeList<K, V> {
+        return internalFilter((node) -> f(node.key));
     }
 
-    public inline function filterPairs(f:(KeyValuePair<K, V>) -> Bool):_AssociativeList<K, V> {
-        return internalFilter((node) -> node.pair, f);
+    /**
+        Returns a new AssociativeList filtered with function `f`.
+
+        The returned AssociativeList will contain all key/value bindings of
+        `this` AssociativeList for which `f({key:K, value:V})` returns `true`.
+
+        This function does not modify `this` AssociativeList.
+    **/
+    public inline function filterPairs(f:(KeyValuePair<K, V>) -> Bool):AssociativeList<K, V> {
+        return internalFilter((node) -> f(node.pair));
     }
 
-    public inline function map<S>(f:(V) -> S):_AssociativeList<K, S> {
+    /**
+        Returns a new AssociativeList mapped with function `f`.
+
+        The returned AssociativeList will retain all its original keys with each
+        key/value pair's value binding being set to `f(value)`.
+    **/
+    public inline function map<S>(f:(V) -> S):AssociativeList<K, S> {
         return internalMap((node) -> new KeyValuePair(node.key, f(node.value)));
     }
 
-    public inline function mapKeys<S>(f:(K) -> S):_AssociativeList<S, V> {
+    /**
+        Returns a new AssociativeList mapped with function `f`.
+
+        The returned AssociativeList will retain all its original keys with each
+        key/value pair's key binding being set to `f(key)`.
+
+        If the mapping function produces collisions, the value bound to the
+        collision key is unspecified.
+    **/
+    public inline function mapKeys<S>(f:(K) -> S):AssociativeList<S, V> {
         return internalMap((node) -> new KeyValuePair(f(node.key), node.value));
     }
 
-    public inline function mapPairs<X, Y>(f:(KeyValuePair<K, V>) -> KeyValuePair<X, Y>):_AssociativeList<X, Y> {
+    /**
+        Returns a new AssociativeList mapped with function `f`.
+
+        The returned AssociativeList will contain the key/value pair bindings
+        from the output of `f({key:K, value:V})`.
+
+        If the mapping function produces collisions, the value bound to the
+        collision key is unspecified.
+    **/
+    public inline function mapPairs<X, Y>(f:(KeyValuePair<K, V>) -> KeyValuePair<X, Y>):AssociativeList<X, Y> {
         return internalMap(f);
     }
 
+    /**
+        Tells if `this` AssociativeList is empty.
+    **/
     public inline function isEmpty():Bool {
         return length == 0;
     }
 
+    /**
+        Removes all bindings from `this` AssociativeList.
+
+        This function does not traverse the list.
+    **/
     public function clear():Void {
         length = 0;
         head = null;
     }
 
-    public function copy():_AssociativeList<K, V> {
-        var list = new _AssociativeList<K, V>();
+    /**
+        Returns a shallow copy of `this` AssociativeList.
+
+        The elements are not copied and retain their identity.
+    **/
+    public function copy():AssociativeList<K, V> {
+        var list = new AssociativeList<K, V>();
         for (pair in keyValueIterator()) {
             list.head = new SingleAssociationNode<K, V>(pair.key, pair.value, list.head);
             list.length++;
@@ -330,6 +232,15 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         return list;
     }
 
+    /**
+        Converts `this` AssociativeList into a string representation.
+
+        Internally, this function calls `Std.string` on each key/value binding
+        of `this` AssociativeList.
+
+        The output is formatted to be enclosed by `"{}"`, with each pair in the
+        form `"key=value"` and separated by `","`.
+    **/
     public function toString():String {
         if (head == null) {
             return "{}";
@@ -361,7 +272,12 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         return hxdf.lambda.Compare.reflectiveEquity(a, b);
     }
 
-    final function find(key:K, operate:(SingleAssociationNode<K, V>) -> Void, failure:() -> Void):Bool {
+    /**
+        Searches for a node with key `key` and calls `operate(node)` on that node.
+
+        If a node with key `key` cannot be found, calls `failure()`.
+    **/
+    function find(key:K, operate:(SingleAssociationNode<K, V>) -> Void, failure:() -> Void):Bool {
         var node = head;
         while (node != null) {
             if (compare(node.key, key)) {
@@ -374,7 +290,13 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         return false;
     }
 
-    final function findWithParent(key:K, operate:(SingleAssociationNode<K, V>, SingleAssociationNode<K, V>) -> Void, failure:() -> Void):Bool {
+    /**
+        Searches for a node with key `key` and its parent node, and calls
+        `operate(node, parent)` on that node and parent.
+
+        If a node with key `key` cannot be found, calls `failure()`.
+    **/
+    function findWithParent(key:K, operate:(SingleAssociationNode<K, V>, SingleAssociationNode<K, V>) -> Void, failure:() -> Void):Bool {
         var parent = null;
         var node = head;
         while (node != null) {
@@ -389,11 +311,16 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         return false;
     }
 
-    function internalFilter<T>(process:(SingleAssociationNode<K, V>) -> T, evaluate:(T) -> Bool):_AssociativeList<K, V> {
-        var list = new _AssociativeList<K, V>();
+    /**
+        Creates a copy of this AssociativeList containing every node of this
+        AssociativeList (in the same order) where `evaluate(node)` on that node
+        returns `true`.
+    **/
+    function internalFilter(evaluate:(SingleAssociationNode<K, V>) -> Bool):AssociativeList<K, V> {
+        var list = new AssociativeList<K, V>();
         var node = head;
         while (node != null) {
-            if (evaluate(process(node))) {
+            if (evaluate(node)) {
                 list.head = new SingleAssociationNode<K, V>(node.key, node.value, list.head);
                 list.length++;
             }
@@ -402,8 +329,13 @@ private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
         return list;
     }
 
-    function internalMap<X, Y>(transform:(KeyValuePair<K, V>) -> KeyValuePair<X, Y>):_AssociativeList<X, Y> {
-        var list = new _AssociativeList<X, Y>();
+    /**
+        Creates a copy of this AssociativeList containing every node of this
+        AssociativeList (in the same order) mapped by calling `transform(node)`
+        on that node.
+    **/
+    function internalMap<X, Y>(transform:(KeyValuePair<K, V>) -> KeyValuePair<X, Y>):AssociativeList<X, Y> {
+        var list = new AssociativeList<X, Y>();
         for (pair in keyValueIterator()) {
             var map = transform(pair);
             list.set(map.key, map.value);
