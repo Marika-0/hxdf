@@ -12,7 +12,8 @@ install_package() {
     haxelib set $1 $2;
 }
 
-install_package formatter  1.9.1;
-install_package hxcpp      4.0.52;
+install_package dox        1.5.0;
+install_package formatter  1.11.0;
+install_package hxcpp      4.1.15;
 install_package hxjava     4.0.0-alpha;
-install_package hxtf       1.2.1;
+install_package hxtf       2.0.2;
