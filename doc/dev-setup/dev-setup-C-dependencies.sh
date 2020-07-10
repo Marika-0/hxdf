@@ -18,8 +18,8 @@ sudo apt-get install -y openjdk-11-jdk;
 sudo apt-get install -y openjdk-11-jre;
 
 
-# Lua dependencies (5.3)
-sudo apt-get install -y lua5.3;
+# Lua dependencies (5.1)
+sudo apt-get install -y lua5.1;
 sudo apt-get install -y luarocks;
 sudo luarocks install lrexlib-pcre;
 sudo luarocks install environ;
