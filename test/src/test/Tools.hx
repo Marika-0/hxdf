@@ -11,7 +11,7 @@ class Tools {
                 return true;
             }
             return false;
-        } else if  (b == null) {
+        } else if (b == null) {
             return false;
         }
 
