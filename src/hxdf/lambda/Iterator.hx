@@ -107,7 +107,7 @@ interface RandomAccessIterator<T> extends BidirectionalIterator<T> {
         `it`.
 
         If the RandomAccessIterator is before `it`, the result is negative. If
-        `it` is before the RandomAccessIterator the result is position. If the
+        `it` is before the RandomAccessIterator the result is positive. If the
         RandomAccessIterator and `it` have the same position, the result is `0`.
 
         If the RandomAccessIterator and `it` are not of the same type, or not
