@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Documentation dependencies
+sudo apt-get install -y texlive-metapost;
+
 # C++ dependencies
 sudo apt-get install -y build-essentials;
 
