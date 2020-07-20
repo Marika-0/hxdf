@@ -37,8 +37,11 @@ class Compare {
         Tests the relative equity of `a` and `b` using `Reflect.compare()`
         while ensuring null-safety.
 
-        For the purpose of this function, null values are ordered below non-null
-        values.
+        If `a` is less than `b`, returns a negative integer. If `b` is less than
+        `a`, returns a positive integer. If `a` is equivalent to `b`, returns
+        zero.
+
+        Null values are considered to be 'less' than non-null values.
     **/
     public static inline function reflectiveComparison<T>(a:Null<T>, b:Null<T>):Int {
         if (a == null && b != null) {
@@ -48,5 +51,19 @@ class Compare {
             return 1;
         }
         return Reflect.compare(a, b);
+    }
+
+    /**
+        Tests the relative equity of `a` and `b` using `Reflect.compare()`
+        while ensuring null-safety.
+
+        If `a` is less than `b`, returns a positive integer. If `b` is less than
+        `a`, returns a negative integer. If `a` is equivalent to `b`, returns
+        zero.
+
+        Null values are considered to be 'greater' than non-null values.
+    **/
+    public static inline function reverseReflectiveComparison<T>(a:Null<T>, b:Null<T>):Int {
+        return 0 - reflectiveComparison(a, b);
     }
 }
