@@ -34,6 +34,8 @@ beginfig(1);
 			"+pop() : Null<T>",
 			"+peek() : Null<T>",
 			"+iterator() : SequentialIterator<T>",
+			"+sort(?f:(T, T)->Int, ascending:Bool = true) : SequentialContainer<T>",
+			"+reverse() : SequentialContainer<T>",
 			"+join(sep:String) : String");
 	Class_stereotypes.SequentialContainer(interface_stereotype);
 	ClassTemplate.SequentialTemplate("T")(SequentialContainer);
@@ -110,7 +112,7 @@ beginfig(1);
 	leftToRight(offset)(BilateralContainer, ExtractableContainer, AssociativeContainer, SetContainer);
 	numeric midRowY; midRowY = max(BilateralContainer.top, ExtractableContainer.top, AssociativeContainer.top, SetContainer.top) + offset + max(SequentialContainer.height, WalkableContainer.height, SpaceContainer.height) / 2;
 	SequentialContainer.c = ((xpart BilateralContainer.c + ExtractableContainer.left + ExtractableContainer.width / 3) / 2, midRowY);
-	WalkableContainer.c = ((ExtractableContainer.right - ExtractableContainer.width / 3 + AssociativeContainer.left + AssociativeContainer.width / 3) / 2, midRowY);
+	WalkableContainer.c = ((xpart SequentialContainer.e + xpart SpaceContainer.w) / 2, midRowY);
 	SpaceContainer.c = ((AssociativeContainer.right - AssociativeContainer.width / 3 + xpart SetContainer.c) / 2, midRowY);
 	Container.s = (xpart (SequentialContainer.c + WalkableContainer.c + SpaceContainer.c), max(SequentialContainer.top, WalkableContainer.top, SpaceContainer.top) + offset);
 	TraversableContainer.n = (xpart BilateralContainer.c, min(BilateralContainer.bottom, ExtractableContainer.bottom, AssociativeContainer.bottom, SetContainer.bottom) - offset);
@@ -133,13 +135,13 @@ beginfig(1);
 
 	drawObjects(ExtractableContainer, ExtractableTemplate);
 	link(inheritance)(rpathStepY(SequentialContainer.s, ExtractableContainer.nw + (ExtractableContainer.width / 3, 0), (max(BilateralContainer.top, ExtractableContainer.top) - SequentialContainer.bottom) / 2));
-	link(inheritance)(rpathStepY(WalkableContainer.s, ExtractableContainer.ne - (ExtractableContainer.width / 3, 0), (max(ExtractableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
+	link(inheritance)(rpathStepY(WalkableContainer.s, ExtractableContainer.ne - (ExtractableContainer.width / 3, 0), min(SequentialContainer.bottom, WalkableContainer.bottom, SpaceContainer.bottom) - WalkableContainer.bottom + (max(ExtractableContainer.top, AssociativeContainer.top) - min(SequentialContainer.bottom, WalkableContainer.bottom, SpaceContainer.bottom)) / 2));
 
 	drawObjects(SetContainer, SetTemplate);
 	link(inheritance)(rpathStepY(SpaceContainer.s, SetContainer.n, (max(SetContainer.top, AssociativeContainer.top) - SpaceContainer.bottom) / 2));
 
 	drawObjects(AssociativeContainer, AssociativeTemplate);
-	link(inheritance)(rpathStepY(WalkableContainer.s, AssociativeContainer.nw + (AssociativeContainer.width / 3, 0), (max(ExtractableContainer.top, AssociativeContainer.top) - WalkableContainer.bottom) / 2));
+	link(inheritance)(rpathStepY(WalkableContainer.s, AssociativeContainer.nw + (AssociativeContainer.width / 3, 0), min(SequentialContainer.bottom, WalkableContainer.bottom, SpaceContainer.bottom) - WalkableContainer.bottom + (max(ExtractableContainer.top, AssociativeContainer.top) - min(SequentialContainer.bottom, WalkableContainer.bottom, SpaceContainer.bottom)) / 2));
 	link(inheritance)(rpathStepY(SpaceContainer.s, AssociativeContainer.ne - (AssociativeContainer.width / 3, 0), (max(SetContainer.top, AssociativeContainer.top) - SpaceContainer.bottom) / 2));
 
 	drawObjects(TraversableContainer, TraversableTemplate);

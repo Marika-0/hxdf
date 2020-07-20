@@ -71,6 +71,22 @@ interface SequentialContainer<T> extends Container {
     function peek():Null<T>;
 
     /**
+        Returns a sorted copy of the SequentialContainer using the comparison
+        function `f`.
+
+        If `f` is unspecified `hxdf.lambda.Compare.reflectiveComarison` is used.
+
+        If `ascending` is `true`, the returned SequentialContainer is sorted in
+        ascending order - otherwise it is sorted in descending order.
+    **/
+    function sort(?f:(T, T)->Int, ascending:Bool = true):SequentialContainer<T>;
+
+    /**
+        Returns a reversed copy of the SequentialContainer.
+    **/
+    function reverse():SequentialContainer<T>;
+
+    /**
         Returns an iterator over the elements of the SequentialContainer.
     **/
     function iterator():SequentialIterator<T>;
