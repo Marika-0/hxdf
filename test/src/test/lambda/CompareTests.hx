@@ -7,6 +7,7 @@ class CompareTests extends hxtf.TestObject {
         test_standardEquity();
         test_standardInequity();
         test_reflectiveEquity();
+        test_reflectiveComparison();
     }
 
     function test_standardEquity():Void {
@@ -36,5 +37,15 @@ class CompareTests extends hxtf.TestObject {
         assert(Compare.reflectiveEquity("Hello", "Hello"));
         var v = {x: 42, y: 11.7};
         assert(Compare.reflectiveEquity(v, v));
+    }
+
+    function test_reflectiveComparison():Void {
+        assert(Compare.reflectiveComparison(1, 1) == 0);
+        assert(Compare.reflectiveComparison(true, true) == 0);
+        assert(Compare.reflectiveComparison(false, false) == 0);
+        assert(Compare.reflectiveComparison(0, 1) < 0);
+        assert(Compare.reflectiveComparison(1, 0) > 0);
+        var v = {x: 42, y: 11.7};
+        assert(Compare.reflectiveComparison(v, v) == 0);
     }
 }

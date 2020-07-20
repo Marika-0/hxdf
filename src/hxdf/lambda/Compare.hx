@@ -32,4 +32,21 @@ class Compare {
         }
         return Reflect.compare(a, b) == 0;
     }
+
+    /**
+        Tests the relative equity of `a` and `b` using `Reflect.compare()`
+        while ensuring null-safety.
+
+        For the purpose of this function, null values are ordered below non-null
+        values.
+    **/
+    public static inline function reflectiveComparison<T>(a:Null<T>, b:Null<T>):Int {
+        if (a == null && b != null) {
+            return -1;
+        }
+        if (b == null && a != null) {
+            return 1;
+        }
+        return Reflect.compare(a, b);
+    }
 }
