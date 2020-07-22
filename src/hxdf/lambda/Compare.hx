@@ -34,14 +34,14 @@ class Compare {
     }
 
     /**
-        Tests the relative equity of `a` and `b` using `Reflect.compare()`
-        while ensuring null-safety.
+        Compares `a` and `b` using `Reflect.compare()` while ensuring
+        null-safety.
 
         If `a` is less than `b`, returns a negative integer. If `b` is less than
         `a`, returns a positive integer. If `a` is equivalent to `b`, returns
         zero.
 
-        Null values are considered to be 'less' than non-null values.
+        Null values are evaluated as 'less' than non-null values.
     **/
     public static inline function reflectiveComparison<T>(a:Null<T>, b:Null<T>):Int {
         if (a == null && b != null) {
@@ -54,16 +54,12 @@ class Compare {
     }
 
     /**
-        Tests the relative equity of `a` and `b` using `Reflect.compare()`
-        while ensuring null-safety.
+        Returns a function evaluating the reversed relative equity of `comp`.
 
-        If `a` is less than `b`, returns a positive integer. If `b` is less than
-        `a`, returns a negative integer. If `a` is equivalent to `b`, returns
-        zero.
-
-        Null values are considered to be 'greater' than non-null values.
+        For example, `reverse(reflectiveComparison)(a, b)` is equivalent to
+        `reflectiveComparison(b, a)`.
     **/
-    public static inline function reverseReflectiveComparison<T>(a:Null<T>, b:Null<T>):Int {
-        return 0 - reflectiveComparison(a, b);
+    public static inline function reverse<T>(comp:(T, T)->Int):(T, T)->Int {
+        return (a, b) -> 0 - comp(a, b);
     }
 }
