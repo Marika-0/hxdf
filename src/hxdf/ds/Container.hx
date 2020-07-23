@@ -74,10 +74,11 @@ interface SequentialContainer<T> extends Container {
         Returns a sorted copy of the SequentialContainer using the comparison
         function `f`.
 
-        If `f` is unspecified `hxdf.lambda.Compare.reflectiveComarison` is used.
+        If `f` is unspecified `hxdf.lambda.Compare.reflectiveComparison` is
+        used.
 
         If `ascending` is `true`, the returned SequentialContainer is sorted in
-        ascending order - otherwise it is sorted in descending order.
+        ascending order. Otherwise, it is sorted in descending order.
     **/
     function sort(?f:(T, T)->Int, ascending:Bool = true):SequentialContainer<T>;
 
