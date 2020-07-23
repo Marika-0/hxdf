@@ -1,7 +1,7 @@
 package hxdf.lambda;
 
-import hxdf.ds.list.SingleLinkedList;
 import hxdf.ds.Container.SequentialContainer;
+import hxdf.ds.list.SingleLinkedList;
 
 class Sort {
     public static function mergeSort<T>(container:SequentialContainer<T>, ?comp:(T, T)->Int):SingleLinkedList<T> {
