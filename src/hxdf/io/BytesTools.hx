@@ -113,7 +113,7 @@ class BytesTools {
     }
 
     /**
-        Parses the given tring as big-endian into its corresponding Bytes.
+        Parses the given String as big-endian into its corresponding Bytes.
 
         If the String contains any characters other than `"0"` and `"1"`, the
         result is undefined.
