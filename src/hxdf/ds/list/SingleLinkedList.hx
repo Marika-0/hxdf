@@ -1,5 +1,7 @@
 package hxdf.ds.list;
 
+import hxdf.lambda.Compare;
+import hxdf.lambda.Sort;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
 import hxdf.lambda.Iterator.IndexIterator as IndexIteratorTemplate;
@@ -84,6 +86,49 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     **/
     public inline function spy():Null<T> {
         return tail == null ? null : tail.data;
+    }
+
+    /**
+        Returns a sorted copy of `this` SingleLinkedList.
+
+        If `f` is unspecified `hxdf.lambda.Compare.reflectiveComparison` is
+        used.
+
+        If `ascending` is `true`, the returned SingleLinkedList is sorted in
+        ascending order. Otherwise, it is sorted in descending order.
+
+        The elements of `this` SingleLinkedList are not copied and retain their
+        identity.
+    **/
+    public function sort(?f:(T, T)->Int, ascending = true):SingleLinkedList<T> {
+        if (f == null) {
+            f = Compare.reflectiveComparison;
+        }
+        if (!ascending) {
+            f = Compare.reverse(f);
+        }
+        return Sort.mergeSort(this, f);
+    }
+
+    /**
+        Returns a reversed copy of this SingleLinkedList.
+
+        The elements of `this` SingleLinkedList are not copied and retain their
+        identity.
+    **/
+    public function reverse():SingleLinkedList<T> {
+        var list = new SingleLinkedList<T>();
+        list.length = length;
+
+        var iterator = iterator();
+        if (iterator.hasNext()) {
+            list.head = list.tail = new SingleNode<T>(iterator.next());
+        }
+        while (iterator.hasNext()) {
+            list.head = new SingleNode<T>(iterator.next(), list.head);
+        }
+
+        return list;
     }
 
     /**
@@ -199,7 +244,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         Removes all elements from `this` SingleLinkedList.
 
-        This function does not traverse the list.
+        This function does not traverse the list, but sets internal references
+        to null and `this.length` to `0`.
     **/
     public function clear():Void {
         head = tail = null;

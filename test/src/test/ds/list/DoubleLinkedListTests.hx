@@ -6,6 +6,7 @@ class DoubleLinkedListTests extends hxtf.TestObject {
     public function new() {
         test_creating();
         test_modifying();
+        test_reordering();
         test_iterating();
         test_transforming();
         test_stringifying();
@@ -118,6 +119,27 @@ class DoubleLinkedListTests extends hxtf.TestObject {
             assert(listD.length == 5 - i);
         }
         assert(listD.isEmpty());
+    }
+
+    function test_reordering():Void {
+        var list = new DoubleLinkedList<Int>();
+
+        assert(list.sort().length == 0);
+        assert(list.reverse().length == 0);
+
+        list.unshift(42);
+        list.unshift(37);
+        list.unshift(16);
+        list.unshift(99);
+        list.unshift(84);
+
+        assert(list.reverse().toString() == "[84,99,16,37,42]");
+        assert(list.sort().toString() == "[16,37,42,84,99]");
+        assert(list.sort(false).toString() == "[99,84,42,37,16]");
+        assert(list.sort().reverse().toString() == "[99,84,42,37,16]");
+        assert(list.sort(false).reverse().toString() == "[16,37,42,84,99]");
+        assert(list.sort((a, b) -> b - a).toString() == "[99,84,42,37,16]");
+        assert(list.sort((a, b) -> b - a, false).toString() == "[16,37,42,84,99]");
     }
 
     function test_iterating():Void {

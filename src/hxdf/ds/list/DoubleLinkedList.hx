@@ -2,9 +2,12 @@ package hxdf.ds.list;
 
 import hxdf.ds.unit.DoubleNode;
 import hxdf.ds.unit.KeyValuePair;
+import hxdf.lambda.Compare;
+import hxdf.lambda.Convert;
 import hxdf.lambda.Iterator.BidirectionalIterator as BidirectionalTemplate;
 import hxdf.lambda.Iterator.IndexIterator as IndexTemplate;
 import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
+import hxdf.lambda.Sort;
 
 /**
     A doubly-linked list.
@@ -111,6 +114,51 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
     **/
     public inline function spy():Null<T> {
         return tail == null ? null : tail.data;
+    }
+
+    /**
+        Returns a sorted copy of `this` DoubleLinkedList.
+
+        If `f` is unspecified `hxdf.lambda.Compare.reflectiveComparison` is
+        used.
+
+        If `ascending` is `true`, the returned DoubleLinkedList is sorted in
+        ascending order. Otherwise, it is sorted in descending order.
+
+        The elements of `this` DoubleLinkedList are not copied and retain their
+        identity.
+    **/
+    public function sort(?f:(T, T)->Int, ascending = true):DoubleLinkedList<T> {
+        if (f == null) {
+            f = Compare.reflectiveComparison;
+        }
+        if (!ascending) {
+            f = Compare.reverse(f);
+        }
+
+        return Convert.toDoubleLinkedList(Sort.mergeSort(this, f));
+    }
+
+    /**
+        Returns a reversed copy of this DoubleLinkedList.
+
+        The elements of `this` DoubleLinkedList are not copied and retain their
+        identity.
+    **/
+    public function reverse():DoubleLinkedList<T> {
+        var list = new DoubleLinkedList<T>();
+        list.length = length;
+
+        var iterator = iterator();
+        if (iterator.hasNext()) {
+            list.head = list.tail = new DoubleNode<T>(iterator.next());
+        }
+        while (iterator.hasNext()) {
+            list.head = new DoubleNode<T>(iterator.next(), list.head);
+            list.head.next.prev = list.head;
+        }
+
+        return list;
     }
 
     /**
@@ -251,7 +299,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
     /**
         Removes all elements from `this` DoubleLinkedList.
 
-        This function does not traverse the list.
+        This function does not traverse the list, but sets internal references
+        to null and `this.length` to `0`.
     **/
     public function clear():Void {
         head = tail = null;
