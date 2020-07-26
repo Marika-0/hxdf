@@ -1,8 +1,7 @@
 package hxdf.lambda;
 
 /**
-    This class contains various comparison operators to help with keeping code
-    clean.
+    Various comparison operators to help with keeping code clean.
 **/
 class Compare {
     /**
