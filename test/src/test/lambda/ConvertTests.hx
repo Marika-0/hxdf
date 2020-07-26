@@ -12,65 +12,58 @@ class ConvertTests extends hxtf.TestObject {
     }
 
     function test_sequentialConversion():Void {
-        inline function runConversion<T>(values:Array<T>, f:(SequentialContainer<T>)->SequentialContainer<T>):Array<SequentialContainer<T>> {
-            var singleLinkedList = new SingleLinkedList<T>();
-            var doubleLinkedList = new DoubleLinkedList<T>();
-
-            for (value in values) {
-                singleLinkedList.push(value);
-                doubleLinkedList.push(value);
-            }
-
-            var array = new Array<SequentialContainer<T>>();
-            array.push(f(singleLinkedList));
-            array.push(f(doubleLinkedList));
-
-            return array;
-        }
-
-        inline function testEquities<T>(containers:Array<SequentialContainer<T>>, values:Array<T>, note:String):Void {
-            var iterators = new Array<Iterator<T>>();
-            {
-                // Test that all containers are the right length.
-                var index = 0;
-                for (container in containers) {
-                    assert(container.length == values.length, note + ", container: " + index);
-                    iterators.push(container.iterator());
-                    index++;
-                }
-            }
-
-            {
-                // Test that all container values are correct.
-                for (value in values) {
-                    var index = -1;
-                    for (iterator in iterators) {
-                        index++;
-                        assert(iterator.hasNext(), note + ", container: " + index + ", value: " + value);
-                        if (!iterator.hasNext()) {
-                            continue;
-                        }
-                        assert(value == iterator.next(), note + ", container: " + index + ", value: " + value);
-                    }
-                }
-            }
-
-            {
-                // Extra test that iterators complete correctly (ie containers are the right length, again).
-                var index = 0;
-                for (iterator in iterators) {
-                    assert(!iterator.hasNext(), note + ", container: " + index);
-                    index++;
-                }
-            }
-        }
+        var containers = new Array<SequentialContainer<Dynamic>>();
 
         var valuesA = [42, 37, 99, 0, 19, 84, 21];
         var valuesB = ["Hello", "world", "test"];
         var valuesC = [];
 
-        testEquities(runConversion(valuesA, Convert.toSingleLinkedList), valuesA, "Lists: A");
-        testEquities(runConversion(valuesB, Convert.toSingleLinkedList), valuesB, "Lists: B");
-        testEquities(runConversion(valuesC, Convert.toSingleLinkedList), valuesC, "Lists: C");
+
+
+        var singleLinkedListA = new SingleLinkedList<Int>();
+        var singleLinkedListB = new SingleLinkedList<String>();
+        var singleLinkedListC = new SingleLinkedList<Dynamic>();
+        var doubleLinkedListA = new DoubleLinkedList<Int>();
+        var doubleLinkedListB = new DoubleLinkedList<String>();
+        var doubleLinkedListC = new DoubleLinkedList<Dynamic>();
+
+        for (value in valuesA) {
+            singleLinkedListA.unshift(value);
+            doubleLinkedListA.unshift(value);
+        }
+        for (value in valuesB) {
+            singleLinkedListB.unshift(value);
+            doubleLinkedListB.unshift(value);
+        }
+        for (value in valuesC) {
+            singleLinkedListC.unshift(value);
+            doubleLinkedListC.unshift(value);
+        }
+
+        containers.push(singleLinkedListA);
+        containers.push(singleLinkedListB);
+        containers.push(singleLinkedListC);
+        containers.push(doubleLinkedListA);
+        containers.push(doubleLinkedListB);
+        containers.push(doubleLinkedListC);
+
+        test_toSingleLinkedList(containers);
+        test_toDoubleLinkedList(containers);
+    }
+
+    function test_toSingleLinkedList(containers:Array<SequentialContainer<Dynamic>>):Void {
+        var index = 0;
+        for (container in containers) {
+            assert(container.toString() == Convert.toSingleLinkedList(container).toString(), "container " + index);
+            index++;
+        }
+    }
+
+    function test_toDoubleLinkedList(containers:Array<SequentialContainer<Dynamic>>):Void {
+        var index = 0;
+        for (container in containers) {
+            assert(container.toString() == Convert.toDoubleLinkedList(container).toString(), "container " + index);
+            index++;
+        }
     }
 }
