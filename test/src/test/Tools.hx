@@ -7,10 +7,7 @@ class Tools {
         }
 
         if (a == null) {
-            if (b == null) {
-                return true;
-            }
-            return false;
+            return b == null;
         } else if (b == null) {
             return false;
         }
