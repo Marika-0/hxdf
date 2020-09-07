@@ -32,7 +32,7 @@ if [[ $cpp_status == 0 && $hl_status == 0 && $java_status == 0 && $lua_status ==
 then
     printf "\n  All tests passed!\n\n";
 else
-    printf "\n  The following targets failed testing$cpp_status:\n";
+    printf "\n  The following targets failed testing:\n";
     if [[ $cpp_status != 0 ]]; then    printf "    C++\n"; fi;
     if [[ $hl_status != 0 ]]; then     printf "    HashLink\n"; fi;
     if [[ $java_status != 0 ]]; then   printf "    Java\n"; fi;
