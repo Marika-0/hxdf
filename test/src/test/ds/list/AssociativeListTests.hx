@@ -23,30 +23,49 @@ class AssociativeListTests extends hxtf.TestObject {
 
     function test_modifying():Void {
         var listA = new AssociativeList<Int, String>();
+        assert(listA.get(99) == null);
+        assert(listA[99] == null);
 
         listA.set(0, "zero");
         assert(listA.length == 1);
         assert(listA.size() == 1);
         assert(!listA.isEmpty());
         assert(listA.get(0) == "zero");
+        assert(listA[0] == "zero");
 
         listA.set(1, "one");
         assert(listA.length == 2);
         assert(listA.size() == 2);
         assert(!listA.isEmpty());
+        assert(listA.get(0) == "zero");
+        assert(listA[0] == "zero");
         assert(listA.get(1) == "one");
+        assert(listA[1] == "one");
 
         listA.set(2, "two");
         assert(listA.length == 3);
         assert(listA.size() == 3);
         assert(!listA.isEmpty());
+        assert(listA.get(0) == "zero");
+        assert(listA[0] == "zero");
+        assert(listA.get(1) == "one");
+        assert(listA[1] == "one");
         assert(listA.get(2) == "two");
+        assert(listA[2] == "two");
 
         listA.set(-1, "negative one");
         assert(listA.length == 4);
         assert(listA.size() == 4);
         assert(!listA.isEmpty());
+        assert(listA.get(0) == "zero");
+        assert(listA[0] == "zero");
+        assert(listA.get(1) == "one");
+        assert(listA[1] == "one");
+        assert(listA.get(2) == "two");
+        assert(listA[2] == "two");
         assert(listA.get(-1) == "negative one");
+        assert(listA.get(99) == null);
+        assert(listA[99] == null);
     }
 
     function test_iterating():Void {
