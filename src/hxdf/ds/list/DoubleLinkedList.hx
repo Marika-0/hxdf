@@ -128,7 +128,7 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         The elements of `this` DoubleLinkedList are not copied and retain their
         identity.
     **/
-    public function sort(?f:(T, T)->Int, ascending = true):DoubleLinkedList<T> {
+    public function sort(?f:(T, T) -> Int, ascending = true):DoubleLinkedList<T> {
         if (f == null) {
             f = Compare.reflectiveComparison;
         }

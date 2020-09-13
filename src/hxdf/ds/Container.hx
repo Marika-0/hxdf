@@ -80,7 +80,7 @@ interface SequentialContainer<T> extends Container {
         If `ascending` is `true`, the returned SequentialContainer is sorted in
         ascending order. Otherwise, it is sorted in descending order.
     **/
-    function sort(?f:(T, T)->Int, ascending:Bool = true):SequentialContainer<T>;
+    function sort(?f:(T, T) -> Int, ascending:Bool = true):SequentialContainer<T>;
 
     /**
         Returns a reversed copy of the SequentialContainer.
