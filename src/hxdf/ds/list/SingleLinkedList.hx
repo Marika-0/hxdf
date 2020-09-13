@@ -100,7 +100,7 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         The elements of `this` SingleLinkedList are not copied and retain their
         identity.
     **/
-    public function sort(?f:(T, T)->Int, ascending = true):SingleLinkedList<T> {
+    public function sort(?f:(T, T) -> Int, ascending = true):SingleLinkedList<T> {
         if (f == null) {
             f = Compare.reflectiveComparison;
         }
@@ -120,12 +120,14 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         var list = new SingleLinkedList<T>();
         list.length = length;
 
-        var iterator = iterator();
-        if (iterator.hasNext()) {
-            list.head = list.tail = new SingleNode<T>(iterator.next());
+        var node = head;
+        if (node != null) {
+            list.head = list.tail = new SingleNode<T>(node.data);
+            node = node.next;
         }
-        while (iterator.hasNext()) {
-            list.head = new SingleNode<T>(iterator.next(), list.head);
+        while (node != null) {
+            list.head = new SingleNode<T>(node.data, list.head);
+            node = node.next;
         }
 
         return list;
@@ -260,9 +262,18 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     **/
     public function copy():SingleLinkedList<T> {
         var list = new SingleLinkedList<T>();
-        for (item in this) {
-            list.unshift(item);
+        list.length = length;
+
+        var node = this.head;
+        if (head != null) {
+            list.head = list.tail = new SingleNode<T>(node.data);
+            node = node.next;
         }
+        while (node != null) {
+            list.tail = list.tail.next = new SingleNode<T>(node.data);
+            node = node.next;
+        }
+
         return list;
     }
 
@@ -281,12 +292,16 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         if (isEmpty()) {
             return "";
         }
+
         var buf = new StringBuf();
-        var iterator = iterator();
-        buf.add(Std.string(iterator.next()));
-        while (iterator.hasNext()) {
+        var node = head;
+
+        buf.add(Std.string(node.data));
+        node = node.next;
+        while (node != null) {
             buf.add(Std.string(sep));
-            buf.add(Std.string(iterator.next()));
+            buf.add(Std.string(node.data));
+            node = node.next;
         }
         return buf.toString();
     }
