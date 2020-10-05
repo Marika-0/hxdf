@@ -29,7 +29,8 @@ interface InputIterator<T>
     function next():T;
 
     /**
-        Advances the iterator `distance` steps.
+        Safely advances the iterator `distance` steps (will not advance the
+        iterator past its final position).
 
         Returns `true` if `next` can safely be called after advancement, or
         `false` otherwise.
@@ -97,7 +98,8 @@ interface BidirectionalIterator<T> extends SequentialIterator<T>
     function prev():T;
 
     /**
-        Retreats the iterator `distance` steps.
+        Safely retreats the iterator `distance` steps (will not retreat the
+        iterator past its final position).
 
         Returns `true` if `prev` can safely be called after retreatment, or
         `false` otherwise.
