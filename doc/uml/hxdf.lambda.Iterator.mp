@@ -9,7 +9,7 @@ verbatimtex
 etex
 
 
-string interface_stereotype; interface_stereotype := "«interface»";
+string interface_stereotype; interface_stereotype := "ï¿½interfaceï¿½";
 % Guillemets (u00AB and u00BB) char bytes may need to be added manually.
 
 numeric offset;              offset             := 40;
@@ -24,6 +24,7 @@ beginfig(1);
 		()
 		(	"+hasNext() : Bool",
 			"+next() : T",
+			"+advance(distance:Int) : Bool",
 			"+copy() : InputIterator<T>");
 	Class_stereotypes.InputIterator(interface_stereotype);
 	ClassTemplate.InputTemplate("T")(InputIterator);
@@ -43,7 +44,8 @@ beginfig(1);
 	Class.BidirectionalIterator("BidirectionalIterator<T>")
 		()
 		(	"+hasPrev() : Bool",
-			"+prev() : T");
+			"+prev() : T",
+			"+retreat(distance:Int) : Bool");
 	Class_stereotypes.BidirectionalIterator(interface_stereotype);
 	ClassTemplate.BidirectionalTemplate("T")(BidirectionalIterator);
 

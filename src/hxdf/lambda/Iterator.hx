@@ -12,19 +12,28 @@ typedef Iterator<T> = InputIterator<T>;
 **/
 interface InputIterator<T> {
     /**
-        Returns `true` if the iterator can be advanced or `false` otherwise.
+        Returns `true` if `next` can be called safely, or `false` otherwise.
 
         This function is not required to be called before a call to `next()`.
     **/
     function hasNext():Bool;
 
     /**
-        Returns the current value of the iterator and advances to the next one.
+        Returns the current value of the iterator and advances the iterator one
+        step.
 
         If this function is called while `hasNext()` returns `false`, the result
         may be unspecified.
     **/
     function next():T;
+
+    /**
+        Advances the iterator `distance` steps.
+
+        Returns `true` if `next` can safely be called after advancement, or
+        `false` otherwise.
+    **/
+    function advance(distance:Int):Bool;
 
     /**
         Creates a copy of the InputIterator over the same iterable and at the
@@ -68,20 +77,28 @@ interface IndexIterator<T> extends InputIterator<KeyValuePair<Int, T>> {
 **/
 interface BidirectionalIterator<T> extends SequentialIterator<T> {
     /**
-        Returns `true` if the iterator can be retreated or `false` otherwise.
+        Returns `true` if `prev` can be called safely, or `false` otherwise.
 
         This function is not required to be called before a call to `prev()`.
     **/
     function hasPrev():Bool;
 
     /**
-        Returns the current value of the iterator and retreats to the previous
-        one.
+        Returns the current value of the iterator and retreats the iterator one
+        step.
 
         If this function is called while `hasPrev()` returns `false`, the result
         may be unspecified.
     **/
     function prev():T;
+
+    /**
+        Retreats the iterator `distance` steps.
+
+        Returns `true` if `prev` can safely be called after retreatment, or
+        `false` otherwise.
+    **/
+    function retreat(distance:Int):Bool;
 }
 
 /**
