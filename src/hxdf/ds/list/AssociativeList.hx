@@ -17,7 +17,7 @@ import hxdf.lambda.Iterator.InputIterator as InputIteratorTemplate;
     order of key/value pairs.
 **/
 @:access(hxdf.ds.list.AssociativeList_)
-abstract AssociativeList<K, V>(AssociativeList_<K, V>) from AssociativeList_<K, V> to AssociativeList_<K, V> {
+abstract AssociativeList<K, V>(_AssociativeList<K, V>) from _AssociativeList<K, V> to _AssociativeList<K, V> {
     /**
         The number of key/value pairs in `this` AssociativeList.
     **/
@@ -35,7 +35,7 @@ abstract AssociativeList<K, V>(AssociativeList_<K, V>) from AssociativeList_<K, 
         Creates a new empty AssociativeList.
     **/
     public inline function new() {
-        this = new AssociativeList_<K, V>();
+        this = new _AssociativeList<K, V>();
     }
 
     /**
@@ -224,13 +224,12 @@ abstract AssociativeList<K, V>(AssociativeList_<K, V>) from AssociativeList_<K, 
     }
 }
 
-@:dox(hide)
-class AssociativeList_<K, V> implements AssociativeContainer<K, V> {
-    public var length(default, null):Int;
+private class _AssociativeList<K, V> implements AssociativeContainer<K, V> {
+    public var length:Int;
 
     var head:SingleAssociationNode<K, V>;
 
-    function new() {
+    public function new() {
         length = 0;
         head = null;
     }
@@ -456,6 +455,14 @@ private class PairInputIterator<K, V> implements InputIteratorTemplate<KeyValueP
         return pair;
     }
 
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
+    }
+
     public inline function copy():PairInputIterator<K, V> {
         return new PairInputIterator<K, V>(node);
     }
@@ -479,6 +486,14 @@ private class KeyInputIterator<K> implements InputIteratorTemplate<K> {
         return key;
     }
 
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
+    }
+
     public inline function copy():KeyInputIterator<K> {
         return new KeyInputIterator<K>(node);
     }
@@ -500,6 +515,14 @@ private class ValueInputIterator<V> implements InputIteratorTemplate<V> {
         var value = node.value;
         node = node.next;
         return value;
+    }
+
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
     }
 
     public inline function copy():ValueInputIterator<V> {

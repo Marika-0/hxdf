@@ -366,6 +366,14 @@ private class BeginIterator<T> implements BidirectionalTemplate<T> {
         return node.data;
     }
 
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
+    }
+
     public inline function hasPrev():Bool {
         return node != null && node.prev != null && node.next != node.prev;
     }
@@ -373,6 +381,14 @@ private class BeginIterator<T> implements BidirectionalTemplate<T> {
     public function prev():T {
         node = node.prev;
         return node.data;
+    }
+
+    public function retreat(distance:Int):Bool {
+        while (0 < distance && hasPrev()) {
+            node = node.prev;
+            --distance;
+        }
+        return hasNext();
     }
 
     public inline function equals(it:SequentialTemplate<T>):Bool {
@@ -405,6 +421,14 @@ private class EndIterator<T> implements BidirectionalTemplate<T> {
         return node.data;
     }
 
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.prev;
+            --distance;
+        }
+        return hasNext();
+    }
+
     public inline function hasPrev():Bool {
         return node != null && node.next != null && node.next != node.prev;
     }
@@ -412,6 +436,14 @@ private class EndIterator<T> implements BidirectionalTemplate<T> {
     public function prev():T {
         node = node.next;
         return node.data;
+    }
+
+    public function retreat(distance:Int):Bool {
+        while (0 < distance && hasPrev()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
     }
 
     public inline function equals(it:SequentialTemplate<T>):Bool {
@@ -443,12 +475,20 @@ private class IndexIterator<T> implements IndexTemplate<T> implements Bidirectio
         return new KeyValuePair(index++, iterator.next());
     }
 
+    public inline function advance(distance:Int):Bool {
+        return iterator.advance(distance);
+    }
+
     public inline function hasPrev():Bool {
         return iterator.hasPrev();
     }
 
     public inline function prev():KeyValuePair<Int, T> {
         return new KeyValuePair(index, iterator.prev());
+    }
+
+    public inline function retreat(distance:Int):Bool {
+        return iterator.retreat(distance);
     }
 
     public inline function equals(it:SequentialTemplate<KeyValuePair<Int, T>>):Bool {

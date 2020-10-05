@@ -325,6 +325,14 @@ private class SequentialIterator<T> implements SequentialIteratorTemplate<T> {
         return value;
     }
 
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
+    }
+
     public inline function equals(it:SequentialIteratorTemplate<T>):Bool {
         return node == (cast it).node;
     }
@@ -352,6 +360,14 @@ private class IndexIterator<T> implements IndexIteratorTemplate<T> {
         var value = node.data;
         node = node.next;
         return new KeyValuePair(index++, value);
+    }
+
+    public function advance(distance:Int):Bool {
+        while (0 < distance && hasNext()) {
+            node = node.next;
+            --distance;
+        }
+        return hasNext();
     }
 
     public inline function compare(it:IndexIteratorTemplate<T>):Int {
