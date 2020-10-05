@@ -125,11 +125,12 @@
 		"trailingWhitespace": false
 	},
 	"lineEnds": {
+		"anonFunctionCurly": null,
 		"anonTypeCurly": null,
 		"blockCurly": null,
 		"caseColon": "after",
 		"emptyCurly": "noBreak",
-		"leftCurly": "after",
+		"leftCurly": "both",
 		"metadataFunction": "none",
 		"metadataOther": "none",
 		"metadataType": "none",
@@ -146,22 +147,22 @@
 		"comprehensionFor": "same",
 		"doWhile": "same",
 		"doWhileBody": "next",
-		"elseBody": "next",
+		"elseBody": "same",
 		"elseIf": "same",
 		"expressionCase": "keep",
 		"expressionIf": "same",
 		"expressionIfWithBlocks": false,
 		"expressionTry": "same",
-		"forBody": "next",
-		"functionBody": "next",
-		"ifBody": "next",
+		"forBody": "same",
+		"functionBody": "same",
+		"ifBody": "same",
 		"ifElse": "same",
 		"returnBody": "same",
 		"returnBodySingleLine": "same",
 		"tryBody": "next",
 		"tryCatch": "same",
 		"untypedBody": "same",
-		"whileBody": "next"
+		"whileBody": "same"
 	},
 	"whitespace": {
 		"addLineCommentSpace": true,
@@ -221,6 +222,7 @@
 				"openingPolicy": "none",
 				"removeInnerWhenEmpty": true
 			},
+			"catchParens": null,
 			"conditionParens": {
 				"openingPolicy": "noneAfter",
 				"closingPolicy": "onlyAfter",
@@ -241,11 +243,15 @@
 				"openingPolicy": "none",
 				"removeInnerWhenEmpty": true
 			},
+			"ifConditionParens": null,
 			"metadataParens": {
 				"closingPolicy": "onlyAfter",
 				"openingPolicy": "none",
 				"removeInnerWhenEmpty": true
-			}
+			},
+			"sharpConditionParens": null,
+			"switchConditionParens": null,
+			"whileConditionParens": null
 		},
 		"semicolonPolicy": "onlyAfter",
 		"switchPolicy": "after",
@@ -261,458 +267,190 @@
 	"wrapping": {
 		"anonFunctionSignature": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 7
-						}
-					],
-					"type": "fillLine",
-					"additionalIndent": 1
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength >= n",
-							"value": 80
-						}
-					],
-					"type": "fillLine",
-					"additionalIndent": 1
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"anonType": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "itemCount <= n",
-							"value": 3
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "anyItemLength >= n",
-							"value": 30
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength >= n",
-							"value": 60
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"type": "onePerLine"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"arrayMatrixWrap": "matrixWrapWithAlign",
 		"arrayWrap": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "hasMultilineItems",
-							"value": 1
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength <= n",
-							"value": 80
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 10
-						}
-					],
-					"type": "fillLineWithLeadingBreak"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "anyItemLength >= n",
-							"value": 30
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"type": "onePerLine"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
+		},
+		"typeParameter": {
+			"defaultWrap": "fillLine",
+			"rules": []
 		},
 		"callParameter": {
-			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 160
-						}
-					],
-					"type": "onePerLine",
-					"additionalIndent": 0
-				}
-			]
+			"defaultWrap": "fillLine",
+			"rules": []
 		},
 		"functionSignature": {
 			"defaultWrap": "fillLine",
-			"defaultAdditionalIndent": 1,
-			"rules": []
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"implementsExtends": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 140
-						}
-					],
-					"type": "fillLine",
-					"additionalIndent": 2
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"type": "fillLine",
-					"additionalIndent": 2
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
-		"maxLineLength": 160,
+		"maxLineLength": 128,
 		"metadataCallParameter": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength >= n",
-							"value": 140
-						}
-					],
-					"type": "fillLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 160
-						}
-					],
-					"type": "fillLine"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"methodChain": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 160
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount <= n",
-							"value": 3
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength <= n",
-							"value": 80
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "anyItemLength >= n",
-							"value": 30
-						},
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"type": "onePerLineAfterFirst"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 7
-						}
-					],
-					"type": "onePerLineAfterFirst"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"multiVar": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "anyItemLength <= n",
-							"value": 15
-						}
-					],
-					"type": "fillLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 80
-						}
-					],
-					"type": "onePerLineAfterFirst"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"objectLiteral": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "itemCount <= n",
-							"value": 3
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "anyItemLength >= n",
-							"value": 30
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength >= n",
-							"value": 60
-						}
-					],
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"type": "onePerLine"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "totalItemLength >= n",
+					"value": 129
+				}],
+				"type": "onePerLine"
+			}, {
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "fillLineWithLeadingBreak"
+			}]
 		},
 		"opAddSubChain": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 160
-						},
-						{
-							"cond": "anyItemLength >= n",
-							"value": 60
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLineAfterFirst"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 160
-						},
-						{
-							"cond": "anyItemLength >= n",
-							"value": 40
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLineAfterFirst"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 160
-						}
-					],
-					"location": "beforeLast",
-					"type": "fillLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount <= n",
-							"value": 3
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength <= n",
-							"value": 120
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLineAfterFirst"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "onePerLineAfterFirst"
+			}]
 		},
 		"opBoolChain": {
 			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 140
-						},
-						{
-							"cond": "anyItemLength >= n",
-							"value": 40
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "lineLength >= n",
-							"value": 140
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount <= n",
-							"value": 3
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength <= n",
-							"value": 120
-						}
-					],
-					"type": "noWrap"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "itemCount >= n",
-							"value": 4
-						}
-					],
-					"location": "beforeLast",
-					"type": "onePerLineAfterFirst"
-				}
-			]
-		},
-		"typeParameter": {
-			"defaultWrap": "noWrap",
-			"rules": [
-				{
-					"conditions": [
-						{
-							"cond": "anyItemLength >= n",
-							"value": 50
-						}
-					],
-					"type": "fillLine"
-				},
-				{
-					"conditions": [
-						{
-							"cond": "totalItemLength >= n",
-							"value": 70
-						}
-					],
-					"type": "fillLine"
-				}
-			]
+			"rules": [{
+				"additionalIndent": 1,
+				"conditions": [{
+					"cond": "exceedsMaxLineLength",
+					"value": 1
+				}],
+				"type": "onePerLineAfterFirst"
+			}]
 		}
 	}
 }
