@@ -10,7 +10,8 @@ typedef Iterator<T> = InputIterator<T>;
 /**
     An iterator operating on a series of elements.
 **/
-interface InputIterator<T> {
+interface InputIterator<T>
+{
     /**
         Returns `true` if `next` can be called safely, or `false` otherwise.
 
@@ -45,7 +46,8 @@ interface InputIterator<T> {
 /**
     An iterator operating over a defined sequence of elements.
 **/
-interface SequentialIterator<T> extends InputIterator<T> {
+interface SequentialIterator<T> extends InputIterator<T>
+{
     /**
         Tests the equity of the SequentialIterator with `it`, returning `true`
         if the SequentialIterator and `it` are at the same position of
@@ -57,7 +59,8 @@ interface SequentialIterator<T> extends InputIterator<T> {
     function equals(it:SequentialIterator<T>):Bool;
 }
 
-interface IndexIterator<T> extends InputIterator<KeyValuePair<Int, T>> {
+interface IndexIterator<T> extends InputIterator<KeyValuePair<Int, T>>
+{
     /**
         Compares the IndexIterator with another IndexIterator `it`.
 
@@ -75,7 +78,8 @@ interface IndexIterator<T> extends InputIterator<KeyValuePair<Int, T>> {
     An iterator operating over a defined sequence of elements that can move in
     reverse.
 **/
-interface BidirectionalIterator<T> extends SequentialIterator<T> {
+interface BidirectionalIterator<T> extends SequentialIterator<T>
+{
     /**
         Returns `true` if `prev` can be called safely, or `false` otherwise.
 
@@ -105,7 +109,8 @@ interface BidirectionalIterator<T> extends SequentialIterator<T> {
     An iterator that can be set to and retrieve values from arbitrary positions
     in a defined sequence of elements.
 **/
-interface RandomAccessIterator<T> extends BidirectionalIterator<T> {
+interface RandomAccessIterator<T> extends BidirectionalIterator<T>
+{
     /**
         The current position of the RandomAccessIterator.
     **/
