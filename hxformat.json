@@ -156,7 +156,7 @@
 		"forBody": "same",
 		"functionBody": "same",
 		"ifBody": "same",
-		"ifElse": "same",
+		"ifElse": "next",
 		"returnBody": "same",
 		"returnBodySingleLine": "same",
 		"tryBody": "next",
