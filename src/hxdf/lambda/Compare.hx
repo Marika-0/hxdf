@@ -3,18 +3,21 @@ package hxdf.lambda;
 /**
     Various comparison operators to help with keeping code clean.
 **/
-class Compare {
+class Compare
+{
     /**
         Tests that `a == b`.
     **/
-    public static inline function standardEquity<T>(a:T, b:T):Bool {
+    public static inline function standardEquity<T>(a:T, b:T):Bool
+    {
         return a == b;
     }
 
     /**
         Tests that `a != b`.
     **/
-    public static inline function standardInequity<T>(a:T, b:T):Bool {
+    public static inline function standardInequity<T>(a:T, b:T):Bool
+    {
         return a != b;
     }
 
@@ -22,13 +25,10 @@ class Compare {
         Tests the equity of `a` and `b` using `Reflect.compare()` or
         `Reflect.compareMethods()` while ensuring null-safety.
     **/
-    public static function reflectiveEquity<T>(a:Null<T>, b:Null<T>):Bool {
-        if (a == null || b == null) {
-            return a == null && b == null;
-        }
-        if (Reflect.isFunction(a)) {
-            return Reflect.compareMethods(a, b);
-        }
+    public static function reflectiveEquity<T>(a:Null<T>, b:Null<T>):Bool
+    {
+        if (a == null || b == null) return a == null && b == null;
+        if (Reflect.isFunction(a)) return Reflect.compareMethods(a, b);
         return Reflect.compare(a, b) == 0;
     }
 
@@ -42,13 +42,10 @@ class Compare {
 
         Null values are evaluated as 'less' than non-null values.
     **/
-    public static inline function reflectiveComparison<T>(a:Null<T>, b:Null<T>):Int {
-        if (a == null && b != null) {
-            return -1;
-        }
-        if (b == null && a != null) {
-            return 1;
-        }
+    public static inline function reflectiveComparison<T>(a:Null<T>, b:Null<T>):Int
+    {
+        if (a == null && b != null) return -1;
+        if (b == null && a != null) return 1;
         return Reflect.compare(a, b);
     }
 
@@ -58,7 +55,8 @@ class Compare {
         For example, `reverse(reflectiveComparison)(a, b)` is equivalent to
         `reflectiveComparison(b, a)`.
     **/
-    public static inline function reverse<T>(comp:(T, T)->Int):(T, T)->Int {
+    public static inline function reverse<T>(comp:(T, T) -> Int):(T, T) -> Int
+    {
         return (a, b) -> 0 - comp(a, b);
     }
 }
