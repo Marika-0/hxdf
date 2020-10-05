@@ -12,7 +12,9 @@ import hxdf.lambda.Sort;
 /**
     A doubly-linked list.
 **/
-class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> implements hxdf.ds.Container.ExtractableContainer<T> {
+class DoubleLinkedList<T>
+implements hxdf.ds.Container.TraversableContainer<T> implements hxdf.ds.Container.ExtractableContainer<T>
+{
     /**
         The number of items in `this` DoubleLinkedList.
     **/
@@ -24,7 +26,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
     /**
         Creates a new empty DoubleLinkedList.
     **/
-    public function new() {
+    public function new()
+    {
         length = 0;
         head = null;
         tail = null;
@@ -33,13 +36,12 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
     /**
         Adds `item` to the front of `this` DoubleLinkedList.
     **/
-    public function push(item:T):Void {
+    public function push(item:T):Void
+    {
         head = new DoubleNode<T>(item, head);
-        if (tail == null) {
-            tail = head;
-        } else {
-            head.next.prev = head;
-        }
+        if (tail == null) tail = head;
+        else head.next.prev = head;
+
         length++;
     }
 
@@ -49,17 +51,15 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         If `this` DoubleLinkedList is empty, returns null.
     **/
-    public function pop():Null<T> {
-        if (head == null) {
-            return null;
-        }
+    public function pop():Null<T>
+    {
+        if (head == null) return null;
+
         var x = head.data;
         head = head.next;
-        if (head == null) {
-            tail = null;
-        } else {
-            head.prev = null;
-        }
+        if (head == null) tail = null;
+        else head.prev = null;
+
         length--;
         return x;
     }
@@ -69,20 +69,20 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         If `this` DoubleLinkedList is empty, returns null.
     **/
-    public inline function peek():Null<T> {
+    public inline function peek():Null<T>
+    {
         return head == null ? null : head.data;
     }
 
     /**
         Adds `item` to the end of `this` DoubleLinkedList.
     **/
-    public function unshift(item:T):Void {
+    public function unshift(item:T):Void
+    {
         tail = new DoubleNode<T>(item, null, tail);
-        if (head == null) {
-            head = tail;
-        } else {
-            tail.prev.next = tail;
-        }
+        if (head == null) head = tail;
+        else tail.prev.next = tail;
+
         length++;
     }
 
@@ -92,17 +92,15 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         If `this` DoubleLinkedList is empty, returns null.
     **/
-    public function shift():Null<T> {
-        if (tail == null) {
-            return null;
-        }
+    public function shift():Null<T>
+    {
+        if (tail == null) return null;
+
         var x = tail.data;
         tail = tail.prev;
-        if (tail == null) {
-            head = null;
-        } else {
-            tail.next = null;
-        }
+        if (tail == null) head = null;
+        else tail.next = null;
+
         length--;
         return x;
     }
@@ -112,7 +110,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         if `this` DoubleLinkedList is empty, retuns null.
     **/
-    public inline function spy():Null<T> {
+    public inline function spy():Null<T>
+    {
         return tail == null ? null : tail.data;
     }
 
@@ -128,14 +127,10 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         The elements of `this` DoubleLinkedList are not copied and retain their
         identity.
     **/
-    public function sort(?f:(T, T) -> Int, ascending = true):DoubleLinkedList<T> {
-        if (f == null) {
-            f = Compare.reflectiveComparison;
-        }
-        if (!ascending) {
-            f = Compare.reverse(f);
-        }
-
+    public function sort(?f:(T, T) -> Int, ascending = true):DoubleLinkedList<T>
+    {
+        if (f == null) f = Compare.reflectiveComparison;
+        if (!ascending) f = Compare.reverse(f);
         return Convert.toDoubleLinkedList(Sort.mergeSort(this, f));
     }
 
@@ -145,15 +140,15 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         The elements of `this` DoubleLinkedList are not copied and retain their
         identity.
     **/
-    public function reverse():DoubleLinkedList<T> {
+    public function reverse():DoubleLinkedList<T>
+    {
         var list = new DoubleLinkedList<T>();
         list.length = length;
 
         var iterator = iterator();
-        if (iterator.hasNext()) {
-            list.head = list.tail = new DoubleNode<T>(iterator.next());
-        }
-        while (iterator.hasNext()) {
+        if (iterator.hasNext()) list.head = list.tail = new DoubleNode<T>(iterator.next());
+        while (iterator.hasNext())
+        {
             list.head = new DoubleNode<T>(iterator.next(), list.head);
             list.head.next.prev = list.head;
         }
@@ -164,7 +159,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
     /**
         Returns an iterator over the elements of `this` DoubleLinkedList.
     **/
-    public inline function iterator():BeginIterator<T> {
+    public inline function iterator():BeginIterator<T>
+    {
         return new BeginIterator<T>(head);
     }
 
@@ -172,7 +168,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         Returns an iterator over the elements of `this` DoubleLinkedList in
         reverse.
     **/
-    public inline function reverseIterator():EndIterator<T> {
+    public inline function reverseIterator():EndIterator<T>
+    {
         return new EndIterator<T>(tail);
     }
 
@@ -180,7 +177,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         Returns a bidirectional iterator over the elements of `this`
         DoubleLinkedList.
     **/
-    public inline function beginIterator():BeginIterator<T> {
+    public inline function beginIterator():BeginIterator<T>
+    {
         return iterator();
     }
 
@@ -188,7 +186,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         Returns a bidirectional iterator over the elements of `this`
         DoubleLinkedList in reverse.
     **/
-    public inline function endIterator():EndIterator<T> {
+    public inline function endIterator():EndIterator<T>
+    {
         return reverseIterator();
     }
 
@@ -198,7 +197,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         Equivalent to `indexIterator()`.
     **/
-    public inline function keyValueIterator():IndexIterator<T> {
+    public inline function keyValueIterator():IndexIterator<T>
+    {
         return new IndexIterator<T>(head);
     }
 
@@ -208,7 +208,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         Equivalent to `keyValueIterator()`.
     **/
-    public inline function indexIterator():IndexIterator<T> {
+    public inline function indexIterator():IndexIterator<T>
+    {
         return keyValueIterator();
     }
 
@@ -220,12 +221,12 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         if `f` is null, the result is unspecified.
     **/
-    public function filter(f:(T) -> Bool):DoubleLinkedList<T> {
+    public function filter(f:(T) -> Bool):DoubleLinkedList<T>
+    {
         var list = new DoubleLinkedList<T>();
-        for (item in this) {
-            if (f(item)) {
-                list.unshift(item);
-            }
+        for (item in this)
+        {
+            if (f(item)) list.unshift(item);
         }
         return list;
     }
@@ -236,11 +237,10 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         If `f` is null, the result is unspecified.
     **/
-    public function map<S>(f:(T) -> S):DoubleLinkedList<S> {
+    public function map<S>(f:(T) -> S):DoubleLinkedList<S>
+    {
         var list = new DoubleLinkedList<S>();
-        for (item in this) {
-            list.unshift(f(item));
-        }
+        for (item in this) list.unshift(f(item));
         return list;
     }
 
@@ -252,18 +252,17 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 
         Returns `true` if an element was removed, or `false` otherwise.
     **/
-    public function remove(val:T, ?comp:(T, T) -> Bool):Bool {
-        if (isEmpty()) {
-            return false;
-        }
+    public function remove(val:T, ?comp:(T, T) -> Bool):Bool
+    {
+        if (isEmpty()) return false;
 
-        if (comp == null) {
-            comp = hxdf.lambda.Compare.standardEquity;
-        }
-        if (comp(val, head.data)) {
-            if (head == tail) {
-                head = tail = null;
-            } else {
+        if (comp == null) comp = hxdf.lambda.Compare.standardEquity;
+
+        if (comp(val, head.data))
+        {
+            if (head == tail) head = tail = null;
+            else
+            {
                 head = head.next;
                 head.prev = null;
             }
@@ -272,14 +271,13 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         }
 
         var node = head.next;
-        while (node != null) {
-            if (comp(val, node.data)) {
+        while (node != null)
+        {
+            if (comp(val, node.data))
+            {
                 node.prev.next = node.next;
-                if (node == tail) {
-                    tail = node.prev;
-                } else {
-                    node.next.prev = node.prev;
-                }
+                if (node == tail) tail = node.prev;
+                else node.next.prev = node.prev;
                 length--;
                 return true;
             }
@@ -292,7 +290,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         Returns `true` if `this` DoubleLinkedList is empty, or `false`
         otherwise.
     **/
-    public inline function isEmpty():Bool {
+    public inline function isEmpty():Bool
+    {
         return head == null;
     }
 
@@ -302,7 +301,8 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         This function does not traverse the list, but sets internal references
         to null and `this.length` to `0`.
     **/
-    public function clear():Void {
+    public function clear():Void
+    {
         head = tail = null;
         length = 0;
     }
@@ -313,18 +313,18 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         The elements of `this` DoubleLinkedList are not copied and retain their
         identity.
     **/
-    public function copy():DoubleLinkedList<T> {
+    public function copy():DoubleLinkedList<T>
+    {
         var list = new DoubleLinkedList<T>();
-        for (item in this) {
-            list.unshift(item);
-        }
+        for (item in this) list.unshift(item);
         return list;
     }
 
     /**
         Converts `this` DoubleLinkedList into a string representation.
     **/
-    public inline function toString():String {
+    public inline function toString():String
+    {
         return '[${join(",")}]';
     }
 
@@ -332,14 +332,15 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
         Converts `this` DoubleLinkedList into a string representation where
         each element is separated by `sep`.
     **/
-    public function join(sep:String):String {
-        if (isEmpty()) {
-            return "";
-        }
+    public function join(sep:String):String
+    {
+        if (isEmpty()) return "";
+
         var buf = new StringBuf();
         var iterator = iterator();
         buf.add(Std.string(iterator.next()));
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             buf.add(Std.string(sep));
             buf.add(Std.string(iterator.next()));
         }
@@ -348,54 +349,56 @@ class DoubleLinkedList<T> implements hxdf.ds.Container.TraversableContainer<T> i
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class BeginIterator<T> implements BidirectionalTemplate<T> {
+private class BeginIterator<T> implements BidirectionalTemplate<T>
+{
     var node:DoubleNode<T>;
 
-    public function new(head:DoubleNode<T>) {
-        if (head != null) {
-            node = new DoubleNode<T>(head.data, head, head);
-        }
+    public function new(head:DoubleNode<T>)
+    {
+        if (head != null) node = new DoubleNode<T>(head.data, head, head);
     }
 
-    public inline function hasNext():Bool {
+    public inline function hasNext():Bool
+    {
         return node != null && node.next != null;
     }
 
-    public function next():T {
+    public function next():T
+    {
         node = node.next;
         return node.data;
     }
 
-    public function advance(distance:Int):Bool {
-        while (0 < distance && hasNext()) {
-            node = node.next;
-            --distance;
-        }
+    public function advance(distance:Int):Bool
+    {
+        while (0 < distance-- && hasNext()) node = node.next;
         return hasNext();
     }
 
-    public inline function hasPrev():Bool {
+    public inline function hasPrev():Bool
+    {
         return node != null && node.prev != null && node.next != node.prev;
     }
 
-    public function prev():T {
+    public function prev():T
+    {
         node = node.prev;
         return node.data;
     }
 
-    public function retreat(distance:Int):Bool {
-        while (0 < distance && hasPrev()) {
-            node = node.prev;
-            --distance;
-        }
+    public function retreat(distance:Int):Bool
+    {
+        while (0 < distance-- && hasPrev()) node = node.prev;
         return hasNext();
     }
 
-    public inline function equals(it:SequentialTemplate<T>):Bool {
+    public inline function equals(it:SequentialTemplate<T>):Bool
+    {
         return node == null ? (cast it).node == null : node.next == (cast it).node.next;
     }
 
-    public function copy():BeginIterator<T> {
+    public function copy():BeginIterator<T>
+    {
         var it = new BeginIterator<T>(node);
         it.node = node;
         return it;
@@ -403,54 +406,56 @@ private class BeginIterator<T> implements BidirectionalTemplate<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class EndIterator<T> implements BidirectionalTemplate<T> {
+private class EndIterator<T> implements BidirectionalTemplate<T>
+{
     var node:DoubleNode<T>;
 
-    public function new(head:DoubleNode<T>) {
-        if (head != null) {
-            node = new DoubleNode<T>(head.data, head, head);
-        }
+    public function new(head:DoubleNode<T>)
+    {
+        if (head != null) node = new DoubleNode<T>(head.data, head, head);
     }
 
-    public inline function hasNext():Bool {
+    public inline function hasNext():Bool
+    {
         return node != null && node.prev != null;
     }
 
-    public function next():T {
+    public function next():T
+    {
         node = node.prev;
         return node.data;
     }
 
-    public function advance(distance:Int):Bool {
-        while (0 < distance && hasNext()) {
-            node = node.prev;
-            --distance;
-        }
+    public function advance(distance:Int):Bool
+    {
+        while (0 < distance-- && hasNext()) node = node.prev;
         return hasNext();
     }
 
-    public inline function hasPrev():Bool {
+    public inline function hasPrev():Bool
+    {
         return node != null && node.next != null && node.next != node.prev;
     }
 
-    public function prev():T {
+    public function prev():T
+    {
         node = node.next;
         return node.data;
     }
 
-    public function retreat(distance:Int):Bool {
-        while (0 < distance && hasPrev()) {
-            node = node.next;
-            --distance;
-        }
+    public function retreat(distance:Int):Bool
+    {
+        while (0 < distance-- && hasPrev()) node = node.next;
         return hasNext();
     }
 
-    public inline function equals(it:SequentialTemplate<T>):Bool {
+    public inline function equals(it:SequentialTemplate<T>):Bool
+    {
         return node == null ? (cast it).node == null : node.prev == (cast it).node.prev;
     }
 
-    public function copy():EndIterator<T> {
+    public function copy():EndIterator<T>
+    {
         var it = new EndIterator<T>(node);
         it.node = node;
         return it;
@@ -458,48 +463,59 @@ private class EndIterator<T> implements BidirectionalTemplate<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class IndexIterator<T> implements IndexTemplate<T> implements BidirectionalTemplate<KeyValuePair<Int, T>> {
+private class IndexIterator<T> implements IndexTemplate<T> implements BidirectionalTemplate<KeyValuePair<Int, T>>
+{
     var index:Int;
     var iterator:BeginIterator<T>;
 
-    public function new(head:DoubleNode<T>) {
+    public function new(head:DoubleNode<T>)
+    {
         index = 0;
         iterator = new BeginIterator<T>(head);
     }
 
-    public inline function hasNext():Bool {
+    public inline function hasNext():Bool
+    {
         return iterator.hasNext();
     }
 
-    public inline function next():KeyValuePair<Int, T> {
+    public inline function next():KeyValuePair<Int, T>
+    {
         return new KeyValuePair(index++, iterator.next());
     }
 
-    public inline function advance(distance:Int):Bool {
+    public inline function advance(distance:Int):Bool
+    {
         return iterator.advance(distance);
     }
 
-    public inline function hasPrev():Bool {
+    public inline function hasPrev():Bool
+    {
         return iterator.hasPrev();
     }
 
-    public inline function prev():KeyValuePair<Int, T> {
+    public inline function prev():KeyValuePair<Int, T>
+    {
         return new KeyValuePair(index, iterator.prev());
     }
 
-    public inline function retreat(distance:Int):Bool {
+    public inline function retreat(distance:Int):Bool
+    {
         return iterator.retreat(distance);
     }
 
-    public inline function equals(it:SequentialTemplate<KeyValuePair<Int, T>>):Bool {
+    public inline function equals(it:SequentialTemplate<KeyValuePair<Int, T>>):Bool
+    {
         return index == (cast it).index;
     }
 
-    public inline function compare(it:IndexTemplate<T>):Int {
+    public inline function compare(it:IndexTemplate<T>):Int
+    {
         return index - (cast it).index;
     }
 
-    public function copy():IndexIterator<T> {
+    public function copy():IndexIterator<T>
+    {
         var copy = new IndexIterator(null);
         copy.index = index;
         copy.iterator = iterator.copy();

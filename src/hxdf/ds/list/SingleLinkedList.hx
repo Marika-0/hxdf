@@ -10,7 +10,8 @@ import hxdf.lambda.Iterator.SequentialIterator as SequentialIteratorTemplate;
 /**
     A singly-linked list.
 **/
-class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
+class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T>
+{
     /**
         The number of items in `this` SingleLinkedList.
     **/
@@ -22,7 +23,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         Creates a new empty SingleLinkedList.
     **/
-    public function new() {
+    public function new()
+    {
         length = 0;
         head = null;
         tail = null;
@@ -31,11 +33,10 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         Adds `item` to the front of `this` SingleLinkedList.
     **/
-    public function push(item:T):Void {
+    public function push(item:T):Void
+    {
         head = new SingleNode<T>(item, head);
-        if (tail == null) {
-            tail = head;
-        }
+        if (tail == null) tail = head;
         length++;
     }
 
@@ -45,15 +46,13 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         If `this` SingleLinkedList is empty, returns null.
     **/
-    public function pop():Null<T> {
-        if (head == null) {
-            return null;
-        }
+    public function pop():Null<T>
+    {
+        if (head == null) return null;
+
         var x = head.data;
         head = head.next;
-        if (head == null) {
-            tail = null;
-        }
+        if (head == null) tail = null;
         length--;
         return x;
     }
@@ -63,19 +62,18 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         If `this` SingleLinkedList is empty, returns null.
     **/
-    public inline function peek():Null<T> {
+    public inline function peek():Null<T>
+    {
         return head == null ? null : head.data;
     }
 
     /**
         Adds `item` to the end of `this` SingleLinkedList.
     **/
-    public function unshift(item:T):Void {
-        if (head == null) {
-            head = tail = new SingleNode<T>(item);
-        } else {
-            tail = tail.next = new SingleNode<T>(item);
-        }
+    public function unshift(item:T):Void
+    {
+        if (head == null) head = tail = new SingleNode<T>(item);
+        else tail = tail.next = new SingleNode<T>(item);
         length++;
     }
 
@@ -84,7 +82,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         if `this` SingleLinkedList is empty, retuns null.
     **/
-    public inline function spy():Null<T> {
+    public inline function spy():Null<T>
+    {
         return tail == null ? null : tail.data;
     }
 
@@ -100,13 +99,10 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         The elements of `this` SingleLinkedList are not copied and retain their
         identity.
     **/
-    public function sort(?f:(T, T) -> Int, ascending = true):SingleLinkedList<T> {
-        if (f == null) {
-            f = Compare.reflectiveComparison;
-        }
-        if (!ascending) {
-            f = Compare.reverse(f);
-        }
+    public function sort(?f:(T, T) -> Int, ascending = true):SingleLinkedList<T>
+    {
+        if (f == null) f = Compare.reflectiveComparison;
+        if (!ascending) f = Compare.reverse(f);
         return Sort.mergeSort(this, f);
     }
 
@@ -116,16 +112,19 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         The elements of `this` SingleLinkedList are not copied and retain their
         identity.
     **/
-    public function reverse():SingleLinkedList<T> {
+    public function reverse():SingleLinkedList<T>
+    {
         var list = new SingleLinkedList<T>();
         list.length = length;
 
         var node = head;
-        if (node != null) {
+        if (node != null)
+        {
             list.head = list.tail = new SingleNode<T>(node.data);
             node = node.next;
         }
-        while (node != null) {
+        while (node != null)
+        {
             list.head = new SingleNode<T>(node.data, list.head);
             node = node.next;
         }
@@ -136,7 +135,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         Returns an iterator over the elements of `this` SingleLinkedList.
     **/
-    public inline function iterator():SequentialIterator<T> {
+    public inline function iterator():SequentialIterator<T>
+    {
         return new SequentialIterator<T>(head);
     }
 
@@ -146,7 +146,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         Equivalent to `indexIterator()`.
     **/
-    public inline function keyValueIterator():IndexIterator<T> {
+    public inline function keyValueIterator():IndexIterator<T>
+    {
         return new IndexIterator<T>(head);
     }
 
@@ -156,7 +157,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         Equivalent to `keyValueIterator()`.
     **/
-    public inline function indexIterator():IndexIterator<T> {
+    public inline function indexIterator():IndexIterator<T>
+    {
         return keyValueIterator();
     }
 
@@ -168,12 +170,12 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         if `f` is null, the result is unspecified.
     **/
-    public function filter(f:(T) -> Bool):SingleLinkedList<T> {
+    public function filter(f:(T) -> Bool):SingleLinkedList<T>
+    {
         var list = new SingleLinkedList<T>();
-        for (item in this) {
-            if (f(item)) {
-                list.unshift(item);
-            }
+        for (item in this)
+        {
+            if (f(item)) list.unshift(item);
         }
         return list;
     }
@@ -184,11 +186,10 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         If `f` is null, the result is unspecified.
     **/
-    public function map<S>(f:(T) -> S):SingleLinkedList<S> {
+    public function map<S>(f:(T) -> S):SingleLinkedList<S>
+    {
         var list = new SingleLinkedList<S>();
-        for (item in this) {
-            list.unshift(f(item));
-        }
+        for (item in this) list.unshift(f(item));
         return list;
     }
 
@@ -200,32 +201,27 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         Returns `true` if an element was removed, or `false` otherwise.
     **/
-    public function remove(val:T, ?comp:(T, T) -> Bool):Bool {
-        if (isEmpty()) {
-            return false;
-        }
+    public function remove(val:T, ?comp:(T, T) -> Bool):Bool
+    {
+        if (isEmpty()) return false;
 
-        if (comp == null) {
-            comp = hxdf.lambda.Compare.standardEquity;
-        }
-        if (comp(val, head.data)) {
-            if (head == tail) {
-                head = tail = null;
-            } else {
-                head = head.next;
-            }
+        if (comp == null) comp = hxdf.lambda.Compare.standardEquity;
+        if (comp(val, head.data))
+        {
+            if (head == tail) head = tail = null;
+            else head = head.next;
             length--;
             return true;
         }
 
         var prev = head;
         var node = head.next;
-        while (node != null) {
-            if (comp(val, node.data)) {
+        while (node != null)
+        {
+            if (comp(val, node.data))
+            {
                 prev.next = node.next;
-                if (node == tail) {
-                    tail = prev;
-                }
+                if (node == tail) tail = prev;
                 length--;
                 return true;
             }
@@ -239,7 +235,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         Returns `true` if `this` SingleLinkedList is empty, or `false`
         otherwise.
     **/
-    public inline function isEmpty():Bool {
+    public inline function isEmpty():Bool
+    {
         return head == null;
     }
 
@@ -249,7 +246,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         This function does not traverse the list, but sets internal references
         to null and `this.length` to `0`.
     **/
-    public function clear():Void {
+    public function clear():Void
+    {
         head = tail = null;
         length = 0;
     }
@@ -260,16 +258,19 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         The elements of `this` SingleLinkedList are not copied and retain their
         identity.
     **/
-    public function copy():SingleLinkedList<T> {
+    public function copy():SingleLinkedList<T>
+    {
         var list = new SingleLinkedList<T>();
         list.length = length;
 
         var node = this.head;
-        if (head != null) {
+        if (head != null)
+        {
             list.head = list.tail = new SingleNode<T>(node.data);
             node = node.next;
         }
-        while (node != null) {
+        while (node != null)
+        {
             list.tail = list.tail.next = new SingleNode<T>(node.data);
             node = node.next;
         }
@@ -280,7 +281,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
     /**
         Converts `this` SingleLinkedList into a string representation.
     **/
-    public inline function toString():String {
+    public inline function toString():String
+    {
         return '[${join(",")}]';
     }
 
@@ -288,8 +290,10 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
         Converts `this` SingleLinkedList into a string representation where
         each element is separated by `sep`.
     **/
-    public function join(sep:String):String {
-        if (isEmpty()) {
+    public function join(sep:String):String
+    {
+        if (isEmpty())
+        {
             return "";
         }
 
@@ -298,7 +302,8 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 
         buf.add(Std.string(node.data));
         node = node.next;
-        while (node != null) {
+        while (node != null)
+        {
             buf.add(Std.string(sep));
             buf.add(Std.string(node.data));
             node = node.next;
@@ -308,73 +313,81 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T> {
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class SequentialIterator<T> implements SequentialIteratorTemplate<T> {
+private class SequentialIterator<T> implements SequentialIteratorTemplate<T>
+{
     var node:SingleNode<T>;
 
-    public function new(head:SingleNode<T>) {
+    public function new(head:SingleNode<T>)
+    {
         node = head;
     }
 
-    public inline function hasNext():Bool {
+    public inline function hasNext():Bool
+    {
         return node != null;
     }
 
-    public function next():T {
+    public function next():T
+    {
         var value = node.data;
         node = node.next;
         return value;
     }
 
-    public function advance(distance:Int):Bool {
-        while (0 < distance && hasNext()) {
-            node = node.next;
-            --distance;
-        }
+    public function advance(distance:Int):Bool
+    {
+        while (0 < distance-- && hasNext()) node = node.next;
         return hasNext();
     }
 
-    public inline function equals(it:SequentialIteratorTemplate<T>):Bool {
+    public inline function equals(it:SequentialIteratorTemplate<T>):Bool
+    {
         return node == (cast it).node;
     }
 
-    public inline function copy():SequentialIterator<T> {
+    public inline function copy():SequentialIterator<T>
+    {
         return new SequentialIterator(node);
     }
 }
 
 @SuppressWarnings(["checkstyle:TypeDocComment", "checkstyle:FieldDocComment"])
-private class IndexIterator<T> implements IndexIteratorTemplate<T> {
+private class IndexIterator<T> implements IndexIteratorTemplate<T>
+{
     var node:SingleNode<T>;
     var index:Int;
 
-    public function new(head:SingleNode<T>, pos = 0) {
+    public function new(head:SingleNode<T>, pos = 0)
+    {
         node = head;
         index = pos;
     }
 
-    public inline function hasNext():Bool {
+    public inline function hasNext():Bool
+    {
         return node != null;
     }
 
-    public function next():KeyValuePair<Int, T> {
+    public function next():KeyValuePair<Int, T>
+    {
         var value = node.data;
         node = node.next;
         return new KeyValuePair(index++, value);
     }
 
-    public function advance(distance:Int):Bool {
-        while (0 < distance && hasNext()) {
-            node = node.next;
-            --distance;
-        }
+    public function advance(distance:Int):Bool
+    {
+        while (0 < distance-- && hasNext()) node = node.next;
         return hasNext();
     }
 
-    public inline function compare(it:IndexIteratorTemplate<T>):Int {
+    public inline function compare(it:IndexIteratorTemplate<T>):Int
+    {
         return index - (cast it).index;
     }
 
-    public inline function copy():IndexIterator<T> {
+    public inline function copy():IndexIterator<T>
+    {
         return new IndexIterator(node, index);
     }
 }
