@@ -34,28 +34,28 @@ class SingleLinkedListTests extends hxtf.TestObject {
         listA.push(17);
         assert(listA.length == 2);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 17);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 3);
+        assert(listA.spy() == 17);
 
         listA.push(24);
         assert(listA.length == 3);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 24);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 3);
+        assert(listA.spy() == 24);
 
-        assert(listA.pop() == 24);
+        assert(listA.pop() == 3);
         assert(listA.length == 2);
         assert(!listA.isEmpty());
         assert(listA.peek() == 17);
-        assert(listA.spy() == 3);
+        assert(listA.spy() == 24);
 
         assert(listA.pop() == 17);
         assert(listA.length == 1);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 3);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 24);
+        assert(listA.spy() == 24);
 
-        assert(listA.pop() == 3);
+        assert(listA.pop() == 24);
         assert(listA.length == 0);
         assert(listA.isEmpty());
         assert(listA.peek() == null);
@@ -78,40 +78,40 @@ class SingleLinkedListTests extends hxtf.TestObject {
         listB.push(11);
         assert(listB.length == 2);
         assert(!listB.isEmpty());
-        assert(listB.peek() == 11);
-        assert(listB.spy() == 4);
+        assert(listB.peek() == 4);
+        assert(listB.spy() == 11);
 
         listB.unshift(16);
         assert(listB.length == 3);
         assert(!listB.isEmpty());
-        assert(listB.peek() == 11);
-        assert(listB.spy() == 16);
+        assert(listB.peek() == 16);
+        assert(listB.spy() == 11);
 
         listB.push(29);
         assert(listB.length == 4);
         assert(!listB.isEmpty());
-        assert(listB.peek() == 29);
-        assert(listB.spy() == 16);
-
-        assert(listB.pop() == 29);
-        assert(listB.length == 3);
-        assert(!listB.isEmpty());
-        assert(listB.peek() == 11);
-        assert(listB.spy() == 16);
-
-        assert(listB.pop() == 11);
-        assert(listB.length == 2);
-        assert(!listB.isEmpty());
-        assert(listB.peek() == 4);
-        assert(listB.spy() == 16);
-
-        assert(listB.pop() == 4);
-        assert(listB.length == 1);
-        assert(!listB.isEmpty());
         assert(listB.peek() == 16);
-        assert(listB.spy() == 16);
+        assert(listB.spy() == 29);
 
         assert(listB.pop() == 16);
+        assert(listB.length == 3);
+        assert(!listB.isEmpty());
+        assert(listB.peek() == 4);
+        assert(listB.spy() == 29);
+
+        assert(listB.pop() == 4);
+        assert(listB.length == 2);
+        assert(!listB.isEmpty());
+        assert(listB.peek() == 11);
+        assert(listB.spy() == 29);
+
+        assert(listB.pop() == 11);
+        assert(listB.length == 1);
+        assert(!listB.isEmpty());
+        assert(listB.peek() == 29);
+        assert(listB.spy() == 29);
+
+        assert(listB.pop() == 29);
         assert(listB.length == 0);
         assert(listB.isEmpty());
         assert(listB.peek() == null);
@@ -136,7 +136,7 @@ class SingleLinkedListTests extends hxtf.TestObject {
         list.unshift(99);
         list.unshift(84);
 
-        assert(list.reverse().toString() == "[84,99,16,37,42]");
+        assert(list.reverse().toString() == "[42,37,16,99,84]");
         assert(list.sort().toString() == "[16,37,42,84,99]");
         assert(list.sort(false).toString() == "[99,84,42,37,16]");
         assert(list.sort().reverse().toString() == "[99,84,42,37,16]");
@@ -174,10 +174,10 @@ class SingleLinkedListTests extends hxtf.TestObject {
 
         var index = 0;
         for (item in listA) {
-            assert(item == [37, 29, 24, 13, 5][index++]);
+            assert(item == [5, 13, 24, 29, 37][index++]);
         }
         for (index => item in listA) {
-            assert(item == [37, 29, 24, 13, 5][index]);
+            assert(item == [5, 13, 24, 29, 37][index]);
         }
 
         var iteratorA = listA.indexIterator();
@@ -248,25 +248,25 @@ class SingleLinkedListTests extends hxtf.TestObject {
         assert(listG.remove(22));
         assert(listG.length == 5);
         for (index => item in listG) {
-            assert(item == [42, 31, 14, 7, 6][index]);
+            assert(item == [6, 7, 14, 31, 42][index]);
         }
 
         assert(listG.remove(13, (a, b) -> b < a));
         assert(listG.length == 4);
         for (index => item in listG) {
-            assert(item == [42, 31, 14, 6][index]);
+            assert(item == [7, 14, 31, 42][index]);
         }
 
         assert(listG.remove(42));
         assert(listG.length == 3);
         for (index => item in listG) {
-            assert(item == [31, 14, 6][index]);
+            assert(item == [7, 14, 31][index]);
         }
 
-        assert(listG.remove(6));
+        assert(listG.remove(7));
         assert(listG.length == 2);
         for (index => item in listG) {
-            assert(item == [31, 14][index]);
+            assert(item == [14, 31][index]);
         }
 
         assert(listG.remove(14));
@@ -302,8 +302,8 @@ class SingleLinkedListTests extends hxtf.TestObject {
         listA.push(26);
         listA.push(677);
 
-        assert(listA.toString() == "[677,26,5,2]");
-        assert(listA.join("str") == "677str26str5str2");
-        assert(listA.join(null) == "677null26null5null2");
+        assert(listA.toString() == "[2,5,26,677]");
+        assert(listA.join("str") == "2str5str26str677");
+        assert(listA.join(null) == "2null5null26null677");
     }
 }

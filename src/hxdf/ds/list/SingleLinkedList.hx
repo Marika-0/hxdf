@@ -31,12 +31,12 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T>
     }
 
     /**
-        Adds `item` to the front of `this` SingleLinkedList.
+        Adds `item` to the end of `this` SingleLinkedList.
     **/
     public function push(item:T):Void
     {
-        head = new SingleNode<T>(item, head);
-        if (tail == null) tail = head;
+        if (head == null) head = tail = new SingleNode<T>(item);
+        else tail = tail.next = new SingleNode<T>(item);
         length++;
     }
 
@@ -68,12 +68,12 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T>
     }
 
     /**
-        Adds `item` to the end of `this` SingleLinkedList.
+        Adds `item` to the front of `this` SingleLinkedList.
     **/
     public function unshift(item:T):Void
     {
-        if (head == null) head = tail = new SingleNode<T>(item);
-        else tail = tail.next = new SingleNode<T>(item);
+        head = new SingleNode<T>(item, head);
+        if (tail == null) tail = head;
         length++;
     }
 
@@ -101,9 +101,9 @@ class SingleLinkedList<T> implements hxdf.ds.Container.ExtractableContainer<T>
     **/
     public function sort(?f:(T, T) -> Int, ascending = true):SingleLinkedList<T>
     {
-        if (f == null) f = Compare.reflectiveComparison;
-        if (!ascending) f = Compare.reverse(f);
-        return Sort.mergeSort(this, f);
+        var sorted = new SingleLinkedList<T>();
+        Sort.mergeSort(this, sorted, f, !ascending);
+        return sorted;
     }
 
     /**
