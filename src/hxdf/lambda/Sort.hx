@@ -3,9 +3,24 @@ package hxdf.lambda;
 import hxdf.ds.Container.SequentialContainer;
 import hxdf.ds.list.SingleLinkedList;
 
+/**
+    Functions for sorting containers.
+**/
 class Sort
 {
-    public static function mergeSort<T>(container:SequentialContainer<T>, ?comp:(T, T) -> Int):SingleLinkedList<T>
+    /**
+        Sorts the given container `container` and pushes the sorted result to
+        `output` using that containers `push()` method.
+
+        Comparison between two elements is done using `comp`. If `comp` is
+        unspecified, `hxdf.lambda.Compare.reflectiveComparison` is used.
+
+        if `reverse` is `true`, the sorted result is pushed to `output` in
+        reverse.
+    **/
+    public static function mergeSort<T>(
+        container:SequentialContainer<T>, output:SequentialContainer<T>, ?comp:(T, T) -> Int, reverse = false
+    ):Void
     {
         inline function advanceIterator(it:Iterator<T>, amount:Int):Bool
         {
@@ -19,17 +34,18 @@ class Sort
 
         if (container.length < 2)
         {
-            var list = new SingleLinkedList<T>();
-            for (item in container) list.unshift(item);
-            return list;
+            for (item in container) output.push(item);
+            return;
         }
 
         if (comp == null) comp = Compare.reflectiveComparison;
+        if (reverse) comp = Compare.reverse(comp);
 
         var binSize = 1;
-        var merge = new SingleLinkedList<T>();
         while (binSize < container.length)
         {
+            var merge:SequentialContainer<T> = container.length <= binSize * 2 ? output : new SingleLinkedList<T>();
+
             var iterA = container.iterator();
             var iterB = container.iterator();
             advanceIterator(iterB, binSize);
@@ -45,7 +61,7 @@ class Sort
                 {
                     if (0 < comp(valA, valB))
                     {
-                        merge.unshift(valB);
+                        merge.push(valB);
                         posB++;
                         if (!iterB.hasNext())
                         {
@@ -53,30 +69,31 @@ class Sort
                             break;
                         }
                         valB = iterB.next();
-                    } else
+                    }
+                    else
                     {
-                        merge.unshift(valA);
+                        merge.push(valA);
                         posA++;
                         valA = iterA.next();
                     }
                 }
                 while (posA < binSize)
                 {
+                    merge.push(valA);
                     posA++;
-                    merge.unshift(valA);
                     valA = iterA.next();
                 }
                 if (posB < binSize)
                 {
                     posB++;
-                    merge.unshift(valB);
+                    merge.push(valB);
                     if (iterB.hasNext())
                     {
                         valB = iterB.next();
                         while (posB < binSize && iterB.hasNext())
                         {
                             posB++;
-                            merge.unshift(valB);
+                            merge.push(valB);
                             valB = iterB.next();
                         }
                     }
@@ -86,19 +103,13 @@ class Sort
                 advanceIterator(iterB, binSize - 1);
                 if (!iterB.hasNext())
                 {
-                    while (iterA.hasNext()) merge.unshift(iterA.next());
+                    while (iterA.hasNext()) merge.push(iterA.next());
                     break;
                 }
             }
 
             binSize *= 2;
-            if (binSize < container.length)
-            {
-                container = merge;
-                merge = new SingleLinkedList<T>();
-            }
+            container = merge;
         }
-
-        return merge;
     }
 }

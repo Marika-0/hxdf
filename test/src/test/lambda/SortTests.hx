@@ -1,6 +1,7 @@
 package test.lambda;
 
 import hxdf.ds.list.SingleLinkedList;
+import hxdf.ds.list.DoubleLinkedList;
 import hxdf.lambda.Sort;
 
 class SortTests extends hxtf.TestObject {
@@ -10,16 +11,32 @@ class SortTests extends hxtf.TestObject {
 
     function test_mergeSort():Void {
         var list = new SingleLinkedList<Int>();
-        assert(Sort.mergeSort(list).toString() == "[]");
+        var result = new SingleLinkedList<Int>();
+
+        Sort.mergeSort(list, result);
+        assert(result.toString() == "[]");
+        result.clear();
 
         list.push(42);
-        assert(Sort.mergeSort(list).toString() == "[42]");
+        Sort.mergeSort(list, result);
+        assert(result.toString() == "[42]");
+        result.clear();
 
         list.push(37);
-        assert(Sort.mergeSort(list).toString() == "[37,42]");
+        Sort.mergeSort(list, result);
+        assert(result.toString() == "[37,42]");
+        result.clear();
+        Sort.mergeSort(list, result, true);
+        assert(result.toString() == "[42,37]");
+        result.clear();
 
         list.push(99);
-        assert(Sort.mergeSort(list).toString() == "[37,42,99]");
+        Sort.mergeSort(list, result);
+        assert(result.toString() == "[37,42,99]");
+        result.clear();
+        Sort.mergeSort(list, result, true);
+        assert(result.toString() == "[99,42,37]");
+        result.clear();
 
         list.push(7);
         list.push(66);
@@ -29,22 +46,11 @@ class SortTests extends hxtf.TestObject {
         list.push(74);
         list.push(41);
         list.push(21);
-        assert(Sort.mergeSort(list).toString() == "[7,12,21,31,37,41,42,66,74,95,99]");
-
-        list.clear();
-        list.push(52);
-        list.push(45);
-        list.push(11);
-        list.push(26);
-        list.push(39);
-        list.push(0);
-        list.push(98);
-        list.push(55);
-        list.push(26);
-        list.push(23);
-        list.push(53);
-        list.push(27);
-        list.push(89);
-        assert(Sort.mergeSort(list).toString() == "[0,11,23,26,26,27,39,45,52,53,55,89,98]");
+        Sort.mergeSort(list, result);
+        assert(result.toString() == "[7,12,21,31,37,41,42,66,74,95,99]");
+        result.clear();
+        Sort.mergeSort(list, result, true);
+        assert(result.toString() == "[99,95,74,66,42,41,37,31,21,12,7]");
+        result.clear();
     }
 }
