@@ -34,28 +34,28 @@ class DoubleLinkedListTests extends hxtf.TestObject {
         listA.push(17);
         assert(listA.length == 2);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 17);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 3);
+        assert(listA.spy() == 17);
 
         listA.push(24);
         assert(listA.length == 3);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 24);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 3);
+        assert(listA.spy() == 24);
 
-        assert(listA.pop() == 24);
+        assert(listA.pop() == 3);
         assert(listA.length == 2);
         assert(!listA.isEmpty());
         assert(listA.peek() == 17);
-        assert(listA.spy() == 3);
+        assert(listA.spy() == 24);
 
         assert(listA.pop() == 17);
         assert(listA.length == 1);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 3);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 24);
+        assert(listA.spy() == 24);
 
-        assert(listA.pop() == 3);
+        assert(listA.pop() == 24);
         assert(listA.length == 0);
         assert(listA.isEmpty());
         assert(listA.peek() == null);
@@ -70,28 +70,28 @@ class DoubleLinkedListTests extends hxtf.TestObject {
         listA.unshift(17);
         assert(listA.length == 2);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 3);
-        assert(listA.spy() == 17);
+        assert(listA.peek() == 17);
+        assert(listA.spy() == 3);
 
         listA.unshift(24);
         assert(listA.length == 3);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 3);
-        assert(listA.spy() == 24);
+        assert(listA.peek() == 24);
+        assert(listA.spy() == 3);
 
-        assert(listA.shift() == 24);
+        assert(listA.shift() == 3);
         assert(listA.length == 2);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 3);
+        assert(listA.peek() == 24);
         assert(listA.spy() == 17);
 
         assert(listA.shift() == 17);
         assert(listA.length == 1);
         assert(!listA.isEmpty());
-        assert(listA.peek() == 3);
-        assert(listA.spy() == 3);
+        assert(listA.peek() == 24);
+        assert(listA.spy() == 24);
 
-        assert(listA.shift() == 3);
+        assert(listA.shift() == 24);
         assert(listA.length == 0);
         assert(listA.isEmpty());
         assert(listA.peek() == null);
@@ -133,7 +133,7 @@ class DoubleLinkedListTests extends hxtf.TestObject {
         list.unshift(99);
         list.unshift(84);
 
-        assert(list.reverse().toString() == "[84,99,16,37,42]");
+        assert(list.reverse().toString() == "[42,37,16,99,84]");
         assert(list.sort().toString() == "[16,37,42,84,99]");
         assert(list.sort(false).toString() == "[99,84,42,37,16]");
         assert(list.sort().reverse().toString() == "[99,84,42,37,16]");
@@ -171,13 +171,13 @@ class DoubleLinkedListTests extends hxtf.TestObject {
 
         var index = 0;
         for (item in listA) {
-            assert(item == [37, 29, 24, 13, 5][index++]);
+            assert(item == [5, 13, 24, 29, 37][index++]);
         }
         for (item in listA.reverseIterator()) {
-            assert(item == [37, 29, 24, 13, 5][--index]);
+            assert(item == [5, 13, 24, 29, 37][--index]);
         }
         for (index => item in listA) {
-            assert(item == [37, 29, 24, 13, 5][index++]);
+            assert(item == [5, 13, 24, 29, 37][index]);
         }
 
         var iteratorA = listA.indexIterator();
@@ -195,28 +195,28 @@ class DoubleLinkedListTests extends hxtf.TestObject {
         var iteratorC = listA.iterator();
         assert(iteratorC.hasNext());
         assert(!iteratorC.hasPrev());
-        assert(iteratorC.next() == 37);
+        assert(iteratorC.next() == 5);
         assert(iteratorC.hasNext());
-        assert(iteratorC.next() == 29);
+        assert(iteratorC.next() == 13);
         assert(iteratorC.hasPrev());
-        assert(iteratorC.prev() == 37);
-        assert(iteratorC.hasNext());
-        assert(iteratorC.next() == 29);
-        assert(iteratorC.hasNext());
-        assert(iteratorC.next() == 24);
+        assert(iteratorC.prev() == 5);
         assert(iteratorC.hasNext());
         assert(iteratorC.next() == 13);
         assert(iteratorC.hasNext());
-        assert(iteratorC.next() == 5);
+        assert(iteratorC.next() == 24);
+        assert(iteratorC.hasNext());
+        assert(iteratorC.next() == 29);
+        assert(iteratorC.hasNext());
+        assert(iteratorC.next() == 37);
         assert(!iteratorC.hasNext());
-        assert(iteratorC.hasPrev());
-        assert(iteratorC.prev() == 13);
-        assert(iteratorC.hasPrev());
-        assert(iteratorC.prev() == 24);
         assert(iteratorC.hasPrev());
         assert(iteratorC.prev() == 29);
         assert(iteratorC.hasPrev());
-        assert(iteratorC.prev() == 37);
+        assert(iteratorC.prev() == 24);
+        assert(iteratorC.hasPrev());
+        assert(iteratorC.prev() == 13);
+        assert(iteratorC.hasPrev());
+        assert(iteratorC.prev() == 5);
     }
 
     function test_transforming():Void {
@@ -328,8 +328,8 @@ class DoubleLinkedListTests extends hxtf.TestObject {
         listA.push(26);
         listA.push(677);
 
-        assert(listA.toString() == "[677,26,5,2]");
-        assert(listA.join("str") == "677str26str5str2");
-        assert(listA.join(null) == "677null26null5null2");
+        assert(listA.toString() == "[2,5,26,677]");
+        assert(listA.join("str") == "2str5str26str677");
+        assert(listA.join(null) == "2null5null26null677");
     }
 }

@@ -33,13 +33,13 @@ class DoubleLinkedList<T>
     }
 
     /**
-        Adds `item` to the front of `this` DoubleLinkedList.
+        Adds `item` to the end of `this` DoubleLinkedList.
     **/
     public function push(item:T):Void
     {
-        head = new DoubleNode<T>(item, head);
-        if (tail == null) tail = head;
-        else head.next.prev = head;
+        tail = new DoubleNode<T>(item, null, tail);
+        if (head == null) head = tail;
+        else tail.prev.next = tail;
 
         length++;
     }
@@ -74,13 +74,13 @@ class DoubleLinkedList<T>
     }
 
     /**
-        Adds `item` to the end of `this` DoubleLinkedList.
+        Adds `item` to the front of `this` DoubleLinkedList.
     **/
     public function unshift(item:T):Void
     {
-        tail = new DoubleNode<T>(item, null, tail);
-        if (head == null) head = tail;
-        else tail.prev.next = tail;
+        head = new DoubleNode<T>(item, head);
+        if (tail == null) tail = head;
+        else head.next.prev = head;
 
         length++;
     }
@@ -128,9 +128,9 @@ class DoubleLinkedList<T>
     **/
     public function sort(?f:(T, T) -> Int, ascending = true):DoubleLinkedList<T>
     {
-        if (f == null) f = Compare.reflectiveComparison;
-        if (!ascending) f = Compare.reverse(f);
-        return Convert.toDoubleLinkedList(Sort.mergeSort(this, f));
+        var sorted = new DoubleLinkedList<T>();
+        Sort.mergeSort(this, sorted, f, !ascending);
+        return sorted;
     }
 
     /**
