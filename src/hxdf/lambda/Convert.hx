@@ -16,7 +16,7 @@ class Convert {
     public static function toSingleLinkedList<T>(container:SequentialContainer<T>):SingleLinkedList<T> {
         var list = new SingleLinkedList<T>();
         for (item in container) {
-            list.unshift(item);
+            list.push(item);
         }
         return list;
     }
@@ -29,7 +29,7 @@ class Convert {
     public static function toDoubleLinkedList<T>(container:SequentialContainer<T>):DoubleLinkedList<T> {
         var list = new DoubleLinkedList<T>();
         for (item in container) {
-            list.unshift(item);
+            list.push(item);
         }
         return list;
     }

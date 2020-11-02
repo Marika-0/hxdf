@@ -18,8 +18,6 @@ class ConvertTests extends hxtf.TestObject {
         var valuesB = ["Hello", "world", "test"];
         var valuesC = [];
 
-
-
         var singleLinkedListA = new SingleLinkedList<Int>();
         var singleLinkedListB = new SingleLinkedList<String>();
         var singleLinkedListC = new SingleLinkedList<Dynamic>();
@@ -28,16 +26,16 @@ class ConvertTests extends hxtf.TestObject {
         var doubleLinkedListC = new DoubleLinkedList<Dynamic>();
 
         for (value in valuesA) {
-            singleLinkedListA.unshift(value);
-            doubleLinkedListA.unshift(value);
+            singleLinkedListA.push(value);
+            doubleLinkedListA.push(value);
         }
         for (value in valuesB) {
-            singleLinkedListB.unshift(value);
-            doubleLinkedListB.unshift(value);
+            singleLinkedListB.push(value);
+            doubleLinkedListB.push(value);
         }
         for (value in valuesC) {
-            singleLinkedListC.unshift(value);
-            doubleLinkedListC.unshift(value);
+            singleLinkedListC.push(value);
+            doubleLinkedListC.push(value);
         }
 
         containers.push(singleLinkedListA);
