@@ -344,17 +344,10 @@
 			"rules": [{
 				"additionalIndent": 1,
 				"conditions": [{
-					"cond": "totalItemLength >= n",
-					"value": 129
-				}],
-				"type": "onePerLine"
-			}, {
-				"additionalIndent": 1,
-				"conditions": [{
 					"cond": "exceedsMaxLineLength",
 					"value": 1
 				}],
-				"type": "fillLineWithLeadingBreak"
+				"type": "onePerLine"
 			}]
 		},
 		"maxLineLength": 128,

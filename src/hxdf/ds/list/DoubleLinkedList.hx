@@ -2,8 +2,6 @@ package hxdf.ds.list;
 
 import hxdf.ds.unit.DoubleNode;
 import hxdf.ds.unit.KeyValuePair;
-import hxdf.lambda.Compare;
-import hxdf.lambda.Convert;
 import hxdf.lambda.Iterator.BidirectionalIterator as BidirectionalTemplate;
 import hxdf.lambda.Iterator.IndexIterator as IndexTemplate;
 import hxdf.lambda.Iterator.SequentialIterator as SequentialTemplate;
@@ -13,7 +11,8 @@ import hxdf.lambda.Sort;
     A doubly-linked list.
 **/
 class DoubleLinkedList<T>
-implements hxdf.ds.Container.TraversableContainer<T> implements hxdf.ds.Container.ExtractableContainer<T>
+    implements hxdf.ds.Container.TraversableContainer<T>
+    implements hxdf.ds.Container.ExtractableContainer<T>
 {
     /**
         The number of items in `this` DoubleLinkedList.
