@@ -9,7 +9,7 @@ verbatimtex
 etex
 
 
-string interface_stereotype; interface_stereotype := "ï¿½interfaceï¿½";
+string interface_stereotype; interface_stereotype := "«interface»";
 % Guillemets (u00AB and u00BB) char bytes may need to be added manually.
 
 numeric offset;              offset             := 40;
