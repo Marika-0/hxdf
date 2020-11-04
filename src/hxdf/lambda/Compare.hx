@@ -57,6 +57,6 @@ class Compare
     **/
     public static inline function reverse<T>(comp:(T, T) -> Int):(T, T) -> Int
     {
-        return (a, b) -> 0 - comp(a, b);
+        return (a, b) -> -comp(a, b);
     }
 }
