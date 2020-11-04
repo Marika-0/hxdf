@@ -1,6 +1,5 @@
 package hxdf.ds.list;
 
-import hxdf.lambda.Compare;
 import hxdf.lambda.Sort;
 import hxdf.ds.unit.KeyValuePair;
 import hxdf.ds.unit.SingleNode;
