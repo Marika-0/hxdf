@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=Python3 without dead-code elimination
 
---python test/build/python/dce_no/TestRun.py
+--python test/build/python/dce_no.py

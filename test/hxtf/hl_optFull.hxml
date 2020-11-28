@@ -4,4 +4,4 @@ _base.hxml
 
 -D test_name=HashLink with full optimization
 
---hl test/build/hl/opt_full/TestRun.hl
+--hl test/build/hl/opt_full.hl

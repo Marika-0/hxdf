@@ -1,1 +1,1 @@
-neko ../build/neko/dce_std/TestRun.n
+neko ../build/neko/dce_std.n
