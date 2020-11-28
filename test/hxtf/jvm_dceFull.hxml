@@ -1,0 +1,7 @@
+_base.hxml
+
+--dce full
+
+-D test_name=JVM with full dead-code elimination
+
+--jvm test/build/jvm/dce_full.jar

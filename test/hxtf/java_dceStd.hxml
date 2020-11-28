@@ -1,7 +1,0 @@
-_base.hxml
-
---dce std
-
--D test_name=Java with standard dead-code elimination
-
---java test/build/java/dce_std

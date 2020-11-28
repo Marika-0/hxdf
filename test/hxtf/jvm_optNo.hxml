@@ -1,0 +1,7 @@
+_base.hxml
+
+--no-opt
+
+-D test_name=JVM without optimization
+
+--jvm test/build/jvm/opt_no.jar

@@ -1,0 +1,7 @@
+_base.hxml
+
+--dce std
+
+-D test_name=JVM with standard dead-code elimination
+
+--jvm test/build/jvm/dce_std.jar

@@ -1,7 +1,0 @@
-_base.hxml
-
---dce full
-
--D test_name=Java with full dead-code elimination
-
---java test/build/java/dce_full

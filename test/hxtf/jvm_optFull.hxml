@@ -1,0 +1,7 @@
+_base.hxml
+
+-D analyzer-optimize
+
+-D test_name=JVM with full optimization
+
+--jvm test/build/jvm/opt_full.jar

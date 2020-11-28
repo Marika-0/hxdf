@@ -1,7 +1,0 @@
-_base.hxml
-
---dce no
-
--D test_name=Java without dead-code elimination
-
---java test/build/java/dce_no

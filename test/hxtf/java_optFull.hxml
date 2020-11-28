@@ -1,7 +1,0 @@
-_base.hxml
-
--D analyzer-optimize
-
--D test_name=Java with full optimization
-
---java test/build/java/opt_full
