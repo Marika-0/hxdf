@@ -1,30 +1,36 @@
-## Help information and troubleshooting for development crud that happens sometimes.
+## Help information and troubleshooting for problems that have been seen to occur when setting up the development environment.
+---
 
-If the following error appears when trying to run HashLink:
+If this error appears when trying to run HashLink tests:
 
 > `hl: error while loading shared libraries: libhl.so: cannot open shared object file: No such file or directory`
 
-1. Do a filesystem search for `libhl.so` and record the directory it's in.
-1. Check to see if the environment variable `LD_LIBRARY_PATH` already contains the recorded directory.
-    - If it does, this won't help - try something else.
-1. Otherwise, add `export LD_LIBRARY_PATH="<dir>:$LD_LIBRARY_PATH"` (where `<dir>` is the recorded directory) to the end of the `~/.bashrc` file (or somewhere else appropriate).
-1. If things still don't work, figure something else out and append your steps here.
+First, after building HashLink, you should have a file `libhl.so` (steps taken from [here](https://github.com/HaxeFoundation/hashlink/issues/181)).
+
+1. Try copying this file into `/lib/` and see if that fixes the issue.
+2. If that doesn't work, try copying `libhl.so` to `/lib32/` and/or `/lib64/` and see if that fixes it.
+
+If the above doesn't work, try running a filesystem search for `libhl.so` (not the one in the directory where you built HashLink) and see if it was installed anywhere on your system.
+
+1. If you can't find `libhl.so`, this won't help - try something else.
+2. If you can find `libhl.so`, check to see if the environment valuable `LD_LIBRARY_PATH` is set and if it contains the parent directory of the found `libhl.so`.
+3. If `LD_LIBRARY_PATH` is set and contains the parent directory of `libhl.so`, this won't help - try something else.
+4. Otherwise, add `export LD_LIBRARY_PATH="<dir>:$LD_LIBRARY_PATH"` to your `~/.bashrc` file (where `<dir>` is the parent directory of the `libhl.so` file).
+
+If none of the above steps work, figure out something else and add your fix here.
 
 ---
 
-If the following error appears when trying to run PHP:
+If this error appears when trying to run PHP:
 
 > `PHP Fatal error:  Uncaught Error: Call to undefined function php\mb_internal_encoding() in <position>`
 
-1. Check to see that the package `php-mbstring` has been installed on your system.
-    - If not, install it and try again.
-1. If that package is installed or installing it didn't help, keep it installed and find a `php.ini` file in you're system.
-1. Search for `extension=mbstring` (should be in the Dynamic Extensions) section and remove preceeding semicolon(s).
-    - If `extension=mbstring` can't be found, navigate to the Dynamic Extensions section and add it to a new line somewhere.
-1. If things still don't work, figure something else out and append your steps here.
+Try the following (steps taken from [here]([here](https://stackoverflow.com/questions/1216274/unable-to-call-the-built-in-mb-internal-encoding-method))).
 
-More information can be found [here](https://stackoverflow.com/questions/1216274/unable-to-call-the-built-in-mb-internal-encoding-method).
+1. Check to see if the `php-mbstring` package has been installed on your system. If it hasn't, installed it and see if that fixes the issue.
+2. If the package is installed, or installing it didn't help, search for the `php.ini` initialization file on your system.
+3. In that file, search for the line containing `extension=mbstring` (should be in the Dynamic Extensions section) and remove any preceding semicolons.
+    * Semicolons are the comment character for PHP, so if that line is commented out in the initialization file the extension won't be loaded.
+4. If a line with `extension=mbstring` doesn't exist in the `php.ini` file, go to the Dynamic Extensions section of the file and add it as a new line somewhere.
 
----
-
-To install PCRE for lua, use `./configure --enable-utf8 --enable-unicode-properties && make && make install`.
+If none of the above steps work, figure out something else and add your fix here.
