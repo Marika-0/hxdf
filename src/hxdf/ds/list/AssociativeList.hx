@@ -16,14 +16,15 @@ import hxdf.lambda.Iterator.InputIterator as InputIteratorTemplate;
     existing bindings are reassigned in-place. No guarantees are made for the
     order of key/value pairs.
 **/
+@:access(hxdf.ds.list.SingleLinkedList)
 class AssociativeList<K, V> implements AssociativeContainer<K, V>
 {
     /**
         The number of key/value pairs in `this` AssociativeList.
     **/
-    public var length:Int;
+    public var length(default, null):Int;
 
-    var head:SingleAssociationNode<K, V>;
+    var list:SingleLinkedList<KeyValuePair<K, V>>;
 
     /**
         Creates a new empty AssociativeList.
@@ -31,7 +32,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     public function new()
     {
         length = 0;
-        head = null;
+        list = new SingleLinkedList<KeyValuePair<K, V>>();
     }
 
     /**
@@ -51,32 +52,13 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
 
         If `key` is already bound to a value, that binding is overridden.
     **/
-    public function set(key:K, value:V):Void
+    public inline function set(key:K, value:V):Void
     {
         find(key, (node) -> node.value = value, () ->
         {
-            head = new SingleAssociationNode<K, V>(key, value, head);
-            length++;
+            list.head = new SingleAssociationNode<K, V>(key, value, list.head);
+            length = ++list.length;
         });
-    }
-
-    /**
-        Removes the binding of `key` and returns it's value.
-
-        If `key` is not bound, returns `null`, and `this` AssociativeList is
-        unchanged.
-    **/
-    public function remove(key:K):Null<V>
-    {
-        var value:Null<V>;
-        findWithParent(key, (node, parent) ->
-        {
-            value = node.value;
-            length--;
-            if (parent == null) head = head.next;
-            else parent.next = node.next;
-        }, () -> value = null);
-        return value;
     }
 
     /**
@@ -107,10 +89,29 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     {
         return findWithParent(key, (node, parent) ->
         {
-            length--;
-            if (parent == null) head = head.next;
+            if (parent == null) list.head = list.head.next;
             else parent.next = node.next;
+            length = --list.length;
         }, () -> {});
+    }
+
+    /**
+        Removes the binding of `key` and returns its value.
+
+        If `key` is not bound, returns `null`, and `this` AssociativeList is
+        unchanged.
+    **/
+    public function remove(key:K):Null<V>
+    {
+        var value:Null<V>;
+        findWithParent(key, (node, parent) ->
+        {
+            value = node.value;
+            if (parent == null) list.head = list.head.next;
+            else parent.next = node.next;
+            length = --list.length;
+        }, () -> value = null);
+        return value;
     }
 
     /**
@@ -118,7 +119,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function iterator():ValueInputIterator<V>
     {
-        return new ValueInputIterator<V>(head);
+        return new ValueInputIterator<V>(list.head);
     }
 
     /**
@@ -126,7 +127,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function keyIterator():KeyInputIterator<K>
     {
-        return new KeyInputIterator<K>(head);
+        return new KeyInputIterator<K>(list.head);
     }
 
     /**
@@ -134,7 +135,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function keyValueIterator():PairInputIterator<K, V>
     {
-        return new PairInputIterator<K, V>(head);
+        return new PairInputIterator<K, V>(list.head);
     }
 
     /**
@@ -147,7 +148,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function filter(f:(V) -> Bool):AssociativeList<K, V>
     {
-        return internalFilter((node) -> f(node.value));
+        return internalFilter((pair) -> f(pair.value));
     }
 
     /**
@@ -160,7 +161,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function filterKeys(f:(K) -> Bool):AssociativeList<K, V>
     {
-        return internalFilter((node) -> f(node.key));
+        return internalFilter((pair) -> f(pair.key));
     }
 
     /**
@@ -173,7 +174,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function filterPairs(f:(KeyValuePair<K, V>) -> Bool):AssociativeList<K, V>
     {
-        return internalFilter((node) -> f(node.pair));
+        return internalFilter(f);
     }
 
     /**
@@ -184,7 +185,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function map<S>(f:(V) -> S):AssociativeList<K, S>
     {
-        return internalMap((node) -> new KeyValuePair(node.key, f(node.value)));
+        return internalMap((pair) -> new KeyValuePair(pair.key, f(pair.value)));
     }
 
     /**
@@ -198,7 +199,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public inline function mapKeys<S>(f:(K) -> S):AssociativeList<S, V>
     {
-        return internalMap((node) -> new KeyValuePair(f(node.key), node.value));
+        return internalMap((pair) -> new KeyValuePair(f(pair.key), pair.value));
     }
 
     /**
@@ -228,10 +229,10 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
 
         This function does not traverse the list.
     **/
-    public function clear():Void
+    public inline function clear():Void
     {
+        list.clear();
         length = 0;
-        head = null;
     }
 
     /**
@@ -242,11 +243,8 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     public function copy():AssociativeList<K, V>
     {
         var list = new AssociativeList<K, V>();
-        for (pair in keyValueIterator())
-        {
-            list.head = new SingleAssociationNode<K, V>(pair.key, pair.value, list.head);
-            list.length++;
-        }
+        list.list = this.list.copy();
+        list.length = length;
         return list;
     }
 
@@ -261,26 +259,26 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     public function toString():String
     {
-        if (head == null) return "{}";
+        if (length == 0) return "{}";
 
         var buf = new StringBuf();
-        var node = head;
+        var node = list.head;
 
-        inline function addPair(node:SingleAssociationNode<K, V>, buf:StringBuf)
+        inline function addPair(pair:KeyValuePair<K, V>, buf:StringBuf)
         {
-            buf.add(Std.string(node.key));
+            buf.add(Std.string(pair.key));
             buf.addChar("=".code);
             buf.addChar(">".code);
-            buf.add(Std.string(node.value));
+            buf.add(Std.string(pair.value));
         }
         buf.addChar("{".code);
 
-        addPair(node, buf);
+        addPair(node.data, buf);
         node = node.next;
         while (node != null)
         {
             buf.addChar(",".code);
-            addPair(node, buf);
+            addPair(node.data, buf);
             node = node.next;
         }
         buf.addChar("}".code);
@@ -299,7 +297,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     **/
     function find(key:K, operate:(SingleAssociationNode<K, V>) -> Void, failure:() -> Void):Bool
     {
-        var node = head;
+        var node:SingleAssociationNode<K, V> = list.head;
         while (node != null)
         {
             if (compare(node.key, key))
@@ -324,7 +322,7 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
     ):Bool
     {
         var parent = null;
-        var node = head;
+        var node:SingleAssociationNode<K, V> = list.head;
         while (node != null)
         {
             if (compare(node.key, key))
@@ -343,19 +341,19 @@ class AssociativeList<K, V> implements AssociativeContainer<K, V>
         Creates a copy of this AssociativeList containing every node of this
         AssociativeList (in the same order) where `evaluate(node)` on that node
         returns `true`.
+
+        The elements are not copied and retain their identity.
     **/
-    function internalFilter(evaluate:(SingleAssociationNode<K, V>) -> Bool):AssociativeList<K, V>
+    function internalFilter(evaluate:(KeyValuePair<K, V>) -> Bool):AssociativeList<K, V>
     {
         var list = new AssociativeList<K, V>();
-        var node = head;
-        while (node != null)
+        for (pair in keyValueIterator())
         {
-            if (evaluate(node))
+            if (evaluate(pair))
             {
-                list.head = new SingleAssociationNode<K, V>(node.key, node.value, list.head);
-                list.length++;
+                list.list.head = new SingleAssociationNode<K, V>(pair.key, pair.value, list.list.head);
+                list.length = ++list.list.length;
             }
-            node = node.next;
         }
         return list;
     }
